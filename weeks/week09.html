@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 9 — output devices — Yui Kondo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@1,125,900&family=Geist:wght@100..900&family=Geist+Mono:wght@400..600&family=Inter+Tight:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/site.js" defer></script>
+</head>
+<body class="has-cover">
+<header class="site-header">
+  <a class="site-name" href="../index.html">Yui Kondo</a>
+  <nav class="site-nav">
+    <a href="../index.html"><span class="box"></span>Index</a>
+    <a href="../grid.html"><span class="box"></span>Grid</a>
+  </nav>
+  <a class="site-about" href="../about.html">About</a>
+</header>
+
+<main class="project">
+  <section class="cover">
+    <img class="cover-img" src="../img/week09/hero.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
+    <div class="cover-title" data-title="OUTPUT DEVICES" aria-hidden="true"><span>OUTPUT DEVICES</span></div>
+    <h2 class="cover-label">Week 9<span class="sr">: OUTPUT DEVICES</span></h2>
+    <div class="cover-strip" aria-label="Yui Kondo — MIT Media Lab, 2026">
+      <div class="strip-track"><div class="strip-group"><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span></div><div class="strip-group"><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span></div></div>
+    </div>
+  </section>
+
+  <div class="project-body">
+    <aside class="toc">
+  <div class="toc-inner">
+    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#process">Process</a></li><li class="lvl3"><a href="#step-one">Step one</a></li><li class="lvl3"><a href="#step-two">Step two</a></li><li class="lvl2"><a href="#what-i-learned">What I learned</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
+  </div>
+</aside>
+    <article class="content">
+<h2 id="assignment">Assignment</h2>
+<p>What this week asked for, in a sentence or two.</p>
+<h2 id="what-i-made">What I made</h2>
+<p>Describe the outcome. Put the main photo first:</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Main result" src="../img/week09/hero.jpg" /></figure>
+<h2 id="process">Process</h2>
+<h3 id="step-one">Step one</h3>
+<p>Walk through what you did. Inline images are fine anywhere:</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Work in progress" src="../img/week09/01.jpg" /></figure>
+<h3 id="step-two">Step two</h3>
+<p>Code blocks render too:</p>
+<pre><code class="language-python">print(&quot;hello, week 09&quot;)
+</code></pre>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Reflections, mistakes, what you'd do differently.</p>
+<h2 id="files">Files</h2>
+<ul>
+<li><a href="../files/week09/">Design files</a> — CAD, code, exports</li>
+</ul>
+    </article>
+  </div>
+  <nav class="pager"><a href="week08.html">← Week 8</a><a href="week10.html">Week 10 →</a></nav>
+</main>
+<script>
+// Highlight the sidebar entry for the section in view. The reference line sits a third of
+// the way down the viewport; at the very bottom of the page the last entry wins.
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));if(!links.length)return;
+  var heads=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  var pinned=null;   // set by a click; the spy stays off until the reader scrolls on their own
+  function mark(cur){links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur.id);});}
+  function update(){
+    if(pinned)return;
+    var line=window.scrollY+window.innerHeight*0.33,cur=heads[0];
+    heads.forEach(function(h){if(h.getBoundingClientRect().top+window.scrollY<=line)cur=h;});
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-2)cur=heads[heads.length-1];
+    mark(cur);
+  }
+  links.forEach(function(a){a.addEventListener('click',function(){
+    var h=document.getElementById(a.getAttribute('href').slice(1));if(!h)return;
+    pinned=h;mark(h);
+  });});
+  function unpin(){pinned=null;update();}
+  window.addEventListener('wheel',unpin,{passive:true});window.addEventListener('touchstart',unpin,{passive:true});
+  window.addEventListener('keydown',function(e){if(/Arrow|Page|Home|End|Space/.test(e.key)||e.key===' ')unpin();});
+  window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
+  // Cover: scale one title line to the cover width (like the banner), then repeat it to fill the height.
+  var c=document.querySelector('.cover-title');if(!c)return;
+  function fill(){
+    var hd=document.querySelector('.site-header');
+    c.parentNode.style.height=window.innerHeight+'px';
+    var t=c.getAttribute('data-title');c.innerHTML='<span>'+t.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</span>';
+    var one=c.querySelector('span');one.style.display='inline-block';one.style.whiteSpace='nowrap';
+    var base=100;c.style.fontSize=base+'px';
+    var w=one.getBoundingClientRect().width||1;
+    var cs=getComputedStyle(c),pad=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight);
+    var fit=base*(c.clientWidth-pad-6)/(w+0.04*base);
+    var fs=Math.max(Math.min(fit, 200), Math.min(window.innerWidth*0.045, 72));
+    c.style.fontSize=fs+'px';one.style.display='block';one.style.whiteSpace='';
+    var lh=one.getBoundingClientRect().height||1,n=Math.max(1,Math.floor(c.clientHeight*0.72/lh));  // leave the lower part of the photo clear
+    var html='';for(var i=0;i<n;i++)html+='<span>'+one.innerHTML+'</span>';c.innerHTML=html;
+  }
+  fill();window.addEventListener('resize',fill);if(document.fonts)document.fonts.ready.then(fill);
+  // Bottom strip: constant-speed marquee (~70 px/s).
+  var tr=document.querySelector('.strip-track');
+  function speed(){if(tr)tr.style.setProperty('--strip-dur',(tr.scrollWidth/2/70).toFixed(2)+'s');}
+  speed();window.addEventListener('resize',speed);if(document.fonts)document.fonts.ready.then(speed);
+  // Header: hidden while the cover is on screen, slides in once the reader scrolls past it.
+  var hd=document.querySelector('.site-header'),cv=document.querySelector('.cover');
+  function hdr(){if(!hd||!cv)return;hd.classList.toggle('shown',window.scrollY>cv.offsetTop+cv.offsetHeight-hd.offsetHeight-8);}
+  hdr();window.addEventListener('scroll',hdr,{passive:true});
+})();
+</script>
+<footer class="site-footer">
+  <div class="col col-wide">Yui Kondo, 2026</div>
+  <div class="col"><p>Contact:</p><p><a href="mailto:yui@mit.edu">yui@mit.edu</a><br><a href="https://www.linkedin.com/in/yui-kondo-3ab584186">LinkedIn</a></p></div>
+</footer>
+</body>
+</html>
