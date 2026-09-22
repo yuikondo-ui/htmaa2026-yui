@@ -271,7 +271,7 @@ Nori turns out to be a good engraving test material: thin, uniform, and the patt
 
 ## Files
 
-Everything is under `files/week02/` in the [repo](https://github.com/yuikondo-ui/htmaa2026-yui/tree/main/files/week02). `modkit.py` is the panel and connector generator with the fit test; `skirt.py` the flared skirt with per-ring panels and connectors at the needed angles; `mannequin.py` the waffle mannequin. The cut files are `out_skirt/sheet_1.dxf` and `out_mannequin/sheet_*.dxf`. `week02_preview_en.html` is the interactive preview, a single file with no build step. `triangle.f3d` is the Fusion version of panel and connector, parametric. `asanoha_nori.svg` is the nori pattern.
+Everything is under `files/week02/` in the [repo](https://github.com/yuikondo-ui/htmaa2026-yui/tree/main/files/week02). `modkit.py` is the panel and connector generator with the fit test; `skirt.py` the flared skirt with per-ring panels and connectors at the needed angles; `mannequin.py` the waffle mannequin. The cut files are zipped: [out_skirt.zip](files/week02/out_skirt.zip) (panels, connectors and the 600 × 400 sheet), [out_mannequin.zip](files/week02/out_mannequin.zip) (two sheets) and [fit_tests.zip](files/week02/fit_tests.zip). `week02_preview_en.html` is the interactive preview, a single file with no build step. `triangle.f3d` is the Fusion version of panel and connector, parametric. `asanoha_nori.svg` is the nori pattern.
 
 ## Use of AI
 
