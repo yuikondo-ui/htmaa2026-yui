@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Week 2 — Waffle Mannequin + Modular Skirt Kit</title>
+<style>
+:root{
+  --bg:#e9e6df; --fg:#1d1c1a; --muted:#6e6a62; --panel:#ffffffcc; --line:#d8d3c8; --accent:#c8412b;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#17171a; --fg:#ece8df; --muted:#9a958b; --panel:#232326d9; --line:#3a3a40; } }
+:root[data-theme="dark"]{ --bg:#17171a; --fg:#ece8df; --muted:#9a958b; --panel:#232326d9; --line:#3a3a40; }
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--fg);font:13px/1.4 -apple-system,system-ui,"Inter",sans-serif;overflow:hidden}
+#c{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#ui{position:absolute;left:12px;top:calc(12px + env(safe-area-inset-top,0px));width:262px;max-width:calc(100vw - 24px);background:var(--panel);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:8px;padding:10px 14px;max-height:calc(100% - 40px);overflow:auto}
+#ui h1{font-size:13px;margin:0 0 6px}
+#ui h2{font-size:11px;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;border-top:1px solid var(--line);padding-top:8px}
+label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:4px 0;color:var(--muted)}
+label span:first-child{white-space:nowrap}
+input[type=range]{width:118px;accent-color:var(--accent)}
+.v{min-width:34px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums}
+.row{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+button{background:transparent;border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:3px 8px;font:inherit;cursor:pointer}
+button.on{border-color:var(--accent);color:var(--accent)}
+#bom{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.6}
+#hint{position:absolute;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <h1>Waffle Mannequin + Modular Skirt Kit</h1>
+  <p style="margin:0 0 6px;color:var(--muted);font-size:12px">HTMAA Week 2 · computer-controlled cutting. A laser-cut cardboard dress form (two families of slotted slices) wearing a press-fit skirt of triangular acrylic panels. Everything is parametric; the sliders are the real cut parameters.</p>
+
+  <h2>Mannequin (waffle slices)</h2>
+  <label><span>Scale (1 = life size)</span><input id="scale" type="range" min="30" max="70" value="40"><span class="v" id="scale_v">0.40</span></label>
+  <label><span>Slice pitch mm</span><input id="pitch" type="range" min="12" max="40" value="18"><span class="v" id="pitch_v">18</span></label>
+  <label><span>Tilt, X family °</span><input id="tx" type="range" min="-30" max="30" value="15"><span class="v" id="tx_v">15</span></label>
+  <label><span>Tilt, Y family °</span><input id="ty" type="range" min="-30" max="30" value="-10"><span class="v" id="ty_v">-10</span></label>
+
+  <h2>Skirt (triangular press-fit kit)</h2>
+  <label><span>Rings</span><input id="rings" type="range" min="1" max="5" value="3"><span class="v" id="rings_v">3</span></label>
+  <label><span>Triangles per ring N</span><input id="n" type="range" min="6" max="24" value="10"><span class="v" id="n_v">10</span></label>
+  <label><span>Flare mm / ring</span><input id="flare" type="range" min="0" max="60" value="10"><span class="v" id="flare_v">10</span></label>
+  <label><span>Ring height mm</span><input id="h" type="range" min="20" max="80" value="28"><span class="v" id="h_v">28</span></label>
+  <label><span>Connector fin mm</span><input id="fin" type="range" min="4" max="24" value="10"><span class="v" id="fin_v">10</span></label>
+  <label><span>Lattice divisions</span><input id="lace" type="range" min="0" max="8" value="4"><span class="v" id="lace_v">4</span></label>
+  <label><span>Cut-through %</span><input id="cut" type="range" min="0" max="100" value="30"><span class="v" id="cut_v">30</span></label>
+
+  <div class="row">
+    <button id="mmat">Cardboard</button>
+    <button id="mcol">B/W: per family</button>
+  </div>
+  <div class="row">
+    <button id="showM" class="on">Mannequin</button>
+    <button id="showS" class="on">Skirt</button>
+    <button id="con" class="on">Connectors</button>
+    <button id="spin" class="on">Spin</button>
+  </div>
+  <div id="bom"></div>
+</div>
+<div id="hint">Drag to orbit · wheel to zoom</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  // ---------------- shared kit constants (mm at output scale) ----------------
+  var T_CARD = 4.0;                        // cardboard
+  var T_ACR = 3.0, SW = 2.95, SD = 5, GAP = 1.5, SLOTS = 2;   // acrylic skirt (tabletop scale)
+  var NEXP = 2.4;
+  // life-size profile: z, circumference, depth/width
+  var PROFILE = [[0,940,0.72],[90,880,0.72],[200,680,0.68],[300,760,0.72],[360,880,0.80],[430,840,0.62],[500,860,0.48],[545,380,0.90],[600,360,0.90]];
+
+  // ---------------- PCHIP (Fritsch–Carlson) ----------------
+  function pchip(xs, ys){
+    var n=xs.length, h=[], d=[], m=new Array(n);
+    for (var i=0;i<n-1;i++){ h.push(xs[i+1]-xs[i]); d.push((ys[i+1]-ys[i])/h[i]); }
+    for (i=1;i<n-1;i++){
+      if (d[i-1]*d[i]<=0) m[i]=0;
+      else { var w1=2*h[i]+h[i-1], w2=h[i]+2*h[i-1]; m[i]=(w1+w2)/(w1/d[i-1]+w2/d[i]); }
+    }
+    m[0]=d[0]; m[n-1]=d[n-2];
+    return function(x){
+      if (x<=xs[0]) return ys[0]; if (x>=xs[n-1]) return ys[n-1];
+      var k=0; while (x>xs[k+1]) k++;
+      var t=(x-xs[k])/h[k], t2=t*t, t3=t2*t;
+      return ys[k]*(2*t3-3*t2+1) + h[k]*m[k]*(t3-2*t2+t) + ys[k+1]*(-2*t3+3*t2) + h[k]*m[k+1]*(t3-t2);
+    };
+  }
+  function body(scale){
+    var zs=[], as=[], bs=[];
+    PROFILE.forEach(function(p){
+      var c=p[1]*scale, r=p[2];
+      var f=function(a){ return Math.PI*(3*(a+r*a)-Math.sqrt((3*a+r*a)*(a+3*r*a)))-c; };
+      var lo=1, hi=1000; for (var i=0;i<60;i++){ var mid=(lo+hi)/2; if (f(mid)<0) lo=mid; else hi=mid; }
+      zs.push(p[0]*scale); as.push(lo); bs.push(lo*r);
+    });
+    return {a:pchip(zs,as), b:pchip(zs,bs), z0:zs[0], z1:zs[zs.length-1]};
+  }
+  function inside(B,x,y,z){ if (z<B.z0||z>B.z1) return false; var A=B.a(z), Bb=B.b(z); return Math.pow(Math.abs(x/A),NEXP)+Math.pow(Math.abs(y/Bb),NEXP)<1; }
+
+  // ---------------- scene ----------------
+  var canvas=document.getElementById('c');
+  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true}); renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  var scene=new THREE.Scene(); var camera=new THREE.PerspectiveCamera(36,1,1,5000);
+  scene.add(new THREE.HemisphereLight(0xffffff,0x777766,0.9));
+  var sun=new THREE.DirectionalLight(0xffffff,0.8); sun.position.set(300,500,400); scene.add(sun);
+  var sun2=new THREE.DirectionalLight(0xffffff,0.3); sun2.position.set(-400,200,-300); scene.add(sun2);
+  var gM=new THREE.Group(), gS=new THREE.Group(); scene.add(gM); scene.add(gS);
+  // mannequin materials: white / black, cardboard (matte, kraft edge) or acrylic (gloss)
+  var mAcrylic=false, colorMode='family';          // 'family' = X white, Y black · 'face' = each sheet white one side, black the other
+  var mWhite, mBlack, mEdge;
+  function makeMannequinMats(){
+    if (mAcrylic){
+      mWhite=new THREE.MeshStandardMaterial({color:0xf2f0ea,roughness:0.25,metalness:0.05});
+      mBlack=new THREE.MeshStandardMaterial({color:0x1c1c1e,roughness:0.25,metalness:0.1});
+      mEdge =new THREE.MeshStandardMaterial({color:0x9a9a9a,roughness:0.2,metalness:0.1});
+    } else {
+      mWhite=new THREE.MeshStandardMaterial({color:0xf4f1ea,roughness:0.95});
+      mBlack=new THREE.MeshStandardMaterial({color:0x222222,roughness:0.95});
+      mEdge =new THREE.MeshStandardMaterial({color:0xb99b6b,roughness:1.0});     // kraft core
+    }
+  }
+  makeMannequinMats();
+  // split an extruded slab into groups: +normal cap, -normal cap, side walls
+  function slabGeometry(geo){
+    var pos=geo.attributes.position.array, nor=geo.attributes.normal.array, groups=[[],[],[]];
+    for (var i=0;i<pos.length;i+=9){
+      var nz=nor[i+2]; var g = Math.abs(nz)>0.9 ? (nz>0?0:1) : 2;
+      for (var k=0;k<9;k++) groups[g].push(pos[i+k]);
+    }
+    var out=new THREE.BufferGeometry(), all=[], start=0;
+    groups.forEach(function(arr,gi){ all=all.concat(arr); out.addGroup(start/3, arr.length/3, gi); start+=arr.length; });
+    out.setAttribute('position',new THREE.Float32BufferAttribute(all,3)); out.computeVertexNormals();
+    return out;
+  }
+  var matCon=new THREE.MeshStandardMaterial({color:0x2a2a2c,roughness:0.35,metalness:0.1});
+  var showM=true, showS=true, showCon=true, spin=true;
+  var $=function(id){ return document.getElementById(id); };
+  function val(id){ return +$(id).value; }
+
+  // ---------------- mannequin ----------------
+  function frame(fam, tiltDeg){
+    var t=tiltDeg*Math.PI/180;
+    if (fam==='x') return {n:new THREE.Vector3(Math.cos(t),0,-Math.sin(t)), eu:new THREE.Vector3(0,1,0), ev:new THREE.Vector3(Math.sin(t),0,Math.cos(t))};
+    return {n:new THREE.Vector3(0,Math.cos(t),-Math.sin(t)), eu:new THREE.Vector3(1,0,0), ev:new THREE.Vector3(0,Math.sin(t),Math.cos(t))};
+  }
+  // outline of plane n·p=d: eu is axis aligned so each v gives a fixed (x or y, z) and a chord along eu
+  function sliceOutlines(B, fam, F, d){
+    var runs=[], cur=null, step=1.0;
+    var vmin=-(B.z1-B.z0)*1.2, vmax=(B.z1-B.z0)*1.6;
+    for (var v=vmin; v<=vmax; v+=step){
+      var p=F.n.clone().multiplyScalar(d).add(F.ev.clone().multiplyScalar(v));   // u=0 point
+      var z=p.z, e=null;
+      if (z>=B.z0 && z<=B.z1){
+        var A=B.a(z), Bb=B.b(z);
+        if (fam==='x'){ var k=1-Math.pow(Math.abs(p.x/A),NEXP); if (k>0) e=Bb*Math.pow(k,1/NEXP); }
+        else          { var k2=1-Math.pow(Math.abs(p.y/Bb),NEXP); if (k2>0) e=A*Math.pow(k2,1/NEXP); }
+      }
+      if (e!==null && e>0.5){ if(!cur){cur=[];runs.push(cur);} cur.push([v,e]); } else cur=null;
+    }
+    return runs.filter(function(r){ return r.length>=3; }).map(function(r){
+      var pts=r.map(function(q){return [q[1],q[0]];}).concat(r.slice().reverse().map(function(q){return [-q[1],q[0]];}));
+      return pts;   // [u,v] CCW-ish
+    });
+  }
+  function offsets(ext, tilt, pitch, B){
+    var span=ext+(B.z1-B.z0)*Math.abs(Math.sin(tilt*Math.PI/180))/2, ds=[];
+    for (var d=-span+pitch/2; d<span; d+=pitch) ds.push(d);
+    var c=(ds[0]+ds[ds.length-1])/2; return ds.map(function(d){return d-c;});
+  }
+  function buildMannequin(){
+    while (gM.children.length) gM.remove(gM.children[0]);
+    var S=val('scale')/100, pitch=val('pitch'), tx=val('tx'), ty=val('ty');
+    var B=body(S);
+    var amax=0,bmax=0; for (var z=B.z0; z<=B.z1; z+=2){ amax=Math.max(amax,B.a(z)); bmax=Math.max(bmax,B.b(z)); }
+    var Fx=frame('x',tx), Fy=frame('y',ty), zmid=(B.z0+B.z1)/2;
+    var xs=offsets(amax,tx,pitch,B).map(function(d){return d+Fx.n.z*zmid;});
+    var ys=offsets(bmax,ty,pitch,B).map(function(d){return d+Fy.n.z*zmid;});
+    // joints (for BOM and for dropping unjoined slices)
+    var l=new THREE.Vector3().crossVectors(Fx.n,Fy.n).normalize(); if (l.z<0) l.negate();
+    var jointsX={}, jointsY={}, nJ=0;
+    var M=new THREE.Matrix3().set(Fx.n.x,Fx.n.y,Fx.n.z, Fy.n.x,Fy.n.y,Fy.n.z, l.x,l.y,l.z);
+    var Minv=new THREE.Matrix3().copy(M).invert();
+    xs.forEach(function(dx,i){ ys.forEach(function(dy,j){
+      var p0=new THREE.Vector3(dx,dy,0).applyMatrix3(Minv); var ins=[];
+      for (var t=-800;t<=800;t+=2){ var q=p0.clone().add(l.clone().multiplyScalar(t)); if (inside(B,q.x,q.y,q.z)) ins.push(t); }
+      if (ins.length>=2 && ins[ins.length-1]-ins[0] >= 20){ jointsX[i]=(jointsX[i]||0)+1; jointsY[j]=(jointsY[j]||0)+1; nJ++; }
+    });});
+    var count={x:0,y:0};
+    [['x',xs,Fx,jointsX],['y',ys,Fy,jointsY]].forEach(function(fam){
+      fam[1].forEach(function(d,i){
+        if ((fam[3][i]||0)<2) return;
+        sliceOutlines(B,fam[0],fam[2],d).forEach(function(pts){
+          var sh=new THREE.Shape(); sh.moveTo(pts[0][0],pts[0][1]); for (var k=1;k<pts.length;k++) sh.lineTo(pts[k][0],pts[k][1]);
+          var geo=slabGeometry(new THREE.ExtrudeGeometry(sh,{depth:T_CARD,bevelEnabled:false}).translate(0,0,-T_CARD/2));
+          var m=new THREE.Matrix4().makeBasis(fam[2].eu,fam[2].ev,fam[2].n); m.setPosition(fam[2].n.clone().multiplyScalar(d));
+          var mats = colorMode==='face' ? [mWhite,mBlack,mEdge]
+                   : (fam[0]==='x' ? [mWhite,mWhite,mEdge] : [mBlack,mBlack,mEdge]);
+          var mesh=new THREE.Mesh(geo,mats); mesh.applyMatrix4(m); gM.add(mesh);
+        });
+        count[fam[0]]++;
+      });
+    });
+    // z-up -> y-up
+    gM.rotation.x=-Math.PI/2;
+    return {B:B, S:S, nx:count.x, ny:count.y, nJ:nJ};
+  }
+
+  // ---------------- skirt (from modkit preview) ----------------
+  function notchedShape(p2){
+    var s=new THREE.Shape();
+    for (var i=0;i<3;i++){
+      var a=p2[i], b=p2[(i+1)%3], dx=b[0]-a[0], dy=b[1]-a[1], L=Math.hypot(dx,dy); dx/=L; dy/=L; var nx=-dy, ny=dx;
+      if (i===0) s.moveTo(a[0],a[1]);
+      for (var k=1;k<=SLOTS;k++){ var t=L*k/(SLOTS+1), cx=a[0]+dx*t, cy=a[1]+dy*t;
+        s.lineTo(cx-dx*SW/2,cy-dy*SW/2); s.lineTo(cx-dx*SW/2+nx*SD,cy-dy*SW/2+ny*SD); s.lineTo(cx+dx*SW/2+nx*SD,cy+dy*SW/2+ny*SD); s.lineTo(cx+dx*SW/2,cy+dy*SW/2); }
+      s.lineTo(b[0],b[1]);
+    }
+    return s;
+  }
+  function lerp2(a,b,c,s,t){ return [a[0]+(b[0]-a[0])*s+(c[0]-a[0])*t, a[1]+(b[1]-a[1])*s+(c[1]-a[1])*t]; }
+  function inTri(x,y,q,m){ for (var i=0;i<3;i++){ var a=q[i],b=q[(i+1)%3],ex=b[0]-a[0],ey=b[1]-a[1],L=Math.hypot(ex,ey); if ((ex*(y-a[1])-ey*(x-a[0]))/L<m) return false; } return true; }
+  function addCuts(shape,p2,div,cutFrac,seed){
+    if (div<=0||cutFrac<=0) return;
+    var a=p2[0],b=p2[1],c=p2[2], margin=SD+1.5, inset=0.9;
+    var rnd=function(){ seed=(seed*9301+49297)%233280; return seed/233280; };
+    for (var i=0;i<div;i++) for (var j=0;j<div-i;j++){
+      var P0=lerp2(a,b,c,i/div,j/div),P1=lerp2(a,b,c,(i+1)/div,j/div),P2=lerp2(a,b,c,i/div,(j+1)/div);
+      var cx=(P0[0]+P1[0]+P2[0])/3, cy=(P0[1]+P1[1]+P2[1])/3;
+      if (!inTri(cx,cy,p2,margin)||rnd()>cutFrac) continue;
+      var pts=[P0,P1,P2].map(function(p){var vx=cx-p[0],vy=cy-p[1],l=Math.hypot(vx,vy)||1;return [p[0]+vx/l*inset,p[1]+vy/l*inset];});
+      var h=new THREE.Path(); h.moveTo(pts[0][0],pts[0][1]); h.lineTo(pts[2][0],pts[2][1]); h.lineTo(pts[1][0],pts[1][1]); h.closePath(); shape.holes.push(h);
+    }
+  }
+  function engraveTexture(q,div){
+    var minx=Math.min(q[0][0],q[1][0],q[2][0]),maxx=Math.max(q[0][0],q[1][0],q[2][0]),miny=Math.min(q[0][1],q[1][1],q[2][1]),maxy=Math.max(q[0][1],q[1][1],q[2][1]);
+    var px=12, W=Math.ceil((maxx-minx)*px)||1, H=Math.ceil((maxy-miny)*px)||1;
+    var cv=document.createElement('canvas'); cv.width=W; cv.height=H; var g=cv.getContext('2d');
+    g.fillStyle='#222224'; g.fillRect(0,0,W,H);
+    if (div>0){ g.strokeStyle='#9a9a9e'; g.lineWidth=0.25*px;
+      for (var i=0;i<3;i++){ var a=q[i],b=q[(i+1)%3],c=q[(i+2)%3],ex=b[0]-a[0],ey=b[1]-a[1],L=Math.hypot(ex,ey); ex/=L; ey/=L; var nx=-ey,ny=ex,hgt=(c[0]-a[0])*nx+(c[1]-a[1])*ny;
+        for (var k=0;k<=div;k++){ var d=hgt*k/div,ox=a[0]+nx*d,oy=a[1]+ny*d; g.beginPath(); g.moveTo((ox-ex*500-minx)*px,H-(oy-ey*500-miny)*px); g.lineTo((ox+ex*500-minx)*px,H-(oy+ey*500-miny)*px); g.stroke(); } } }
+    var tex=new THREE.CanvasTexture(cv); tex.repeat.set(1/(maxx-minx),1/(maxy-miny)); tex.offset.set(-minx/(maxx-minx),-miny/(maxy-miny)); return tex;
+  }
+  function buildSkirt(info){
+    while (gS.children.length) gS.remove(gS.children[0]);
+    var B=info.B, rings=val('rings'), N=val('n'), flare=val('flare'), H=val('h'), FIN=val('fin'), div=val('lace'), cutF=val('cut')/100;
+    var zw=200*info.S;                                               // waist height
+    var r0=(B.a(zw)+B.b(zw))/2+2;                                    // waistband radius sits on the waist
+    function V(k,i){ var r=r0+k*flare, a=(i+(k%2)*0.5)*2*Math.PI/N; return new THREE.Vector3(r*Math.cos(a), zw-k*H, r*Math.sin(a)); }
+    var faces=[];
+    for (var k=0;k<rings;k++) for (var i=0;i<N;i++){ var o=k%2, A=V(k,i),Bv=V(k,i+1),C=V(k+1,i+o),D=V(k+1,i+o+1); faces.push([A,C,Bv]); faces.push([Bv,C,D]); }
+    var edgeMap={}, angles={}, nCon=0;
+    faces.forEach(function(f,fi){
+      var a=f[0],b=f[1],c=f[2], n=new THREE.Vector3().subVectors(b,a).cross(new THREE.Vector3().subVectors(c,a)).normalize();
+      var cen=new THREE.Vector3().add(a).add(b).add(c).multiplyScalar(1/3);
+      if (n.dot(new THREE.Vector3(cen.x,0,cen.z))<0){ n.negate(); var t=f[1]; f[1]=f[2]; f[2]=t; a=f[0]; b=f[1]; c=f[2]; }
+      f.n=n; f.cen=cen;
+      var u=new THREE.Vector3().subVectors(b,a).normalize(), v=new THREE.Vector3().crossVectors(n,u).normalize();
+      var p2=[a,b,c].map(function(p){ var d=new THREE.Vector3().subVectors(p,cen); return [d.dot(u),d.dot(v)]; });
+      var ar=(p2[1][0]-p2[0][0])*(p2[2][1]-p2[0][1])-(p2[2][0]-p2[0][0])*(p2[1][1]-p2[0][1]); if (ar<0) p2.reverse();
+      var q=p2.map(function(p,i){ var pr=p2[(i+2)%3],nx=p2[(i+1)%3],e1=[pr[0]-p[0],pr[1]-p[1]],e2=[nx[0]-p[0],nx[1]-p[1]],l1=Math.hypot(e1[0],e1[1]),l2=Math.hypot(e2[0],e2[1]);
+        e1=[e1[0]/l1,e1[1]/l1]; e2=[e2[0]/l2,e2[1]/l2]; var bis=[e1[0]+e2[0],e1[1]+e2[1]],lb=Math.hypot(bis[0],bis[1]); bis=[bis[0]/lb,bis[1]/lb];
+        var half=Math.acos(Math.max(-1,Math.min(1,e1[0]*e2[0]+e1[1]*e2[1])))/2, d=(GAP/2)/Math.sin(half); return [p[0]+bis[0]*d,p[1]+bis[1]*d]; });
+      var ringIdx=Math.floor(fi/(2*N)), w=rings>1?(ringIdx+0.5)/rings:1;
+      var shape=notchedShape(q); addCuts(shape,q,div,cutF*w*1.6,fi*7+13);
+      var geo=new THREE.ExtrudeGeometry(shape,{depth:T_ACR,bevelEnabled:false}); geo.translate(0,0,-T_ACR/2);
+      var m=new THREE.Matrix4().makeBasis(u,v,n); m.setPosition(cen);
+      var mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({map:engraveTexture(q,div),roughness:0.35,metalness:0.1})); mesh.applyMatrix4(m); gS.add(mesh);
+      for (var i=0;i<3;i++){ var pa=f[i],pb=f[(i+1)%3]; var key=[pa,pb].map(function(p){return p.x.toFixed(2)+','+p.y.toFixed(2)+','+p.z.toFixed(2);}).sort().join('|'); (edgeMap[key]=edgeMap[key]||[]).push({f:f,pa:pa,pb:pb}); }
+    });
+    if (showCon) Object.keys(edgeMap).forEach(function(key){
+      var list=edgeMap[key]; if (list.length!==2) return;
+      var f1=list[0].f,f2=list[1].f,pa=list[0].pa,pb=list[0].pb, e=new THREE.Vector3().subVectors(pb,pa), L=e.length(); e.normalize();
+      var dih=Math.round(Math.acos(Math.max(-1,Math.min(1,f1.n.dot(f2.n))))*180/Math.PI); angles[dih]=(angles[dih]||0)+1;
+      for (var k=1;k<=SLOTS;k++){ var c=pa.clone().add(e.clone().multiplyScalar(L*k/(SLOTS+1)));
+        [f1,f2].forEach(function(f){ var u=new THREE.Vector3().subVectors(f.cen,c); u.sub(e.clone().multiplyScalar(u.dot(e))).normalize(); var armL=SD+GAP/2;
+          var geo=new THREE.BoxGeometry(armL,FIN,SW), m=new THREE.Matrix4().makeBasis(u,f.n,e); m.setPosition(c.clone().add(u.clone().multiplyScalar(armL/2)));
+          var mesh=new THREE.Mesh(geo,matCon); mesh.applyMatrix4(m); gS.add(mesh); });
+        nCon++; }
+    });
+    var angTxt=Object.keys(angles).sort(function(a,b){return a-b;}).map(function(a){return a+'°×'+angles[a];}).join('、');
+    var eTop=V(0,0).distanceTo(V(0,1)), eBot=V(rings,0).distanceTo(V(rings,1));
+    return {faces:faces.length, nCon:nCon, angTxt:angTxt, eTop:eTop, eBot:eBot, r0:r0, hem:2*(r0+rings*flare), bottom:zw-rings*H};
+  }
+
+  var info=null, center=150;
+  function build(){
+    info=buildMannequin(); var sk=buildSkirt(info);
+    gM.visible=showM; gS.visible=showS;
+    var B=info.B; center=(B.z1+Math.min(0,sk.bottom))/2;
+    $('bom').innerHTML=
+      '<b>Mannequin</b> height '+Math.round(B.z1)+' mm · '+info.nx+' X + '+info.ny+' Y slices · '+info.nJ+' joints<br>'+
+      '<b>Skirt</b> '+sk.faces+' panels (edges ≈ '+Math.round(sk.eTop)+'–'+Math.round(sk.eBot)+' mm) · '+sk.nCon+' connectors<br>'+
+      'Dihedral angles: '+(sk.angTxt||'—')+'<br>'+
+      'Waist radius '+Math.round(sk.r0)+' mm · hem Ø '+Math.round(sk.hem)+' mm'+
+      (sk.eTop<20?'<br><span style="color:var(--accent)">⚠ Edges under 20 mm: no room for slots. Lower N or raise ring height</span>':'');
+  }
+  ['scale','pitch','tx','ty','rings','n','flare','h','fin','lace','cut'].forEach(function(id){
+    $(id).addEventListener('input',function(){ $(id+'_v').textContent = id==='scale' ? (this.value/100).toFixed(2) : this.value; build(); });
+  });
+  $('mmat').addEventListener('click',function(){ mAcrylic=!mAcrylic; this.textContent=mAcrylic?'Acrylic':'Cardboard'; makeMannequinMats(); build(); });
+  $('mcol').addEventListener('click',function(){ colorMode = colorMode==='family' ? 'face' : 'family'; this.textContent = colorMode==='family' ? 'B/W: per family' : 'B/W: two-faced sheets'; build(); });
+  $('showM').addEventListener('click',function(){ showM=!showM; this.classList.toggle('on',showM); gM.visible=showM; });
+  $('showS').addEventListener('click',function(){ showS=!showS; this.classList.toggle('on',showS); gS.visible=showS; });
+  $('con').addEventListener('click',function(){ showCon=!showCon; this.classList.toggle('on',showCon); build(); });
+  $('spin').addEventListener('click',function(){ spin=!spin; this.classList.toggle('on',spin); });
+
+  var theta=0.6, phi=1.25, dist=900, drag=false, lx=0, ly=0;
+  canvas.addEventListener('pointerdown',function(e){drag=true;lx=e.clientX;ly=e.clientY;});
+  window.addEventListener('pointerup',function(){drag=false;});
+  window.addEventListener('pointermove',function(e){ if(!drag)return; theta-=(e.clientX-lx)*0.006; phi=Math.max(0.2,Math.min(2.6,phi-(e.clientY-ly)*0.006)); lx=e.clientX; ly=e.clientY; });
+  canvas.addEventListener('wheel',function(e){ e.preventDefault(); dist=Math.max(200,Math.min(3000,dist*(1+e.deltaY*0.001))); },{passive:false});
+  function resize(){ var w=canvas.clientWidth,h=canvas.clientHeight; if(canvas.width!==Math.round(w*renderer.getPixelRatio())){ renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); } }
+  function loop(){ resize(); if(spin&&!drag) theta+=0.003;
+    camera.position.set(dist*Math.sin(phi)*Math.cos(theta), center+dist*Math.cos(phi), dist*Math.sin(phi)*Math.sin(theta)); camera.lookAt(0,center,0);
+    renderer.render(scene,camera); requestAnimationFrame(loop); }
+  build(); loop();
+})();
+</script>
+</body>
+</html>
