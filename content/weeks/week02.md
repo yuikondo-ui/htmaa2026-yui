@@ -41,38 +41,7 @@ I started with panels made from triangles, written in Python with Claude as `mod
 ![Kit parts: tri, tile, half, dart, connectors](img/week02/kit_parts.jpg)
 *The kit. `tri` is an equilateral triangle with slots on every edge; `tile`, `half` and `dart` are a square, a half square and a trapezoid, where the dart gives curvature by its shape; `con_0` is a straight connector for coplanar panels and `con_<angle>` an angled one that sets the dihedral angle between panels; `fit_test` is a strip of slots stepping 0.1 mm around the material thickness.*
 
-The generator is Python with shapely and ezdxf, and writes a DXF with CUT and ENGRAVE layers. Two functions carry the whole idea:
-
-```python
-def slot_w():
-    """drawn slot width so that the *physical* slot = thickness + fit"""
-    return P["thickness"] + P["fit"] - P["kerf"]
-
-def notched(poly, n_per_edge):
-    """cut n perpendicular slots into every edge of a convex polygon"""
-    sw, sd = slot_w(), P["slot_depth"]
-    pts = list(orient(poly, 1.0).exterior.coords)[:-1]      # CCW → inward = left normal
-    cutters = []
-    for i in range(len(pts)):
-        (x0, y0), (x1, y1) = pts[i], pts[(i + 1) % len(pts)]
-        ex, ey = x1 - x0, y1 - y0
-        ang = math.degrees(math.atan2(ey, ex))
-        for k in range(n_per_edge):
-            t = (k + 1) / (n_per_edge + 1)                   # symmetric about the midpoint
-            r = box(-sw / 2, -1.0, sw / 2, sd)               # +y = inward, 1 mm overshoot
-            cutters.append(translate(rotate(r, ang, origin=(0, 0)), x0 + ex * t, y0 + ey * t))
-    return rounded(poly, P["corner_r"]).difference(unary_union(cutters))
-
-def connector(angle_deg=0):
-    """two arms, each slot_depth + gap/2 long, meeting at the hinge line"""
-    sw, sd, h, g = con_slot_w(), P["slot_depth"], P["con_height"], P["con_gap"]
-    L = sd + g / 2
-    def arm():
-        return box(0, -h/2, L, h/2).difference(box(L - sd, -sw/2, L + 1, sw/2))
-    a1 = rotate(arm(), 180 - angle_deg / 2, origin=(0, 0))
-    a2 = rotate(arm(), angle_deg / 2, origin=(0, 0))
-    return unary_union([a1, a2, hub(angle_deg, h)])          # hub fills the outer V
-```
+The generator is Python with shapely and ezdxf, and writes a DXF with CUT and ENGRAVE layers.
 
 :::source files/week02/modkit.py
 

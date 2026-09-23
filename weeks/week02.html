@@ -379,36 +379,7 @@ button.on{border-color:var(--accent);color:var(--accent)}
 <h2 id="the-triangle-kit">The triangle kit</h2>
 <p>I started with panels made from triangles, written in Python with Claude as <code>modkit.py</code>.</p>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Kit parts: tri, tile, half, dart, connectors" src="../img/week02/kit_parts.jpg" /><figcaption>The kit. <code>tri</code> is an equilateral triangle with slots on every edge; <code>tile</code>, <code>half</code> and <code>dart</code> are a square, a half square and a trapezoid, where the dart gives curvature by its shape; <code>con_0</code> is a straight connector for coplanar panels and <code>con_&lt;angle&gt;</code> an angled one that sets the dihedral angle between panels; <code>fit_test</code> is a strip of slots stepping 0.1 mm around the material thickness.</figcaption></figure>
-<p>The generator is Python with shapely and ezdxf, and writes a DXF with CUT and ENGRAVE layers. Two functions carry the whole idea:</p>
-<pre><code class="language-python">def slot_w():
-    &quot;&quot;&quot;drawn slot width so that the *physical* slot = thickness + fit&quot;&quot;&quot;
-    return P[&quot;thickness&quot;] + P[&quot;fit&quot;] - P[&quot;kerf&quot;]
-
-def notched(poly, n_per_edge):
-    &quot;&quot;&quot;cut n perpendicular slots into every edge of a convex polygon&quot;&quot;&quot;
-    sw, sd = slot_w(), P[&quot;slot_depth&quot;]
-    pts = list(orient(poly, 1.0).exterior.coords)[:-1]      # CCW → inward = left normal
-    cutters = []
-    for i in range(len(pts)):
-        (x0, y0), (x1, y1) = pts[i], pts[(i + 1) % len(pts)]
-        ex, ey = x1 - x0, y1 - y0
-        ang = math.degrees(math.atan2(ey, ex))
-        for k in range(n_per_edge):
-            t = (k + 1) / (n_per_edge + 1)                   # symmetric about the midpoint
-            r = box(-sw / 2, -1.0, sw / 2, sd)               # +y = inward, 1 mm overshoot
-            cutters.append(translate(rotate(r, ang, origin=(0, 0)), x0 + ex * t, y0 + ey * t))
-    return rounded(poly, P[&quot;corner_r&quot;]).difference(unary_union(cutters))
-
-def connector(angle_deg=0):
-    &quot;&quot;&quot;two arms, each slot_depth + gap/2 long, meeting at the hinge line&quot;&quot;&quot;
-    sw, sd, h, g = con_slot_w(), P[&quot;slot_depth&quot;], P[&quot;con_height&quot;], P[&quot;con_gap&quot;]
-    L = sd + g / 2
-    def arm():
-        return box(0, -h/2, L, h/2).difference(box(L - sd, -sw/2, L + 1, sw/2))
-    a1 = rotate(arm(), 180 - angle_deg / 2, origin=(0, 0))
-    a2 = rotate(arm(), angle_deg / 2, origin=(0, 0))
-    return unary_union([a1, a2, hub(angle_deg, h)])          # hub fills the outer V
-</code></pre>
+<p>The generator is Python with shapely and ezdxf, and writes a DXF with CUT and ENGRAVE layers.</p>
 <details class="src standalone"><summary><code>modkit.py</code> <span class="muted">227 lines · </span><a href="../files/week02/modkit.py" download>download</a></summary><pre><code>#!/usr/bin/env python3
 &quot;&quot;&quot;
 modkit.py — parametric press-fit construction kit for modular garments
