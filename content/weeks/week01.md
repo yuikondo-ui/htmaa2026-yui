@@ -16,7 +16,7 @@ Algorithms are looking at us, but we cannot stare back at the images they constr
 
 ## How it started: Algorithmic Mirror
 
-The idea grows out of the [Algorithmic Mirror](https://www.media.mit.edu/projects/algorithmic-mirror/overview/), an interactive visualization tool that simulates the hidden profiling practices of social media platforms. I developed it with MIT Media Lab's Viral Communications group, [Oxford's Synthetic Society Lab](https://www.oii.ox.ac.uk/research/research-groups/synthetic-society-lab/) and [Oxford's Child-Centred AI Lab](https://oxfordccai.org/). It uses large-language-model sentence embeddings to reimagine how online activity might be categorized and interpreted.
+The idea grows out of the [Algorithmic Mirror](https://algorithmicmirror.com/20250731-bright-lion-glf0) ([description](https://www.media.mit.edu/projects/algorithmic-mirror/overview/)), an interactive visualization tool that simulates the hidden profiling practices of social media platforms. I developed it with MIT Media Lab's Viral Communications group, [Oxford's Synthetic Society Lab](https://www.oii.ox.ac.uk/research/research-groups/synthetic-society-lab/) and [Oxford's Child-Centred AI Lab](https://oxfordccai.org/). It uses large-language-model sentence embeddings to reimagine how online activity might be categorized and interpreted.
 
 :::video https://youtu.be/LPDfGhzDFjs | Algorithmic Mirror, overview
 
