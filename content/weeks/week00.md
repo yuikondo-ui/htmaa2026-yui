@@ -79,9 +79,9 @@ Artistic inspiration for fragmented selves across space and time:
 
 I first thought of printing the user's inferences as cards, so that users could sort them by hand and slip them into pockets on the clothes. Learning about construction kits this week changed that: I want assembling the clothes from parts to be intuitive in itself. So I familiarised myself with modular clothes and took inspiration from fashion artists ([definition](https://www.sciencedirect.com/science/article/pii/S0921344924000892): modular garments are clothing items that can be disassembled and reassembled into multiple parts without sewing the parts together; sleeves or a collar are zipped or buttoned onto the main body).
 
-:::cols tall
-![Digital clothes: a figure in a triangulated garment](img/week01/digital-clothes.jpg)
-*Digital clothes: a body covered in triangular panels, each one a piece of data.*
+:::cols natural
+![Anrealage, Dimension, Spring/Summer 2022](img/week01/digital-clothes.jpg)
+*Kunihiko Morinaga, Anrealage Spring/Summer 2022 collection "Dimension". Photo © Masaya Tanaka. [Source ↗](https://www.tokyoweekender.com/art_and_culture/fashion/anrealage-japanese-fashion/)*
 ![The Week 1 construction kit, assembled and sprayed](img/week01/colored.jpg)
 *The output of Week 1: a press-fit construction kit for a skirt in plywood, two rings assembled, sprayed purple and gold.*
 :::
