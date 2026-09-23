@@ -225,58 +225,6 @@ Three panels joined d–u–d curve as expected, and the first ring closes. Gett
 *The first ring closed: 14 panels and 28 connectors in plywood.*
 :::
 
-## The flared skirt
-
-Equilateral triangles only make a tube, because every ring has the same circumference. For a flare, each ring needs its own isosceles panels: up panels with their base on the upper circle, down panels on the lower one, both with the same leg length. `skirt.py` builds the cone mesh, extracts one panel shape per ring and direction, and generates connectors at the dihedral angles the mesh actually needs.
-
-![Skirt cut sheet](img/week02/skirt_sheet.jpg)
-*The current skirt on one 600 × 400 sheet, including 15 % spare.*
-
-The current file is `skirt.py r0=45 N=7 rings=3 flare=10 H=32 thickness=3 fit=-0.2 con_fit=-0.1 slots=2`. That gives 7 up and 7 down triangles per ring over 3 rings, so 42 panels in 6 shapes (R1d, R1u, R2d, R2u, R3d, R3u, engraved), with edges of 39–65 mm. The waist is Ø 90 and the hem Ø 150, the length 96 mm. Around each ring the connectors are `con_30`, 84 of them; between rings `con_20`, 28 of them, angles rounded to 10°. Assembly is ring 1 first, alternating down and up panels with `con_30` on the slanted edges, then ring 2 below with `con_20`, then ring 3. Panels that share an edge have the same base length, so the R1u base equals the R2d base.
-
-:::source files/week02/skirt.py
-
-## The mannequin
-
-The clothes need a body. Vogler went MakeHuman → Rhino → Slicer for Fusion 360 → cardboard. Slicer is discontinued, so I wrote a parametric slicer with Claude, `mannequin.py`.
-
-![Waffle mannequin, tilted slices](img/week02/mannequin_tilted_preview.jpg)
-*The waffle mannequin with the X slices tilted 12°.*
-
-The body is a stack of superellipse cross-sections. Width and depth follow a measurement table from hip to waist, bust, shoulders and neck, interpolated with PCHIP. Two families of slices, X and Y, are cut directly from this analytic body, with no mesh in between. Slots sit at each X∩Y intersection, X slotted from the top and Y from the bottom, so assembly is to stand the X slices and lower the Y slices on. Slot width uses the same `thickness + fit − kerf`. Each family can be tilted from vertical with `tilt_x` and `tilt_y`; Vogler angled her slices "to give the mannequin a more dynamic look". The slots follow the real intersection lines, so they come out diagonal. Fragile parts are dropped automatically: slices with fewer than two joints, bridges thinner than 14 mm, and slots that would leave a thin flap.
-
-```python
-# life-size measurements, mm.  z = height above the hip cut
-#            z    circumference  depth/width
-profile = [( 0,      940,  0.72),   # hip
-           ( 90,     880,  0.72),   # high hip
-           (200,     680,  0.68),   # waist
-           (300,     760,  0.72),   # underbust
-           (360,     880,  0.80),   # bust
-           (430,     840,  0.62),   # upper chest
-           (500,     860,  0.48),   # shoulders (wide, thin)
-           (545,     380,  0.90),   # neck base
-           (600,     360,  0.90)]   # neck top
-
-def inside(x, y, z, a, b, z0, z1):
-    """is the point inside the superellipse body?"""
-    n = P["n_exp"]
-    return z0 <= z <= z1 and (abs(x / a(z)) ** n + abs(y / b(z)) ** n) < 1
-
-def plane_frame(family):
-    """(normal, e_u, e_v) of a slice family, tilted by tilt_x / tilt_y degrees"""
-    t = math.radians(P["tilt_x"] if family == "x" else P["tilt_y"])
-    if family == "x":
-        return (cos(t), 0, -sin(t)), (0, 1, 0), (sin(t), 0, cos(t))
-    return (0, cos(t), -sin(t)), (1, 0, 0), (0, sin(t), cos(t))
-```
-
-:::source files/week02/mannequin.py
-
-At 0.4 scale the mannequin is 240 mm tall and 143 mm wide, in 4 mm cardboard at an 18 mm pitch. Vertical slices give 6 X and 4 Y. With X tilted 12° it is 8 X and 4 Y; this is the version to build first, because tilting one family keeps assembly as easy as vertical. With both families tilted, 15° and −10°, it is 9 X and 6 Y and looks best, but every Y slice has to slide in along a diagonal at the same time, which is not for a first build.
-
-I want it bicolour, black and white, either per family (X white, Y black, so it reads as a lattice) or with two-faced sheets, each slice white on one side and black on the other, which gives Vogler's op-art effect that flips as you walk around. Still to do: a cardboard fit test to set `fit`, then cut and assemble the 12° version.
-
 ## Next: joint and shape in one piece
 
 The connector count is the weak point of the kit for a user. I want the joint and the shape combined. Vogler's module does this:
