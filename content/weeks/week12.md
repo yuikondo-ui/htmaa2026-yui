@@ -1,8 +1,8 @@
 ---
 week: 12
-date: 11/25
-topics: [networking and communications](http://academy.cba.mit.edu/classes/networking_communications/index.html), [interface and application programming](http://academy.cba.mit.edu/classes/interface_application_programming/index.html)
-recitation: mesh networks
+date: 12/02
+topics: [system integration](https://fabacademy.org/2026/classes/system_integration/index.html)
+recitation: help session
 status: WIP
 hero: img/week12/hero.jpg
 summary: One line about what this week was about.
@@ -31,7 +31,7 @@ Walk through what you did. Inline images are fine anywhere:
 Code blocks render too:
 
 ```python
-print("hello, week 12")
+print("hello, week 13")
 ```
 
 ## What I learned

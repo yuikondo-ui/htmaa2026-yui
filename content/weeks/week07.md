@@ -1,8 +1,8 @@
 ---
 week: 07
-date: 10/21
-topics: [computer-controlled machining](http://academy.cba.mit.edu/classes/computer_machining/index.html)
-recitation: CAM (Computer-Aided Manufacturing)
+date: 10/28
+topics: [input devices](http://academy.cba.mit.edu/classes/input_devices/index.html)
+recitation: Edge AI
 status: WIP
 hero: img/week07/hero.jpg
 summary: One line about what this week was about.
@@ -31,7 +31,7 @@ Walk through what you did. Inline images are fine anywhere:
 Code blocks render too:
 
 ```python
-print("hello, week 07")
+print("hello, week 08")
 ```
 
 ## What I learned

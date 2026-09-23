@@ -1,7 +1,7 @@
 ---
 week: 13
-date: 12/02
-topics: [system integration](https://fabacademy.org/2026/classes/system_integration/index.html)
+date: 12/09
+topics: [project development](http://academy.cba.mit.edu/classes/project_development/index.html)
 recitation: help session
 status: WIP
 hero: img/week13/hero.jpg
@@ -31,7 +31,7 @@ Walk through what you did. Inline images are fine anywhere:
 Code blocks render too:
 
 ```python
-print("hello, week 13")
+print("hello, week 14")
 ```
 
 ## What I learned

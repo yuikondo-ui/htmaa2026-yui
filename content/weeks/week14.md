@@ -1,8 +1,8 @@
 ---
 week: 14
-date: 12/09
-topics: [project development](http://academy.cba.mit.edu/classes/project_development/index.html)
-recitation: help session
+date: 12/15
+topics: [project presentation](http://academy.cba.mit.edu/classes/project_presentation/index.html)
+recitation: final exam & open house
 status: WIP
 hero: img/week14/hero.jpg
 summary: One line about what this week was about.
@@ -31,7 +31,7 @@ Walk through what you did. Inline images are fine anywhere:
 Code blocks render too:
 
 ```python
-print("hello, week 14")
+print("hello, week 15")
 ```
 
 ## What I learned

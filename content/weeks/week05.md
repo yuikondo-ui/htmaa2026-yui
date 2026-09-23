@@ -1,8 +1,8 @@
 ---
 week: 05
-date: 10/07
-topics: [electronics design](http://academy.cba.mit.edu/classes/electronics_design/index.html)
-recitation: EDA (Electronic Design Automation)
+date: 10/14
+topics: [electronics production](http://academy.cba.mit.edu/classes/electronics_production/index.html)
+recitation: debugging
 status: WIP
 hero: img/week05/hero.jpg
 summary: One line about what this week was about.
@@ -31,7 +31,7 @@ Walk through what you did. Inline images are fine anywhere:
 Code blocks render too:
 
 ```python
-print("hello, week 05")
+print("hello, week 06")
 ```
 
 ## What I learned

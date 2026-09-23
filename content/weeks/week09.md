@@ -1,8 +1,8 @@
 ---
 week: 09
-date: 11/04
-topics: [output devices](http://academy.cba.mit.edu/classes/output_devices/index.html)
-recitation: motor and motion control
+date: 11/11
+topics: [wildcard week](http://academy.cba.mit.edu/classes/wildcard/index.html), [molding and casting](http://academy.cba.mit.edu/classes/molding_casting/index.html), [midterm review](https://academy.cba.mit.edu/classes/midterm/index.html)
+recitation: wildcard week, molding and casting
 status: WIP
 hero: img/week09/hero.jpg
 summary: One line about what this week was about.
@@ -31,7 +31,7 @@ Walk through what you did. Inline images are fine anywhere:
 Code blocks render too:
 
 ```python
-print("hello, week 09")
+print("hello, week 10")
 ```
 
 ## What I learned
