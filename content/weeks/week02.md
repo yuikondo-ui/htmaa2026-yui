@@ -166,13 +166,13 @@ Before cutting anything of my own, we characterized the lab's xTool machines as 
 
 The laser burns a groove of width `kerf`, centred on the drawn line, so a slot comes out `kerf` wider than drawn. To get a physical slot of `thickness + fit`, the file has to draw it `kerf` narrower, which is where `slot_w = thickness + fit − kerf` comes from. `fit` is the design intent, negative for a press fit and positive for a slip fit; `kerf` is the machine's property. Only the difference `fit − kerf` reaches the file, so in practice either one can be adjusted.
 
-### Fit tests
+### Test with acrylic
 
 The first fit test was a strip with eight slots labelled −0.4 to +0.3 mm relative to the nominal 3.0 mm thickness. Every slot was loose, even −0.4. So the sheet was thinner than 3 mm, or the kerf wider than I had guessed, or both.
 
 The second test shifted the range to −1.0 to −0.3, and −0.5 held. I cut panels and connectors at −0.5, and they would not go together at all. The strip only loads one joint, where a slot grips a piece of scrap. A real joint loads two at once, the panel gripping the connector and the connector gripping the panel, so it needs a looser number than the strip suggests.
 
-The third test was the honest one: three rows, each with two triangles and two connectors, all four parts cut at the same fit (−0.3, −0.2 and −0.1), with labels engraved so the parts could be matched after they dropped out of the sheet. The first attempt had no labels and the parts were impossible to tell apart. Panel slots at −0.2 and connector slots at −0.1 work. The panel and the connector come from the same sheet and still want different numbers, probably because the small connector heats and shrinks slightly. The generator now takes `fit` and `con_fit` separately.
+For the third test, I cut three rows, each with two triangles and two connectors, all four parts cut at the same fit (−0.3, −0.2 and −0.1), with labels engraved so the parts could be matched after they dropped out of the sheet. The first attempt had no labels and the parts were impossible to tell apart. Panel slots at −0.2 and connector slots at −0.1 work. The panel and the connector come from the same sheet and still want different numbers, probably because the small connector heats and shrinks slightly. The generator now takes `fit` and `con_fit` separately.
 
 :::cols tall
 ![Fit test strip](img/week02/fit_test_1.jpg)
@@ -181,16 +181,49 @@ The third test was the honest one: three rows, each with two triangles and two c
 *Fit test 3. Two triangles and two connectors per row, cut at the same fit, labels engraved. The −0.2 / −0.1 combination is the one that holds.*
 :::
 
-### Fire
+#### Fire
 
 When I cut the acrylic at 80 % power and 20 mm/s, it caught fire. Two things probably came together: I had not removed the protective paper from the acrylic, and there was cardboard left on the bed from the mannequin test. The cardboard is most likely what burned. Next time I will clean the bed before running any job. And once something catches fire, stop immediately, with the emergency stop or pause, and put it out with the fire blanket.
 
 ![Parts from the cut that caught fire](img/week02/fire_parts.jpg)
 *The parts from the cut that caught fire, paper still on. The connectors are charred at the edges.*
 
-The same file on a black sheet did not fit at all. Different sheet, different thickness: nominal 3 mm extruded acrylic ranges roughly 2.6–3.1 mm, and a 0.4 mm change is far larger than the 0.1 mm steps of the fit test. The rule is now: change sheet, measure its thickness with calipers, set `thickness`. `fit` and `kerf` stay. Regenerating takes seconds.
+The same file on a black sheet did not fit at all. Nominal 3 mm extruded acrylic ranges roughly 2.6–3.1 mm, and a 0.4 mm change is far larger than the 0.1 mm steps of the fit test. The rule is now: change sheet, measure its thickness with calipers, set `thickness`. `fit` and `kerf` stay. Regenerating takes seconds.
 
 The small scale exposed a bug. Shrinking the skirt to 0.4 scale made the first-ring triangles pointy, with a 49° apex. With two slots per edge at one third and two thirds, the two slots near the apex crossed and cut the apex off as a loose fragment. The fix is one slot per edge for small triangles, which also halves the connector count, or bigger triangles for two slots. The generator now reports an error when slots intersect.
+
+### Test with plywood
+
+The acrylic ran out, so I switched to 3 mm plywood. At 90 % power and 30 mm/s the beam did not go through; the parts tore when I pushed them out of the sheet and the thin connector rails broke. At 90 % and 20 mm/s the cut went through and the parts dropped out on their own. The lesson is not to pry: if a part needs to be pushed out, cut again more slowly rather than force it.
+
+The acrylic numbers did not transfer either. Rows at fit −0.3, −0.2 and −0.1 were all too tight for the plywood, so I cut a second strip at 0.0, +0.1, +0.2 and +0.3. Wood is more forgiving than acrylic, because it compresses instead of cracking, so the useful range is wider. Two changes went into this second strip: the slot roots are rounded (0.4 mm) so cracks do not start at the inner corners, and the connector height went from 12 to 14 mm so the rails are thicker. The result is +0.3 for both the panel slots and the connector slots. Final numbers: thickness 3, kerf 0.25, fit +0.3. Only the difference fit − kerf reaches the file, so kerf stays at the guessed value and fit carries the correction.
+
+:::cols tall
+![Plywood parts cut at 90 % / 30 mm/s](img/week02/broken_wood.jpg)
+*90 % power, 30 mm/s: not through. Pressing the parts out broke the narrow sections.*
+![Plywood fit test strips](img/week02/fit_test.jpg)
+*The second fit test, 0.0 to +0.3, with rounded slot roots. Row 3 (+0.3) is the one that holds.*
+:::
+
+With the numbers confirmed, I cut the whole kit: 42 panels in six labelled shapes and the connectors.
+
+:::cols tall
+![Kit on the laser bed](img/week02/kit_1.jpg)
+*The kit on the bed: panels labelled by ring and direction (1d, 1u, 2d …), connectors along the left edge.*
+![Sorted parts](img/week02/kit_2.jpg)
+*Sorted by label, connectors in a box.*
+:::
+
+Assembled, the first connectors were too weak in the middle. The designed neck, the material between the two slots, was 1.5 mm, but the laser burns 0.12 mm off each slot bottom, so it came out at 1.25 mm, and the part label was engraved right on top of it, thinning it further. Three fixes: the neck is now drawn kerf-wider so the physical neck equals the parameter, the label moved to the rail, and the neck went from 1.5 to 2.5 mm and then to 5 mm. The trade-off is a wider gap between panels, because the neck is the gap, so the assembled ring grows by about 14 × 3.5 mm per ring.
+
+Three panels joined d–u–d curve as expected, and the first ring closes. Getting the two connectors on one edge to seat at the centre is the current problem; the candidates are slot depth (residue at the slot bottom) and the neck width.
+
+:::cols tall
+![Three panels joined](img/week02/assembly_1.jpg)
+*Three panels, d–u–d, joined with the angled connectors. The surface curves.*
+![The first ring assembled](img/week02/assembly_2.jpg)
+*The first ring closed: 14 panels and 28 connectors in plywood.*
+:::
 
 ## The flared skirt
 
