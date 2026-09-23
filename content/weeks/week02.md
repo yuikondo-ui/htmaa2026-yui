@@ -185,13 +185,24 @@ With the numbers confirmed, I cut the whole kit: 42 panels in six labelled shape
 
 Assembled, the first connectors were too weak in the middle. The designed neck, the material between the two slots, was 1.5 mm, but the laser burns 0.12 mm off each slot bottom, so it came out at 1.25 mm, and the part label was engraved right on top of it, thinning it further. Three fixes: the neck is now drawn kerf-wider so the physical neck equals the parameter, the label moved to the rail, and the neck went from 1.5 to 2.5 mm and then to 5 mm. The trade-off is a wider gap between panels, because the neck is the gap, so the assembled ring grows by about 14 × 3.5 mm per ring.
 
-Three panels joined d–u–d curve as expected, and the first ring closes. Getting the two connectors on one edge to seat at the centre is the current problem; the candidates are slot depth (residue at the slot bottom) and the neck width.
+Three panels joined d–u–d curve as expected, and the first ring closes. But the neck was still too narrow: with two connectors on one edge, neither would seat at the centre.
 
 :::cols tall
 ![Three panels joined](img/week02/assembly_1.jpg)
 *Three panels, d–u–d, joined with the angled connectors. The surface curves.*
 ![The first ring assembled](img/week02/assembly_2.jpg)
-*The first ring closed: 14 panels and 28 connectors in plywood.*
+*The first ring closed. The connectors sit off-centre because the neck is too narrow.*
+:::
+
+So I doubled the neck again, from 5 to 10 mm, and recut the connectors. Then it worked. The alignment is not perfect: the connector angles are not all the same, so the vertical edges between rings do not line up well yet. Then the time was up. I wanted to have fun with colours, so I sprayed the kit purple and gold.
+
+:::cols tall
+![Connectors with a 10 mm neck](img/week02/neck_10mm.jpg)
+*The recut connectors with a 10 mm neck.*
+![Two rings assembled](img/week02/assembly_3.jpg)
+*Two rings assembled with the 10 mm connectors. The panels seat, but the vertical edges drift.*
+![The kit sprayed purple and gold](img/week02/colored.jpg)
+*The kit sprayed purple and gold.*
 :::
 
 ## Next: joint and shape in one piece
