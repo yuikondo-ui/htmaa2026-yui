@@ -8,6 +8,12 @@ hero: img/week00/sketch.jpg
 summary: Clothes for digital selves — a tangible digital twin built from a person's own data, and a doll-dressing game about what to show and what to hide.
 ---
 
+## Prototypes
+
+[Prototype v1 ↗](files/week00/data-barbie.html): a first version of the doll in the browser. The persona is fictional: a fifteen-year-old in Osaka with 32 inferences drawn from YouTube, TikTok, Claude, Alexa, an Apple Watch and a Google Nest. Tap a facet to sew it into underwear, a shirt or a coat, then choose who is in the room. The doll speaks only from what is showing, and old inferences are drawn as old cloth.
+
+:::embed files/week00/data-barbie.html | Data Barbie, prototype v1
+
 ## Week 0: Concept making
 
 ### Concept
