@@ -8,11 +8,19 @@ hero: img/week00/sketch.jpg
 summary: Clothes for digital selves — a tangible digital twin built from a person's own data, and a doll-dressing game about what to show and what to hide.
 ---
 
+## Overview
+
+### Data Barbie
+
+I want to propose the concept of Data Barbie: a dress-up activity in which the doll is your own data double. It starts from the traces a person leaves on YouTube, TikTok, Claude and elsewhere. A language model reads those traces and turns them into inferences: demographics, behaviour, relationships, goals, interests, and the sensitive ones in between. Each inference becomes one panel of a modular shell around a head shaped like the user's face.
+
+Undressed, the doll tells everything it knows about you. Put a piece of clothing on it and it speaks only from the facets you chose to show; take the clothing off and the rest comes back. Which panels you cover, and for whom, is the game.
+
+Children and adolescents rarely get to see their own inferred profile, let alone decide which parts of it face outward. Dressing and undressing a doll made of their own data lets them think about that with their hands: what to show, what to hide, and to whom.
+
 ## Prototypes
 
-[Prototype v1 ↗](files/week00/data-barbie.html): a first version of the doll in the browser. The persona is fictional: a fifteen-year-old in Osaka with 32 inferences drawn from YouTube, TikTok, Claude, Alexa, an Apple Watch and a Google Nest. Tap a facet to sew it into underwear, a shirt or a coat, then choose who is in the room. The doll speaks only from what is showing, and old inferences are drawn as old cloth.
-
-:::embed files/week00/data-barbie.html | Data Barbie, prototype v1
+[Prototype v1 ↗](files/week00/data-barbie.html) (Sep 25 2026): a first version of the doll in the browser. Tap a facet to sew it into underwear, a shirt or a coat, then choose who is in the room. The doll speaks only from what is showing, and old inferences are drawn as old cloth.
 
 ## Week 0: Concept making
 
@@ -48,14 +56,6 @@ By turning opaque inferences into spatial metaphors, the mirror invites reflecti
 ### Motivation: tangible and playful
 
 The mirror lives on a screen, and a screen is where the profiling already happens. I want to take it off the screen and make it something a child can hold and play with. Offline, we dress for the room we are in: one outfit for the office, another for friends, another for family. Online there is no room to read, because the room is the whole internet, so we walk in naked and disclose everything at once. Goffman called the two sides front stage and back stage; a flat data profile removes the distinction altogether. A tangible mirror can give it back, because clothes are the most familiar tool we have for deciding what to show.
-
-### Data Barbie
-
-I want to propose the concept of Data Barbie: a dress-up activity in which the doll is your own data double. It starts from the traces a person leaves on YouTube, TikTok, Claude and elsewhere. A language model reads those traces and turns them into inferences: demographics, behaviour, relationships, goals, interests, and the sensitive ones in between. Each inference becomes one panel of a modular shell around a head shaped like the user's face.
-
-Undressed, the doll tells everything it knows about you. Put a piece of clothing on it and it speaks only from the facets you chose to show; take the clothing off and the rest comes back. Which panels you cover, and for whom, is the game.
-
-The point is educational. Children and adolescents rarely get to see their own inferred profile, let alone decide which parts of it face outward. Dressing and undressing a doll made of their own data lets them think about that with their hands: what to show, what to hide, and to whom.
 
 ### Sketch and inspiration
 
