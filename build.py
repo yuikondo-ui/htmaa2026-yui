@@ -192,7 +192,7 @@ def head(title, depth=0, cover_page=False):
 <title>{esc(title)} — {esc(SITE['name'])}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@1,125,900&family=Geist:wght@100..900&family=Geist+Mono:wght@400..600&family=Inter+Tight:wght@100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wdth,wght@1,125,900&family=Geist:wght@100..900&family=Geist+Mono:wght@400..600&family=Inter+Tight:wght@100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{r}css/style.css">
 <script src="{r}js/site.js" defer></script>
 </head>
@@ -389,7 +389,7 @@ def build_index(weeks, final):
         f'  <a class="row{"" if m["started"] else " todo"}" href="weeks/{m["slug"]}.html"><span class="c1"><span class="wk">Week {esc(m["num"])}</span></span>'
         f'<span class="c2">{esc(m["topics_text"] or "Ref. " + m["ref"])}</span><span class="c3">{status_tag(m)}</span></a>\n' for m in weeks)
     if final:
-        rows += (f'  <a class="row" href="final.html"><span class="c1"><span class="wk">Final</span></span>'
+        rows += (f'  <a class="row todo" href="final.html"><span class="c1"><span class="wk">Final</span></span>'
                  f'<span class="c2">Ref. {esc(final["ref"])}</span><span class="c3">{status_tag(final)}</span></a>\n')
     write("index.html", head("Index") + header(0, "index") + banner() +
           f'\n<main class="index">\n{rows}</main>\n' + footer())

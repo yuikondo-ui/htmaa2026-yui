@@ -61,44 +61,57 @@
   document.addEventListener('mouseleave', close);
 })();
 
-/* --- a door. hold the banner for a second and a half: the lights go out, the cursor becomes a torch,
-       and somewhere in the dark there is a small green light. click it. (or type "open".) --- */
+/* --- the door. hold the banner for a second and a half: the lights go out and the cursor becomes a torch.
+       a keyhole hides bottom-left in the dark. click it, give the password, and the title appears, then the map.
+       (typing "open" anywhere still takes you to the plain gate.) --- */
 (function () {
   var sc = document.querySelector('script[src$="js/site.js"]');
   var root = sc ? sc.getAttribute('src').replace(/js\/site\.js$/, '') : '';
+  var KEY = "f3c1f895fdb1ac14c19166f4d606f9c8be3805ec2d4596dbf344d75a8c41e3a6";   /* sha256 of the password — vault/setpass.py rewrites this */
   function go() { window.location.href = root + 'vault/'; }
 
   var dark = null, holdTimer = null;
   function lightsOut() {
     if (dark) return;
     dark = document.createElement('div'); dark.className = 'blackout';
-    var torch = document.createElement('div'); torch.className = 'bo-torch';
-    var dot = document.createElement('a'); dot.className = 'bo-dot'; dot.href = root + 'vault/';
-    /* the light hides somewhere in the middle 60% of the screen, never where the pointer already is */
-    var px = 0.2 + Math.random() * 0.6, py = 0.2 + Math.random() * 0.6;
-    dot.style.left = (px * 100) + '%'; dot.style.top = (py * 100) + '%';
-    dark.appendChild(torch); dark.appendChild(dot); document.body.appendChild(dark);
+    dark.innerHTML =
+      '<div class="bo-torch"></div>' +
+      '<div class="bo-key">' +
+        '<svg class="keyhole" viewBox="0 0 24 34" aria-label="keyhole"><circle cx="12" cy="11" r="8"/><path d="M8 17 L4 32 L20 32 L16 17 Z"/></svg>' +
+        '<form class="bo-form" autocomplete="off"><input type="password" placeholder="·······" autocapitalize="off" spellcheck="false"></form>' +
+      '</div>' +
+      '<div class="bo-splash"><h1>how to break into (almost) anywhere</h1></div>';
+    document.body.appendChild(dark);
     document.documentElement.classList.add('lights-out');
+    var key = dark.querySelector('.bo-key'), hole = dark.querySelector('.keyhole'),
+        form = dark.querySelector('.bo-form'), input = form.querySelector('input'), splash = dark.querySelector('.bo-splash');
+    var big = matchMedia('(hover:none)').matches, r = big ? (innerWidth < 700 ? 150 : 260) : 200;
+    dark.style.setProperty('--r', r + 'px');
     function move(x, y) {
       dark.style.setProperty('--mx', x + 'px'); dark.style.setProperty('--my', y + 'px');
-      var r = parseFloat(getComputedStyle(dark).getPropertyValue('--r')) || 200;
-      var dx = x - px * innerWidth, dy = y - py * innerHeight;
-      dot.classList.toggle('lit', Math.sqrt(dx * dx + dy * dy) < r * 0.9);
+      var k = hole.getBoundingClientRect(), dx = x - (k.left + k.width / 2), dy = y - (k.top + k.height / 2);
+      key.classList.toggle('lit', Math.sqrt(dx * dx + dy * dy) < r * 0.95);
     }
     dark.addEventListener('pointermove', function (e) { move(e.clientX, e.clientY); });
-    dark.addEventListener('touchmove', function (e) { var t = e.touches[0]; move(t.clientX, t.clientY); e.preventDefault(); }, { passive: false });
     dark.addEventListener('pointerdown', function (e) { move(e.clientX, e.clientY); });
+    dark.addEventListener('touchmove', function (e) { var t = e.touches[0]; move(t.clientX, t.clientY); e.preventDefault(); }, { passive: false });
     move(innerWidth / 2, innerHeight / 2);
-    dot.addEventListener('click', function (e) { e.preventDefault(); dot.classList.add('found'); setTimeout(go, 450); });
-    var big = matchMedia('(hover:none)').matches;
-    dark.style.setProperty('--r', big ? (innerWidth < 700 ? '150px' : '260px') : '200px');
+    hole.addEventListener('click', function (e) { e.preventDefault(); key.classList.add('open', 'lit'); setTimeout(function () { input.focus(); }, 60); });
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var v = input.value.trim().toLowerCase(); if (!v) return;
+      if (await sha256(v) === KEY) {
+        var folder = (await sha256('door:' + v)).slice(0, 16);
+        key.classList.add('gone'); splash.classList.add('show');
+        setTimeout(function () { window.location.href = root + 'vault/' + folder + '/'; }, 1900);
+      } else { input.value = ''; form.classList.remove('no'); void form.offsetWidth; form.classList.add('no'); }
+    });
   }
   function lightsOn() {
     if (!dark) return;
     dark.classList.add('off'); document.documentElement.classList.remove('lights-out');
     var d = dark; dark = null; setTimeout(function () { d.remove(); }, 400);
   }
-  /* hold the banner */
   function startHold(e) {
     var banner = e.target.closest && e.target.closest('.banner'); if (!banner || dark) return;
     banner.classList.add('holding');
@@ -109,8 +122,10 @@
   document.addEventListener('pointerup', endHold);
   document.addEventListener('pointercancel', endHold);
   document.addEventListener('contextmenu', function (e) { if (e.target.closest && e.target.closest('.banner')) e.preventDefault(); });
-  /* any key brings the lights back (except the torch hunt on touch, which has no keys anyway) */
   document.addEventListener('keydown', function (e) { if (dark && e.key === 'Escape') lightsOn(); });
+  /* coming back with the browser's back button: the page is restored from cache, so put the lights back on */
+  window.addEventListener('pageshow', function () { if (dark) { var d = dark; dark = null; d.remove(); document.documentElement.classList.remove('lights-out'); } });
+  window.addEventListener('pagehide', function () { if (dark) { var d = dark; dark = null; d.remove(); document.documentElement.classList.remove('lights-out'); } });
 
   var typed = '';
   document.addEventListener('keydown', function (e) {
@@ -118,4 +133,30 @@
     typed = (typed + e.key.toLowerCase()).slice(-4);
     if (typed === 'open') go();
   });
+
+  async function sha256(s) {
+    if (window.crypto && crypto.subtle) {
+      try { var b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+            return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, '0'); }).join(''); } catch (_) {}
+    }
+    return sha256js(s);
+  }
+  function sha256js(ascii){
+    function rr(v,a){return (v>>>a)|(v<<(32-a));}
+    var mathPow=Math.pow,maxWord=mathPow(2,32),i,j,result='',words=[],asciiBitLength=ascii.length*8,
+        hash=sha256js.h=sha256js.h||[],k=sha256js.k=sha256js.k||[],primeCounter=k.length,isComposite={};
+    for(var candidate=2;primeCounter<64;candidate++){ if(!isComposite[candidate]){ for(i=0;i<313;i+=candidate)isComposite[i]=candidate;
+        hash[primeCounter]=(mathPow(candidate,.5)*maxWord)|0; k[primeCounter++]=(mathPow(candidate,1/3)*maxWord)|0; } }
+    ascii=unescape(encodeURIComponent(ascii)); ascii+='\x80'; while(ascii.length%64-56)ascii+='\x00';
+    for(i=0;i<ascii.length;i++){ j=ascii.charCodeAt(i); if(j>>8)return; words[i>>2]|=j<<((3-i)%4)*8; }
+    words[words.length]=((asciiBitLength/maxWord)|0); words[words.length]=(asciiBitLength);
+    for(j=0;j<words.length;){ var w=words.slice(j,j+=16),oldHash=hash; hash=hash.slice(0,8);
+      for(i=0;i<64;i++){ var w15=w[i-15],w2=w[i-2],a=hash[0],e=hash[4],
+          temp1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0),
+          temp2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+        hash=[(temp1+temp2)|0].concat(hash); hash[4]=(hash[4]+temp1)|0; }
+      for(i=0;i<8;i++)hash[i]=(hash[i]+oldHash[i])|0; }
+    for(i=0;i<8;i++)for(j=3;j+1;j--){ var b=(hash[i]>>(j*8))&255; result+=((b<16)?0:'')+b.toString(16); }
+    return result;
+  }
 })();

@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@100..900&display=swap" rel="stylesheet">
 <style>
+  @font-face { font-family:"Gridular"; src:url(../fonts/Gridular-Regular.woff2) format("woff2"); font-weight:400; font-display:swap; }
   @font-face { font-family:"ABC Diatype Variable"; src:url(../fonts/ABCDiatypeVariable.woff2) format("woff2"); font-weight:100 900; font-display:swap; }
   :root { --bg:#131313; --green:#58cd86; --dim:#3a3a3a; }
   * { box-sizing:border-box; margin:0; padding:0; }
@@ -20,11 +21,15 @@
     display:grid; place-items:center; overflow:hidden;
   }
   form { display:grid; gap:14px; justify-items:center; width:min(80vw, 460px); }
+  /* the title only appears once the password is right, then the map */
+  h1 { opacity:0; transform:translateY(10px); transition:opacity .7s .1s, transform .7s .1s; }
+  body.in h1 { opacity:1; transform:translateY(0); }
+  body.in input { opacity:0; transition:opacity .3s; }
+  .keyhole { width:22px; height:31px; fill:var(--green); margin-bottom:6px; }
   h1 {
-    font-family:"Anton","Archivo Expanded",Impact,sans-serif; font-weight:400;
-    font-size:clamp(40px, 9vw, 104px); line-height:.92; text-align:center;
-    text-transform:lowercase; letter-spacing:-0.01em; color:var(--green);
-    transform:scaleX(.82); transform-origin:center;
+    font-family:"Gridular","ABC Diatype Variable","Geist",sans-serif; font-weight:400;
+    font-size:clamp(26px, 4.6vw, 64px); line-height:1.1; text-align:center;
+    text-transform:lowercase; letter-spacing:.01em; color:var(--green);
   }
   input {
     width:100%; margin-top:22px; padding:10px 0; background:none; border:0;
@@ -38,6 +43,7 @@
 </head>
 <body>
   <form id="form" autocomplete="off">
+    <svg class="keyhole" viewBox="0 0 24 34" aria-hidden="true"><circle cx="12" cy="11" r="8"/><path d="M8 17 L4 32 L20 32 L16 17 Z"/></svg>
     <h1>how to break into (almost) anywhere</h1>
     <input id="pw" type="password" placeholder="·······" autocapitalize="off" spellcheck="false" autofocus>
   </form>
@@ -55,7 +61,7 @@ form.addEventListener('submit', async function(e){
   var h = await sha256(v);
   if (h === KEY) {
     var folder = (await sha256('door:' + v)).slice(0,16);
-    location.href = folder + '/';
+    document.body.classList.add('in'); setTimeout(function(){ location.href = folder + '/'; }, 1900);
   } else {
     pw.value = ''; document.body.classList.remove('no'); void document.body.offsetWidth; document.body.classList.add('no');
   }

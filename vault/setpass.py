@@ -28,4 +28,9 @@ if len(old) != 1:
 if old[0] != folder:
     os.rename(os.path.join(here, old[0]), os.path.join(here, folder))
 open(gate, "w", encoding="utf-8").write(new)
+site_js = os.path.join(here, "..", "js", "site.js")
+if os.path.exists(site_js):
+    js = open(site_js, encoding="utf-8").read()
+    js2, m = re.subn(r'var KEY\s*=\s*"[0-9a-f]{64}"', 'var KEY = "%s"' % key, js)
+    if m: open(site_js, "w", encoding="utf-8").write(js2); print("js/site.js updated too")
 print("password set. gallery now lives at vault/%s/" % folder)
