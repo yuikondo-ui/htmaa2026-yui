@@ -61,7 +61,7 @@ form.addEventListener('submit', async function(e){
   var h = await sha256(v);
   if (h === KEY) {
     var folder = (await sha256('door:' + v)).slice(0,16);
-    document.body.classList.add('in'); if (window.VaultMusic) VaultMusic.start(); setTimeout(function(){ location.href = folder + '/'; }, 1900);
+    document.body.classList.add('in'); setTimeout(function(){ location.href = folder + '/'; }, 1900);
   } else {
     pw.value = ''; document.body.classList.remove('no'); void document.body.offsetWidth; document.body.classList.add('no');
   }
@@ -94,6 +94,6 @@ function sha256js(ascii){
   return result;
 }
 </script>
-<script src="music.js?v=2" data-base=""></script>
+<script src="music.js?v=3" data-base=""></script>
 </body>
 </html>

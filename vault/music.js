@@ -1,6 +1,6 @@
 /* background music for the vault: Suzanne Kraft — Flatiron (from "Talk From Home").
-   Starts when you get in (the gate calls VaultMusic.start()), keeps playing across pages,
-   and there is a small ♪ toggle bottom-right. The song is in three parts so the files stay small enough for forge. */
+   Never starts on its own: it plays only after someone presses the ♪ bottom-right, then keeps playing across pages
+   (and is remembered) until they press it again. The song is in three parts so the files stay small enough for forge. */
 (function () {
   var base = (document.currentScript && document.currentScript.getAttribute('data-base')) || '';
   var PARTS = [base + 'audio/flatiron-1.m4a', base + 'audio/flatiron-2.m4a', base + 'audio/flatiron-3.m4a'];
@@ -47,7 +47,7 @@
   audio.addEventListener('play', render); audio.addEventListener('pause', render);
 
   window.VaultMusic = {
-    start: function () { state.on = true; state.part = 0; state.t = 0; save(); load(0, 0); return play(10); },   /* the gate calls this when the password is right */
+    start: function () { state.on = true; state.part = 0; state.t = 0; save(); load(0, 0); return play(10); },   /* not called anywhere now — music is opt-in via the ♪ */
     play: play, stop: stop
   };
   /* resume if it was on; a browser may refuse until the first tap — then the first tap anywhere starts it */
