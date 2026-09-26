@@ -7,7 +7,7 @@
 <title>how to break into (almost) anywhere</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="vault.css?v=20">
+<link rel="stylesheet" href="vault.css?v=24">
 <style>
   html, body { height:100%; overflow:hidden; }
   body { cursor:none; user-select:none; -webkit-user-select:none; }
@@ -133,7 +133,7 @@ function light(x, y){
 addEventListener('pointermove', function(e){ light(e.clientX, e.clientY); });
 addEventListener('pointerdown', function(e){ light(e.clientX, e.clientY); });
 addEventListener('touchmove', function(e){ var t=e.touches[0]; light(t.clientX, t.clientY); }, {passive:true});
-if (matchMedia('(hover:none)').matches) { plan.style.setProperty('--r', '300px'); light(innerWidth/2, innerHeight/2); }
+if (matchMedia('(hover:none)').matches) { plan.style.setProperty('--r', innerWidth < 700 ? '150px' : '300px'); light(innerWidth/2, innerHeight/2); }
 
 /* start on the floor in the URL (#3, ?floor=3) or the ground floor */
 var start = (location.hash || '').slice(1) || new URLSearchParams(location.search).get('floor') || 'ground';
