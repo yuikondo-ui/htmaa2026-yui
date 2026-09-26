@@ -54,7 +54,6 @@
   #floors { position:fixed; left:var(--pad); bottom:12px; display:flex; gap:14px; color:var(--mute); z-index:10; }
   #floors a { cursor:none; }
   #floors a.on { color:var(--green); }
-  #floorname { position:fixed; right:var(--pad); bottom:12px; color:var(--mute); }
 
   @media (hover:none) { body, .place, #floors a { cursor:auto; } .place.found b { opacity:1; } #marks { z-index:5; } }
   @media (max-width:700px) { #plan, #marks { width:96vw; } #floors { gap:18px; font-size:1.1em; } .place { width:18px; height:18px; margin:-9px 0 0 -9px; } }
@@ -71,12 +70,11 @@
 <div id="torch"></div>
 
 <nav id="floors"></nav>
-<div id="floorname"></div>
 
 <script src="places.js?v=4"></script>
 <script>
 var plan = document.getElementById('plan'), marks = document.getElementById('marks'), torch = document.getElementById('torch'),
-    body = document.body, floorsNav = document.getElementById('floors'), floorname = document.getElementById('floorname');
+    body = document.body, floorsNav = document.getElementById('floors');
 var current = null;
 
 /* floor switcher */
@@ -89,7 +87,6 @@ function show(key){
   var f = FLOORS.find(function(x){ return x[0] === key; }) || FLOORS[1];
   current = f[0];
   plan.style.backgroundImage = 'url(floors/' + f[0] + '.png)';
-  floorname.textContent = f[2];
   Array.prototype.forEach.call(floorsNav.children, function(a){ a.classList.toggle('on', a.dataset.floor === f[0]); });
   history.replaceState(null, '', '#' + f[0]);
   placePlaces();
