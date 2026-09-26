@@ -61,58 +61,56 @@
   document.addEventListener('mouseleave', close);
 })();
 
-/* --- a door. click the banner five times (it tears a little more each time), or type "open" anywhere. --- */
+/* --- a door. hold the banner for a second and a half: the lights go out, the cursor becomes a torch,
+       and somewhere in the dark there is a small green light. click it. (or type "open".) --- */
 (function () {
   var sc = document.querySelector('script[src$="js/site.js"]');
   var root = sc ? sc.getAttribute('src').replace(/js\/site\.js$/, '') : '';
   function go() { window.location.href = root + 'vault/'; }
-  var NS = 'http://www.w3.org/2000/svg', n = 0, t = 0, cracks = [];
 
-  /* a jagged line from top to bottom, around x (0–1 of the banner width) */
-  function jag(x, w, h) {
-    var pts = [], steps = 7 + Math.floor(Math.random() * 4), px = x * w;
-    for (var i = 0; i <= steps; i++) {
-      var y = (h / steps) * i, dx = (Math.random() - .5) * w * 0.05 + (i === 0 || i === steps ? 0 : 0);
-      px += dx; pts.push([Math.max(4, Math.min(w - 4, px)), y]);
+  var dark = null, holdTimer = null;
+  function lightsOut() {
+    if (dark) return;
+    dark = document.createElement('div'); dark.className = 'blackout';
+    var torch = document.createElement('div'); torch.className = 'bo-torch';
+    var dot = document.createElement('a'); dot.className = 'bo-dot'; dot.href = root + 'vault/';
+    /* the light hides somewhere in the middle 60% of the screen, never where the pointer already is */
+    var px = 0.2 + Math.random() * 0.6, py = 0.2 + Math.random() * 0.6;
+    dot.style.left = (px * 100) + '%'; dot.style.top = (py * 100) + '%';
+    dark.appendChild(torch); dark.appendChild(dot); document.body.appendChild(dark);
+    document.documentElement.classList.add('lights-out');
+    function move(x, y) {
+      dark.style.setProperty('--mx', x + 'px'); dark.style.setProperty('--my', y + 'px');
+      var r = parseFloat(getComputedStyle(dark).getPropertyValue('--r')) || 200;
+      var dx = x - px * innerWidth, dy = y - py * innerHeight;
+      dot.classList.toggle('lit', Math.sqrt(dx * dx + dy * dy) < r * 0.9);
     }
-    return pts;
+    dark.addEventListener('pointermove', function (e) { move(e.clientX, e.clientY); });
+    dark.addEventListener('touchmove', function (e) { var t = e.touches[0]; move(t.clientX, t.clientY); e.preventDefault(); }, { passive: false });
+    dark.addEventListener('pointerdown', function (e) { move(e.clientX, e.clientY); });
+    move(innerWidth / 2, innerHeight / 2);
+    dot.addEventListener('click', function (e) { e.preventDefault(); dot.classList.add('found'); setTimeout(go, 450); });
+    var big = matchMedia('(hover:none)').matches;
+    dark.style.setProperty('--r', big ? (innerWidth < 700 ? '150px' : '260px') : '200px');
   }
-  function draw(banner, pts) {
-    var svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'crack');
-    svg.setAttribute('viewBox', '0 0 ' + banner.clientWidth + ' ' + banner.clientHeight); svg.setAttribute('preserveAspectRatio', 'none');
-    var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
-    var lip = document.createElementNS(NS, 'path'); lip.setAttribute('d', d); lip.setAttribute('class', 'lip'); lip.setAttribute('transform', 'translate(2 0)');
-    var p = document.createElementNS(NS, 'path'); p.setAttribute('d', d);
-    svg.appendChild(lip); svg.appendChild(p); banner.appendChild(svg);
+  function lightsOn() {
+    if (!dark) return;
+    dark.classList.add('off'); document.documentElement.classList.remove('lights-out');
+    var d = dark; dark = null; setTimeout(function () { d.remove(); }, 400);
   }
-  function tear(banner, pts) {
-    var w = banner.clientWidth, h = banner.clientHeight;
-    var line = pts.map(function (p) { return (p[0] / w * 100).toFixed(2) + '% ' + (p[1] / h * 100).toFixed(2) + '%'; });
-    var left = 'polygon(0 0, ' + line.join(', ') + ', 0 100%)';
-    var right = 'polygon(100% 0, ' + line.join(', ') + ', 100% 100%)';
-    var m = banner.querySelector('.marquee');
-    var tf = m ? getComputedStyle(m).transform : 'none';          /* freeze the marquee where it is */
-    ['l', 'r'].forEach(function (side) {
-      var piece = document.createElement('div'); piece.className = 'piece ' + side;
-      piece.style.clipPath = side === 'l' ? left : right;
-      var clone = m ? m.cloneNode(true) : null;
-      if (clone) { clone.style.transform = tf; clone.style.animation = 'none'; piece.appendChild(clone); }
-      banner.querySelectorAll('.crack').forEach(function (c) { piece.appendChild(c.cloneNode(true)); });
-      banner.appendChild(piece);
-    });
-    banner.classList.add('torn');
-    setTimeout(go, 700);
+  /* hold the banner */
+  function startHold(e) {
+    var banner = e.target.closest && e.target.closest('.banner'); if (!banner || dark) return;
+    banner.classList.add('holding');
+    holdTimer = setTimeout(function () { banner.classList.remove('holding'); lightsOut(); }, 1500);
   }
-
-  document.addEventListener('click', function (e) {
-    var banner = e.target.closest && e.target.closest('.banner'); if (!banner) return;
-    var now = Date.now(); if (now - t > 2500) { n = 0; cracks = []; banner.querySelectorAll('.crack').forEach(function (c) { c.remove(); }); } t = now;
-    n++;
-    var r = banner.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
-    var pts = jag(x, banner.clientWidth, banner.clientHeight); cracks.push(pts); draw(banner, pts);
-    banner.classList.remove('hit'); void banner.offsetWidth; banner.classList.add('hit');
-    if (n >= 5) { n = 0; tear(banner, pts); }
-  });
+  function endHold() { clearTimeout(holdTimer); holdTimer = null; document.querySelectorAll('.banner.holding').forEach(function (b) { b.classList.remove('holding'); }); }
+  document.addEventListener('pointerdown', startHold);
+  document.addEventListener('pointerup', endHold);
+  document.addEventListener('pointercancel', endHold);
+  document.addEventListener('contextmenu', function (e) { if (e.target.closest && e.target.closest('.banner')) e.preventDefault(); });
+  /* any key brings the lights back (except the torch hunt on touch, which has no keys anyway) */
+  document.addEventListener('keydown', function (e) { if (dark && e.key === 'Escape') lightsOn(); });
 
   var typed = '';
   document.addEventListener('keydown', function (e) {

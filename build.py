@@ -256,6 +256,9 @@ def load_weeks():
         meta.setdefault("ref", f"HTMAA/WK-{meta['week']}")
         meta["slug"] = f"week{meta['week']}"
         meta["body"] = body
+        # a week counts as "not started" while it still has the template summary or (almost) no prose
+        words = re.sub(r"^#.*$", "", body, flags=re.M).split()
+        meta["started"] = not meta.get("summary", "").startswith("One line about") and len(words) > 40
         weeks.append(meta)
     weeks.sort(key=lambda m: m["week"])
     return weeks
@@ -383,7 +386,7 @@ def build_final(final, weeks):
 
 def build_index(weeks, final):
     rows = "".join(
-        f'  <a class="row" href="weeks/{m["slug"]}.html"><span class="c1"><span class="wk">Week {esc(m["num"])}</span></span>'
+        f'  <a class="row{"" if m["started"] else " todo"}" href="weeks/{m["slug"]}.html"><span class="c1"><span class="wk">Week {esc(m["num"])}</span></span>'
         f'<span class="c2">{esc(m["topics_text"] or "Ref. " + m["ref"])}</span><span class="c3">{status_tag(m)}</span></a>\n' for m in weeks)
     if final:
         rows += (f'  <a class="row" href="final.html"><span class="c1"><span class="wk">Final</span></span>'
