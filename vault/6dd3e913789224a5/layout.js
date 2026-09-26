@@ -43,9 +43,19 @@
       i.style.cssText = 'position:absolute;left:50%;top:50%;width:' + (swap ? H : W) + 'px;height:' + (swap ? W : H) + 'px;transform:translate(-50%,-50%) rotate(' + d + 'deg);max-width:none';
     });
   }
+  var PHONE = matchMedia('(max-width: 700px)');
   function apply(f) {
-    var b = box(f), rows = rowsOf(f, b.w);
-    f.style.gridArea = b.r + ' / ' + b.c + ' / span ' + rows + ' / ' + (b.c + b.w);
+    var b = box(f);
+    if (PHONE.matches) {                       /* phones: one column in row order; each photo keeps a hint of its desktop size and side */
+      f.style.gridArea = ''; f.style.order = b.r; f.style.aspectRatio = (1 / ratio(f)).toFixed(4);
+      var mid = b.c + b.w / 2, side = mid < 10 ? 'l' : mid > 15 ? 'r' : 'c';
+      var size = b.w >= 18 ? 'full' : b.w >= 11 ? 'big' : b.w >= 7 ? 'mid' : 'small';
+      f.setAttribute('data-ph', size + ' ' + side);
+    } else {
+      f.removeAttribute('data-ph');
+      f.style.order = ''; f.style.aspectRatio = '';
+      f.style.gridArea = b.r + ' / ' + b.c + ' / span ' + rowsOf(f, b.w) + ' / ' + (b.c + b.w);
+    }
     turn(f);
   }
   function applyAll() { figs().forEach(apply); }
@@ -71,7 +81,7 @@
   var restored = restore();
   applyAll();
   figs().forEach(function (f) { var i = f.querySelector('img'); if (i && !i.complete) i.addEventListener('load', function () { apply(f); }); });
-  addEventListener('resize', applyAll);
+  addEventListener('resize', applyAll); PHONE.addEventListener && PHONE.addEventListener('change', applyAll);
 
   /* ---------------- editor ---------------- */
   var editing = false, sel = null, drag = null;

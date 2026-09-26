@@ -25,6 +25,9 @@ By hand: each photo is `<figure data-box="row col width">` — row from the top 
 ## Spreads
 Each `<section class="spread">` is one two-page spread on a 24-column grid (left page = columns 1–12, right = 13–24). Presets: `L-full L-tall L-small L-low L-wide R-full R-tall R-wide R-small R-low R-big`, or your own `style="grid-area: row-start / col-start / row-end / col-end"` (rows are 1vw). Add `class="natural"` to avoid cropping. Place pages use `class="spread photos"` + `data-box` instead (above). Captions show on hover. Images ≤ ~130 KB (900 px, quality ~62) so forge accepts the push.
 
+## Phones
+Everything works on a phone: the gate, the map (touch to move the torch; markers are always shown), and the place pages, where the photos become one column in row order at their own proportions. The layout editor is desktop-only.
+
 ## Password
 `python3 vault/setpass.py "new password"` — rewrites the hash in `index.html` and renames the gallery folder (the folder name is derived from the password, so it can't be read out of the source). Current: `sesame`. Case-insensitive.
 

@@ -151,7 +151,6 @@ header.top.hidden { opacity:0; pointer-events:none; }
 
 /* photo spreads on place pages: sized to the photos, not the viewport */
 .spread.photos { min-height:auto; padding-bottom:6vw; }
-@media (max-width:700px){ .spread.photos figure { grid-column:1 / 25 !important; grid-row:auto / span 75 !important; } }
 
 /* ---------- layout editor (press E on a place page) ---------- */
 body.editing .spread.photos { background-image: repeating-linear-gradient(90deg, rgba(88,205,134,.10) 0 1px, transparent 1px calc(100% / 24)); background-size: 100% 100%; }
@@ -168,3 +167,29 @@ body.editing .spread.photos figure.bump, body.editing .spread.photos figure.over
 #layout-note { position:fixed; left:var(--pad); bottom:12px; z-index:40; color:var(--green); font-size:.8em; }
 body.editing #layout-note { display:none; }
 #layout-hud .n { opacity:.8; }
+
+/* ---------- phones: photo pages become one column, in row order, photos at their own proportions ---------- */
+@media (max-width: 700px) {
+  .spread.photos { display:flex; flex-direction:column; gap:22px; min-height:auto; padding:0 var(--pad) 56px; }
+  .spread.photos figure { width:100%; position:relative; }
+  /* size and side follow the desktop layout: full bleed, big, medium, small · left, centre, right */
+  .spread.photos figure[data-ph~="full"]  { width:calc(100% + 2 * var(--pad)); margin-left:calc(-1 * var(--pad)); }
+  .spread.photos figure[data-ph~="big"]   { width:86%; }
+  .spread.photos figure[data-ph~="mid"]   { width:70%; }
+  .spread.photos figure[data-ph~="small"] { width:52%; }
+  .spread.photos figure[data-ph~="l"] { align-self:flex-start; }
+  .spread.photos figure[data-ph~="c"] { align-self:center; }
+  .spread.photos figure[data-ph~="r"] { align-self:flex-end; }
+  .spread.photos figure[data-ph~="small"] + figure[data-ph~="small"] { margin-top:-6px; }
+  .place-head { min-height:auto; padding-bottom:24px; }
+  .place-head .left { padding:70px var(--pad) 24px; }
+  .place-head .right { padding:0 var(--pad) 12px; }
+  .place-head .meta { margin-top:16px; }
+  .display { font-size:clamp(56px, 22vw, 120px); }
+  #layout-note { display:none; }
+}
+@media (max-width: 700px) {
+  header.top { align-items:flex-start; }
+  header.top .title { font-size:.95em; max-width:62%; line-height:1.1; }
+  header.top nav { gap:1em; }
+}
