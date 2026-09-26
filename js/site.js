@@ -61,17 +61,59 @@
   document.addEventListener('mouseleave', close);
 })();
 
-/* --- a door. click the banner five times, or type "open" anywhere. --- */
+/* --- a door. click the banner five times (it tears a little more each time), or type "open" anywhere. --- */
 (function () {
-  var s = document.querySelector('script[src$="js/site.js"]');
-  var root = s ? s.getAttribute('src').replace(/js\/site\.js$/, '') : '';
+  var sc = document.querySelector('script[src$="js/site.js"]');
+  var root = sc ? sc.getAttribute('src').replace(/js\/site\.js$/, '') : '';
   function go() { window.location.href = root + 'vault/'; }
-  var n = 0, t = 0;
+  var NS = 'http://www.w3.org/2000/svg', n = 0, t = 0, cracks = [];
+
+  /* a jagged line from top to bottom, around x (0–1 of the banner width) */
+  function jag(x, w, h) {
+    var pts = [], steps = 7 + Math.floor(Math.random() * 4), px = x * w;
+    for (var i = 0; i <= steps; i++) {
+      var y = (h / steps) * i, dx = (Math.random() - .5) * w * 0.05 + (i === 0 || i === steps ? 0 : 0);
+      px += dx; pts.push([Math.max(4, Math.min(w - 4, px)), y]);
+    }
+    return pts;
+  }
+  function draw(banner, pts) {
+    var svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'crack');
+    svg.setAttribute('viewBox', '0 0 ' + banner.clientWidth + ' ' + banner.clientHeight); svg.setAttribute('preserveAspectRatio', 'none');
+    var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
+    var lip = document.createElementNS(NS, 'path'); lip.setAttribute('d', d); lip.setAttribute('class', 'lip'); lip.setAttribute('transform', 'translate(2 0)');
+    var p = document.createElementNS(NS, 'path'); p.setAttribute('d', d);
+    svg.appendChild(lip); svg.appendChild(p); banner.appendChild(svg);
+  }
+  function tear(banner, pts) {
+    var w = banner.clientWidth, h = banner.clientHeight;
+    var line = pts.map(function (p) { return (p[0] / w * 100).toFixed(2) + '% ' + (p[1] / h * 100).toFixed(2) + '%'; });
+    var left = 'polygon(0 0, ' + line.join(', ') + ', 0 100%)';
+    var right = 'polygon(100% 0, ' + line.join(', ') + ', 100% 100%)';
+    var m = banner.querySelector('.marquee');
+    var tf = m ? getComputedStyle(m).transform : 'none';          /* freeze the marquee where it is */
+    ['l', 'r'].forEach(function (side) {
+      var piece = document.createElement('div'); piece.className = 'piece ' + side;
+      piece.style.clipPath = side === 'l' ? left : right;
+      var clone = m ? m.cloneNode(true) : null;
+      if (clone) { clone.style.transform = tf; clone.style.animation = 'none'; piece.appendChild(clone); }
+      banner.querySelectorAll('.crack').forEach(function (c) { piece.appendChild(c.cloneNode(true)); });
+      banner.appendChild(piece);
+    });
+    banner.classList.add('torn');
+    setTimeout(go, 700);
+  }
+
   document.addEventListener('click', function (e) {
-    if (!(e.target.closest && e.target.closest('.banner'))) return;
-    var now = Date.now(); if (now - t > 2500) n = 0; t = now;
-    if (++n >= 5) { n = 0; go(); }
+    var banner = e.target.closest && e.target.closest('.banner'); if (!banner) return;
+    var now = Date.now(); if (now - t > 2500) { n = 0; cracks = []; banner.querySelectorAll('.crack').forEach(function (c) { c.remove(); }); } t = now;
+    n++;
+    var r = banner.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+    var pts = jag(x, banner.clientWidth, banner.clientHeight); cracks.push(pts); draw(banner, pts);
+    banner.classList.remove('hit'); void banner.offsetWidth; banner.classList.add('hit');
+    if (n >= 5) { n = 0; tear(banner, pts); }
   });
+
   var typed = '';
   document.addEventListener('keydown', function (e) {
     if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;

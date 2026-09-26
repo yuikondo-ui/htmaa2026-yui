@@ -80,13 +80,31 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em}
 }
 .marquee-group{display:flex;flex:none;align-items:baseline}
 .mq-item{display:block;padding-right:.9em}
-.banner:hover .marquee{animation-play-state:paused}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes breathe{
   0%,100%{font-variation-settings:"wdth" 125,"wght" 900}
   50%{font-variation-settings:"wdth" 112,"wght" 860}
 }
 @media (prefers-reduced-motion:reduce){.marquee{animation:none}}
+/* the banner tears when clicked: a crack per click, and on the fifth it rips in two */
+.banner{position:relative;cursor:pointer;user-select:none}
+.banner .crack{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.banner .crack path{fill:none;stroke:#111;stroke-width:3;stroke-linejoin:round;stroke-linecap:round;
+  stroke-dasharray:2000;stroke-dashoffset:2000;animation:crack .18s ease-out forwards}
+.banner .crack path.lip{stroke:#fff;stroke-width:1.2;opacity:.9}
+@keyframes crack{to{stroke-dashoffset:0}}
+.banner.hit{animation:hit .16s ease-out}
+@keyframes hit{30%{transform:translate(-3px,1px) rotate(-.3deg)}70%{transform:translate(3px,-1px) rotate(.3deg)}}
+.banner.torn{background:transparent}
+.banner.torn .marquee{visibility:hidden}
+.banner.torn .crack{display:none}
+.banner .piece{position:absolute;inset:0;background:var(--red);color:#fff;overflow:hidden;pointer-events:none;will-change:transform}
+.banner .piece .marquee{visibility:visible;animation:none}
+.banner .piece.l{animation:tearL .75s cubic-bezier(.5,0,.9,.4) forwards}
+.banner .piece.r{animation:tearR .75s cubic-bezier(.5,0,.9,.4) forwards}
+@keyframes tearL{to{transform:translate(-14%,60%) rotate(-7deg);opacity:0}}
+@keyframes tearR{to{transform:translate(12%,80%) rotate(6deg);opacity:0}}
+
 
 /* ---------- Index table ---------- */
 .index{margin:0 var(--pad) 4rem}
