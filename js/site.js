@@ -60,3 +60,22 @@
   window.addEventListener('scroll', function () { if (active) { if (pv.classList.contains('show')) placePreview(active); if (!inside(rects(active), mx, my)) close(); } }, { passive: true });
   document.addEventListener('mouseleave', close);
 })();
+
+/* --- a door. click the banner five times, or type "open" anywhere. --- */
+(function () {
+  var s = document.querySelector('script[src$="js/site.js"]');
+  var root = s ? s.getAttribute('src').replace(/js\/site\.js$/, '') : '';
+  function go() { window.location.href = root + 'vault/'; }
+  var n = 0, t = 0;
+  document.addEventListener('click', function (e) {
+    if (!(e.target.closest && e.target.closest('.banner'))) return;
+    var now = Date.now(); if (now - t > 2500) n = 0; t = now;
+    if (++n >= 5) { n = 0; go(); }
+  });
+  var typed = '';
+  document.addEventListener('keydown', function (e) {
+    if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    typed = (typed + e.key.toLowerCase()).slice(-4);
+    if (typed === 'open') go();
+  });
+})();

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>how to break into (almost) anywhere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vault.css?v=5">
+<style>
+  html, body { height:100%; overflow:hidden; }
+  body { cursor:none; user-select:none; -webkit-user-select:none; }
+  header.top { mix-blend-mode:normal; color:var(--green); }
+  header.top nav a.on { text-decoration:underline; text-underline-offset:3px; }
+
+  /* the plan, hidden in the dark, revealed by the torch */
+  #plan {
+    position:absolute; inset:0; margin:auto;
+    width:min(94vw, 150vh); aspect-ratio:1660/1040;
+    background:center/contain no-repeat; opacity:0; transition:opacity .4s;
+    -webkit-mask: radial-gradient(circle var(--r,260px) at var(--mx,-999px) var(--my,-999px), #000 0, #000 55%, transparent 100%);
+            mask: radial-gradient(circle var(--r,260px) at var(--mx,-999px) var(--my,-999px), #000 0, #000 55%, transparent 100%);
+  }
+  body.lit #plan { opacity:1; }
+
+  /* places you got into: a small pulse on the room */
+  .place {
+    position:absolute; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%;
+    background:var(--green); box-shadow:0 0 0 0 rgba(88,205,134,.6); animation:pulse 2.2s infinite;
+    cursor:none;
+  }
+  .place b {
+    position:absolute; left:18px; top:-2px; white-space:nowrap; font-weight:500; color:var(--green);
+    opacity:0; transition:opacity .15s;
+  }
+  .place:hover b { opacity:1; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(88,205,134,.6)} 100%{box-shadow:0 0 0 22px rgba(88,205,134,0)} }
+
+  /* torch */
+  #torch {
+    position:fixed; left:0; top:0; width:8px; height:8px; margin:-4px 0 0 -4px; border-radius:50%;
+    background:var(--green); pointer-events:none; opacity:0; box-shadow:0 0 0 2px var(--bg);
+  }
+  body.lit #torch { opacity:1; }
+
+  /* floors */
+  #floors { position:fixed; left:var(--pad); bottom:12px; display:flex; gap:14px; color:var(--mute); z-index:10; }
+  #floors a { cursor:none; }
+  #floors a.on { color:var(--green); }
+  #floorname { position:fixed; right:var(--pad); bottom:12px; color:var(--mute); }
+
+  @media (hover:none) { body, .place, #floors a { cursor:auto; } .place b { opacity:1; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="title" href="index.html">how to break into (almost) anywhere</a>
+  <nav><a class="on" href="index.html">Map</a><a href="../../index.html">HTMAA</a></nav>
+</header>
+
+<div id="plan"></div>
+<div id="torch"></div>
+
+<nav id="floors"></nav>
+<div id="floorname"></div>
+
+<script src="places.js?v=4"></script>
+<script>
+var plan = document.getElementById('plan'), torch = document.getElementById('torch'),
+    body = document.body, floorsNav = document.getElementById('floors'), floorname = document.getElementById('floorname');
+var current = null;
+
+/* floor switcher */
+FLOORS.forEach(function(f){
+  var a = document.createElement('a'); a.href = '#' + f[0]; a.textContent = f[1]; a.dataset.floor = f[0]; a.title = f[2];
+  a.addEventListener('click', function(e){ e.preventDefault(); show(f[0]); });
+  floorsNav.appendChild(a);
+});
+function show(key){
+  var f = FLOORS.find(function(x){ return x[0] === key; }) || FLOORS[1];
+  current = f[0];
+  plan.style.backgroundImage = 'url(floors/' + f[0] + '.png)';
+  floorname.textContent = f[2];
+  Array.prototype.forEach.call(floorsNav.children, function(a){ a.classList.toggle('on', a.dataset.floor === f[0]); });
+  history.replaceState(null, '', '#' + f[0]);
+  placePlaces();
+}
+/* keyboard: 0 = lower, g = ground, 2–6 */
+addEventListener('keydown', function(e){
+  var k = e.key.toLowerCase();
+  if (k === '0' || k === 'l') show('lower'); else if (k === 'g' || k === '1') show('ground');
+  else if (/^[2-6]$/.test(k)) show(k);
+  else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    var i = FLOORS.findIndex(function(x){ return x[0] === current; });
+    i = Math.max(0, Math.min(FLOORS.length-1, i + (e.key === 'ArrowUp' ? 1 : -1))); show(FLOORS[i][0]);
+  }
+});
+
+/* place markers on the drawn (contain-fit) part of the plan */
+function drawnBox(){
+  var W = plan.clientWidth, H = plan.clientHeight, ar = 1660/1040;
+  var w = W, h = W/ar; if (h > H) { h = H; w = H*ar; }
+  return { ox:(W-w)/2, oy:(H-h)/2, w:w, h:h };
+}
+function placePlaces(){
+  plan.querySelectorAll('.place').forEach(function(n){ n.remove(); });
+  var b = drawnBox();
+  PLACES.forEach(function(p){
+    if (p.floor !== current) return;
+    var a = document.createElement('a'); a.className = 'place'; a.href = 'places/' + p.id + '.html';
+    a.style.left = (b.ox + p.x*b.w) + 'px'; a.style.top = (b.oy + p.y*b.h) + 'px';
+    a.innerHTML = '<b>' + p.name + '</b>';
+    plan.appendChild(a);
+  });
+}
+addEventListener('resize', placePlaces);
+
+/* torch follows the pointer */
+function light(x, y){
+  body.classList.add('lit');
+  var r = plan.getBoundingClientRect();
+  plan.style.setProperty('--mx', (x - r.left) + 'px');
+  plan.style.setProperty('--my', (y - r.top) + 'px');
+  torch.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+}
+addEventListener('pointermove', function(e){ light(e.clientX, e.clientY); });
+addEventListener('pointerdown', function(e){ light(e.clientX, e.clientY); });
+addEventListener('touchmove', function(e){ var t=e.touches[0]; light(t.clientX, t.clientY); }, {passive:true});
+if (matchMedia('(hover:none)').matches) plan.style.setProperty('--r', '300px');
+
+/* start on the floor in the URL (#3, ?floor=3) or the ground floor */
+var start = (location.hash || '').slice(1) || new URLSearchParams(location.search).get('floor') || 'ground';
+show(start);
+</script>
+</body>
+</html>

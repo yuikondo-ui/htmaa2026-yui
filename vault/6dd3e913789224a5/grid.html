@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Index — how to break into (almost) anywhere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vault.css?v=5">
+</head>
+<body>
+<header class="top">
+  <a class="title" href="index.html">how to break into (almost) anywhere</a>
+  <nav><a href="index.html">Map</a><a href="../../index.html">HTMAA</a></nav>
+</header>
+
+<main class="grid">
+  <div class="items"></div>
+</main>
+<script src="places.js?v=4"></script>
+<script>
+document.querySelector('.items').innerHTML = PLACES.map(function(p){
+  return '<figure><a href="places/' + p.id + '.html"><img src="' + p.thumb + '" alt=""></a>' +
+         '<figcaption><a href="places/' + p.id + '.html">' + p.name + '</a><small>' + p.date + '</small></figcaption></figure>';
+}).join('');
+</script>
+</body>
+</html>
