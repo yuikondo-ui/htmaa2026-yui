@@ -79,7 +79,7 @@
     /* the keyhole lives in the page itself, under the name in the footer (so you have to scroll down in the dark to find it) */
     var key = document.createElement('div'); key.className = 'bo-key';
     key.innerHTML =
-      '<svg class="keyhole" viewBox="0 0 28 44" aria-label="keyhole"><rect x="4" y="2" width="20" height="40" rx="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="14" cy="17" r="4.5"/><path d="M11.8 20 L10 30 H18 L16.2 20 Z"/><circle cx="14" cy="6" r="1.1"/><circle cx="14" cy="38" r="1.1"/></svg>' +
+      '<svg class="keyhole" viewBox="0 0 24 34" aria-label="keyhole"><circle cx="12" cy="11" r="8"/><path d="M8 17 L4 32 L20 32 L16 17 Z"/></svg>' +
       '<form class="bo-form" autocomplete="off"><input type="password" placeholder="·······" autocapitalize="off" spellcheck="false"></form>';
     var home = document.querySelector('.site-footer .col-wide') || document.querySelector('.site-footer');
     if (home) { home.appendChild(key); } else { key.classList.add('fixed'); dark.appendChild(key); }
