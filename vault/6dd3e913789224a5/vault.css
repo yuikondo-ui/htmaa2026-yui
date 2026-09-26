@@ -180,7 +180,11 @@ body.editing #layout-note { display:none; }
   .spread.photos figure[data-ph~="l"] { align-self:flex-start; }
   .spread.photos figure[data-ph~="c"] { align-self:center; }
   .spread.photos figure[data-ph~="r"] { align-self:flex-end; }
-  .spread.photos figure[data-ph~="small"] + figure[data-ph~="small"] { margin-top:-6px; }
+  /* a little rhythm: every few photos breathe more, some sit closer */
+  .spread.photos figure:nth-child(5n+2) { margin-top:10px; }
+  .spread.photos figure:nth-child(7n+4)[data-ph~="small"] { margin-top:-8px; }
+  .spread.photos figure[data-ph~="full"] { margin-top:8px; margin-bottom:8px; }
+  .spread.photos figure.paired { position:relative; }
   .place-head { min-height:auto; padding-bottom:24px; }
   .place-head .left { padding:70px var(--pad) 24px; }
   .place-head .right { padding:0 var(--pad) 12px; }

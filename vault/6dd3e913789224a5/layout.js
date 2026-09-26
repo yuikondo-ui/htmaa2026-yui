@@ -50,15 +50,35 @@
       f.style.gridArea = ''; f.style.order = b.r; f.style.aspectRatio = (1 / ratio(f)).toFixed(4);
       var mid = b.c + b.w / 2, side = mid < 10 ? 'l' : mid > 15 ? 'r' : 'c';
       var size = b.w >= 18 ? 'full' : b.w >= 11 ? 'big' : b.w >= 7 ? 'mid' : 'small';
-      f.setAttribute('data-ph', size + ' ' + side);
+      f.setAttribute('data-ph', size + ' ' + side); f.style.width = ''; f.style.alignSelf = '';
     } else {
-      f.removeAttribute('data-ph');
+      f.removeAttribute('data-ph'); f.style.width = ''; f.style.marginTop = ''; f.style.alignSelf = ''; f.classList.remove('paired');
       f.style.order = ''; f.style.aspectRatio = '';
       f.style.gridArea = b.r + ' / ' + b.c + ' / span ' + rowsOf(f, b.w) + ' / ' + (b.c + b.w);
     }
     turn(f);
   }
-  function applyAll() { figs().forEach(apply); }
+  function applyAll() { figs().forEach(apply); if (PHONE.matches) requestAnimationFrame(pairUp); }
+  /* phones: two small/medium photos that sit on opposite sides get pulled up next to each other, a little staggered — like a scrapbook */
+  function pairUp() {
+    var list = figs().slice().sort(function (a, b) { return box(a).r - box(b).r; });
+    list.forEach(function (f) { f.style.marginTop = ''; f.classList.remove('paired'); });
+    for (var i = 0; i + 1 < list.length; i++) {
+      var a = list[i], b = list[i + 1], pa = (a.dataset.ph || '').split(' '), pb = (b.dataset.ph || '').split(' ');
+      var smallA = pa[0] === 'small' || pa[0] === 'mid', smallB = pb[0] === 'small' || pb[0] === 'mid';
+      var opposite = (pa[1] === 'l' && pb[1] !== 'l') || (pa[1] === 'r' && pb[1] !== 'r') || (pa[1] === 'c' && pb[1] !== 'c');
+      if (smallA && smallB && opposite && !a.classList.contains('paired')) {
+        var wa = pa[0] === 'mid' ? 54 : 46, wb = pb[0] === 'mid' ? 42 : 38;
+        a.style.width = wa + '%'; b.style.width = wb + '%';
+        a.classList.add('paired'); b.classList.add('paired');
+        var stagger = Math.max(Math.round(a.offsetHeight * 0.35), a.offsetHeight - b.offsetHeight);   /* never let the next photo run into a */
+        b.style.marginTop = (-(a.offsetHeight) + stagger - 22) + 'px';   /* 22 = the column gap */
+        if (pa[1] === 'c') a.style.alignSelf = 'flex-start';
+        if (pb[1] === 'c') b.style.alignSelf = 'flex-end';
+        i++;
+      }
+    }
+  }
   /* edits are remembered in this browser (localStorage) until the page file itself carries them */
   var KEYLS = 'vault-layout:' + location.pathname;
   function fid(f) { var i = f.querySelector('img'); return i ? i.getAttribute('src') : ''; }
