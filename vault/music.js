@@ -9,7 +9,13 @@
   try { var saved = JSON.parse(localStorage.getItem(LS) || '{}'); for (var k in saved) state[k] = saved[k]; } catch (_) {}
   function save() { try { localStorage.setItem(LS, JSON.stringify({ on: state.on, part: state.part, t: state.t })); } catch (_) {} }
 
-  var audio = new Audio(); audio.preload = 'auto'; audio.volume = 0.8;
+  var VOL = 0.8, fadeTimer = null;
+  var audio = new Audio(); audio.preload = 'auto'; audio.volume = 0;
+  /* the music never jumps in: it rises from silence over `secs` seconds */
+  function fadeTo(target, secs) {
+    clearInterval(fadeTimer); var from = audio.volume, steps = Math.max(1, Math.round(secs * 20)), i = 0;
+    fadeTimer = setInterval(function () { i++; audio.volume = from + (target - from) * (i / steps); if (i >= steps) clearInterval(fadeTimer); }, secs * 1000 / steps);
+  }
   var next = new Audio(); next.preload = 'auto';
   function load(part, t) {
     state.part = part % PARTS.length; audio.src = PARTS[state.part];
@@ -31,21 +37,22 @@
     ui.title = (state.on && !audio.paused) ? 'music off' : 'music on';
   }
 
-  function play() {
+  function play(secs) {
     if (!audio.src) load(state.part, state.t);
-    return audio.play().then(function () { state.on = true; save(); render(); }).catch(function () { render(); });
+    audio.volume = 0;
+    return audio.play().then(function () { state.on = true; save(); render(); fadeTo(VOL, secs || 4); }).catch(function () { render(); });
   }
-  function stop() { audio.pause(); state.on = false; save(); render(); }
-  ui.addEventListener('click', function () { if (state.on && !audio.paused) stop(); else play(); });
+  function stop() { fadeTo(0, 0.6); setTimeout(function () { audio.pause(); render(); }, 650); state.on = false; save(); render(); }
+  ui.addEventListener('click', function () { if (state.on && !audio.paused) stop(); else play(3); });
   audio.addEventListener('play', render); audio.addEventListener('pause', render);
 
   window.VaultMusic = {
-    start: function () { state.on = true; state.part = 0; state.t = 0; save(); load(0, 0); return play(); },   /* the gate calls this when the password is right */
+    start: function () { state.on = true; state.part = 0; state.t = 0; save(); load(0, 0); return play(10); },   /* the gate calls this when the password is right */
     play: play, stop: stop
   };
   /* resume if it was on; a browser may refuse until the first tap — then the first tap anywhere starts it */
   if (state.on) {
-    load(state.part, state.t); play();
-    document.addEventListener('pointerdown', function once() { if (state.on && audio.paused) play(); document.removeEventListener('pointerdown', once); });
+    load(state.part, state.t); play(6);
+    document.addEventListener('pointerdown', function once() { if (state.on && audio.paused) play(6); document.removeEventListener('pointerdown', once); });
   }
 })();
