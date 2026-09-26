@@ -7,6 +7,7 @@
    Edit mode: press E (or open the page with #edit). Drag to move, drag the corner to resize, click to select.
      arrows = nudge   [ ] = narrower / wider   r = rotate 90°
      backspace = remove from layout   S = download this page with the new layout (replace the file, done)
+   Edits are kept in the browser (localStorage) across reloads until the file itself has them.
 */
 (function () {
   var ROWCOL = 24;
@@ -28,7 +29,7 @@
   function setBox(f, b, free) {
     b.w = Math.max(2, Math.min(ROWCOL, Math.round(b.w))); b.c = Math.max(1, Math.min(ROWCOL - b.w + 1, Math.round(b.c))); b.r = Math.max(1, Math.round(b.r));
     if (!free && !f.classList.contains('over') && overlaps(f, b)) { bump(f); return false; }
-    f.dataset.box = b.r + ' ' + b.c + ' ' + b.w; apply(f); mark(f); return true;
+    f.dataset.box = b.r + ' ' + b.c + ' ' + b.w; apply(f); mark(f); remember(); if (!free) hudCount(); return true;
   }
   /* a photo that sits on another one stays red until it is moved off */
   function mark(f) { f.classList.toggle('over', overlaps(f, box(f))); }
@@ -48,6 +49,26 @@
     turn(f);
   }
   function applyAll() { figs().forEach(apply); }
+  /* edits are remembered in this browser (localStorage) until the page file itself carries them */
+  var KEYLS = 'vault-layout:' + location.pathname;
+  function fid(f) { var i = f.querySelector('img'); return i ? i.getAttribute('src') : ''; }
+  function remember() {
+    try {
+      var o = {}; figs().forEach(function (f) { o[fid(f)] = { box: f.dataset.box, rot: f.dataset.rot || '' }; });
+      localStorage.setItem(KEYLS, JSON.stringify(o));
+    } catch (_) {}
+  }
+  function forget() { try { localStorage.removeItem(KEYLS); } catch (_) {} }
+  function restore() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEYLS) || 'null'); if (!o) return 0; var n = 0;
+      figs().forEach(function (f) { var e = o[fid(f)]; if (!e) return;
+        if (e.box !== f.dataset.box || (e.rot || '') !== (f.dataset.rot || '')) { n++; f.dataset.box = e.box; if (e.rot) f.dataset.rot = e.rot; else f.removeAttribute('data-rot'); } });
+      if (!n) forget();   /* the file already has these edits */
+      return n;
+    } catch (_) { return 0; }
+  }
+  var restored = restore();
   applyAll();
   figs().forEach(function (f) { var i = f.querySelector('img'); if (i && !i.complete) i.addEventListener('load', function () { apply(f); }); });
   addEventListener('resize', applyAll);
@@ -55,7 +76,9 @@
   /* ---------------- editor ---------------- */
   var editing = false, sel = null, drag = null;
   var hud = document.createElement('div'); hud.id = 'layout-hud';
-  hud.innerHTML = '<b>layout</b> drag anywhere (up and down too) · corner = resize · ← → ↑ ↓ (shift = 5) · [ ] width · r = rotate · ⌫ remove · <u>S = download page</u> · E = done';
+  hud.innerHTML = '<b>layout</b> drag anywhere (up and down too) · corner = resize · ← → ↑ ↓ (shift = 5) · [ ] width · r = rotate · ⌫ remove · <u>S = download page</u> · E = done <span class="n"></span>';
+  var edits = 0;
+  function hudCount() { edits++; var n = hud.querySelector('.n'); if (n) n.textContent = '· ' + edits + ' change' + (edits === 1 ? '' : 's') + ' since load, kept in this browser until you download'; }
   function toggle(on) {
     editing = on; document.body.classList.toggle('editing', on);
     if (on) { document.body.appendChild(hud); figs().forEach(prep); } else { hud.remove(); select(null); }
@@ -71,6 +94,8 @@
 
   addEventListener('keydown', function (e) {
     if (/INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    /* ⌘S / Ctrl+S anywhere on the page = download the page with the current layout (the browser's own "Save As" would save the ORIGINAL file, without your moves) */
+    if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'S')) { e.preventDefault(); if (!editing) toggle(true); download(); return; }
     if (e.key === 'e' || e.key === 'E') { toggle(!editing); return; }
     if (!editing) return;
     if (e.key === 's' || e.key === 'S') { download(); e.preventDefault(); return; }
@@ -79,7 +104,7 @@
     if (e.key === 'ArrowLeft') b.c--; else if (e.key === 'ArrowRight') b.c++;
     else if (e.key === 'ArrowUp') b.r -= e.shiftKey ? 5 : 1; else if (e.key === 'ArrowDown') b.r += e.shiftKey ? 5 : 1;
     else if (e.key === '[') b.w--; else if (e.key === ']') b.w++;
-    else if (e.key === 'r' || e.key === 'R') { sel.dataset.rot = (rot(sel) + 90) % 360; if (!rot(sel)) sel.removeAttribute('data-rot'); apply(sel); mark(sel); label(sel); e.preventDefault(); return; }
+    else if (e.key === 'r' || e.key === 'R') { sel.dataset.rot = (rot(sel) + 90) % 360; if (!rot(sel)) sel.removeAttribute('data-rot'); apply(sel); mark(sel); label(sel); remember(); hudCount(); e.preventDefault(); return; }
     else if (e.key === 'n' && s[i + 1]) { s[i + 1].appendChild(sel); b.r = bottom(s[i + 1], sel); }
     else if (e.key === 'p' && s[i - 1]) { s[i - 1].appendChild(sel); b.r = bottom(s[i - 1], sel); }
     else if (e.key === '+') { var ns = document.createElement('section'); ns.className = 'spread photos'; sel.parentNode.after(ns); ns.appendChild(sel); b.r = 1; }
@@ -108,6 +133,7 @@
   addEventListener('pointerup', function () {
     if (!drag) return;
     if (!drag.wasOver && overlaps(drag.f, box(drag.f))) { setBox(drag.f, drag.b, true); bump(drag.f); }   /* landed on another photo: go back */
+    else if (drag.f.dataset.box !== drag.b.r + ' ' + drag.b.c + ' ' + drag.b.w) hudCount();
     mark(drag.f); label(drag.f); drag = null;
   });
 
@@ -124,8 +150,11 @@
     var pn = doc.querySelector('.prevnext'); if (pn) pn.innerHTML = '';
     var html = '<!doctype html>\n' + doc.outerHTML.replace(/<\/section>\s*<section/g, '</section>\n\n  <section');
     var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
-    a.download = location.pathname.split('/').pop() || 'page.html'; a.click();
+    var t = new Date(), pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    a.download = (location.pathname.split('/').pop() || 'page.html').replace(/\.html$/, '') + ' ' + pad(t.getHours()) + pad(t.getMinutes()) + '.html'; a.click();
+    var n = hud.querySelector('.n'); if (n) n.textContent = '· downloaded ' + a.download + ' — replace places/' + (location.pathname.split('/').pop()) + ' with it';
   }
 
+  if (restored) { var note = document.createElement('div'); note.id = 'layout-note'; note.textContent = restored + ' photo position' + (restored === 1 ? '' : 's') + ' from your last edit (not yet in the file). Press E, then S to download.'; document.body.appendChild(note); }
   if (location.hash === '#edit') toggle(true);
 })();
