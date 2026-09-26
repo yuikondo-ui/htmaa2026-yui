@@ -104,6 +104,9 @@
       if (await sha256(v) === KEY) {
         var folder = (await sha256('door:' + v)).slice(0, 16);
         key.classList.add('gone'); splash.classList.add('show');
+        /* the music starts as you get in (the vault pages pick it up from here) */
+        try { localStorage.setItem('vault-music', JSON.stringify({ on: true, part: 0, t: 0 })); } catch (_) {}
+        try { var song = new Audio(root + 'vault/audio/flatiron-1.m4a'); song.volume = 0.8; song.play().catch(function () {}); } catch (_) {}
         setTimeout(function () { window.location.href = root + 'vault/' + folder + '/'; }, 1900);
       } else { input.value = ''; form.classList.remove('no'); void form.offsetWidth; form.classList.add('no'); }
     });
