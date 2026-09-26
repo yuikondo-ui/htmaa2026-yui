@@ -90,7 +90,10 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em}
 .banner{cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;transition:filter .2s}
 .banner.holding{animation:dimming 1.5s linear forwards}
 @keyframes dimming{0%{filter:brightness(1)}70%{filter:brightness(.9)}85%{filter:brightness(.55)}90%{filter:brightness(1)}100%{filter:brightness(.25)}}
-.blackout{position:fixed;inset:0;z-index:1000;cursor:none;touch-action:none;animation:flicker .5s steps(1,end) forwards}
+.blackout{position:fixed;inset:0;z-index:1000;cursor:none;pointer-events:none;animation:flicker .5s steps(1,end) forwards}
+html.lights-out body{cursor:none}
+html.lights-out a,html.lights-out button{pointer-events:none}
+html.lights-out .bo-key,html.lights-out .bo-key *{pointer-events:auto}
 @keyframes flicker{0%{opacity:0}20%{opacity:.85}30%{opacity:.2}45%{opacity:.9}55%{opacity:.5}70%{opacity:.97}100%{opacity:.985}}
 .blackout.off{animation:none;opacity:0;transition:opacity .35s}
 /* the torch: a soft hole in the dark that lets a little of the page through */
@@ -99,10 +102,11 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em}
           mask:radial-gradient(circle var(--r,200px) at var(--mx,-999px) var(--my,-999px),rgba(0,0,0,.72) 0,rgba(0,0,0,.8) 45%,#000 100%)}
 .bo-torch{position:absolute;left:var(--mx,-999px);top:var(--my,-999px);width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#58cd86;box-shadow:0 0 0 2px #131313;pointer-events:none}
 /* the keyhole, bottom-left, only visible inside the torch */
-.bo-key{position:absolute;left:18px;bottom:18px;display:flex;align-items:center;gap:14px;opacity:0;transition:opacity .15s}
+.bo-key{position:relative;z-index:1001;margin-top:.9em;display:flex;align-items:center;gap:14px;opacity:0;transition:opacity .15s}
+.bo-key.fixed{position:fixed;left:18px;bottom:18px;margin:0}
 .bo-key.lit{opacity:1}
 .bo-key.gone{opacity:0;transition:opacity .4s}
-.keyhole{width:22px;height:31px;fill:#58cd86;cursor:none;transition:transform .25s;outline:none}
+.keyhole{width:20px;height:31px;fill:#58cd86;color:#58cd86;cursor:none;transition:transform .25s;outline:none}
 .bo-key.open .keyhole{transform:scale(1.25)}
 .bo-form{display:none}
 .bo-key.open .bo-form{display:block}
@@ -117,8 +121,9 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em}
 .bo-splash h1{font-family:var(--name);font-weight:400;font-variation-settings:normal;font-size:clamp(26px,4.6vw,64px);line-height:1.1;text-align:center;
   text-transform:lowercase;letter-spacing:.01em;color:#58cd86;transform:translateY(10px);opacity:0;max-width:80vw;margin:0;transition:transform .7s .2s,opacity .7s .2s}
 .bo-splash.show h1{transform:translateY(0);opacity:1}
-html.lights-out{overflow:hidden}
-@media (hover:none){.blackout{cursor:auto}.keyhole{width:28px;height:40px;cursor:auto}.bo-form input{cursor:auto}}
+html.lights-out{scrollbar-width:none}
+html.lights-out::-webkit-scrollbar{display:none}
+@media (hover:none){.blackout{cursor:auto}.keyhole{width:26px;height:41px;cursor:auto}.bo-form input{cursor:auto}}
 
 
 /* ---------- Index table ---------- */

@@ -74,17 +74,17 @@
   function lightsOut() {
     if (dark) return;
     dark = document.createElement('div'); dark.className = 'blackout';
-    dark.innerHTML =
-      '<div class="bo-torch"></div>' +
-      '<div class="bo-key">' +
-        '<svg class="keyhole" viewBox="0 0 24 34" aria-label="keyhole"><circle cx="12" cy="11" r="8"/><path d="M8 17 L4 32 L20 32 L16 17 Z"/></svg>' +
-        '<form class="bo-form" autocomplete="off"><input type="password" placeholder="·······" autocapitalize="off" spellcheck="false"></form>' +
-      '</div>' +
-      '<div class="bo-splash"><h1>how to break into (almost) anywhere</h1></div>';
+    dark.innerHTML = '<div class="bo-torch"></div><div class="bo-splash"><h1>how to break into (almost) anywhere</h1></div>';
     document.body.appendChild(dark);
+    /* the keyhole lives in the page itself, under the name in the footer (so you have to scroll down in the dark to find it) */
+    var key = document.createElement('div'); key.className = 'bo-key';
+    key.innerHTML =
+      '<svg class="keyhole" viewBox="0 0 28 44" aria-label="keyhole"><rect x="4" y="2" width="20" height="40" rx="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="14" cy="17" r="4.5"/><path d="M11.8 20 L10 30 H18 L16.2 20 Z"/><circle cx="14" cy="6" r="1.1"/><circle cx="14" cy="38" r="1.1"/></svg>' +
+      '<form class="bo-form" autocomplete="off"><input type="password" placeholder="·······" autocapitalize="off" spellcheck="false"></form>';
+    var home = document.querySelector('.site-footer .col-wide') || document.querySelector('.site-footer');
+    if (home) { home.appendChild(key); } else { key.classList.add('fixed'); dark.appendChild(key); }
     document.documentElement.classList.add('lights-out');
-    var key = dark.querySelector('.bo-key'), hole = dark.querySelector('.keyhole'),
-        form = dark.querySelector('.bo-form'), input = form.querySelector('input'), splash = dark.querySelector('.bo-splash');
+    var hole = key.querySelector('.keyhole'), form = key.querySelector('.bo-form'), input = form.querySelector('input'), splash = dark.querySelector('.bo-splash');
     var big = matchMedia('(hover:none)').matches, r = big ? (innerWidth < 700 ? 150 : 260) : 200;
     dark.style.setProperty('--r', r + 'px');
     function move(x, y) {
@@ -92,9 +92,10 @@
       var k = hole.getBoundingClientRect(), dx = x - (k.left + k.width / 2), dy = y - (k.top + k.height / 2);
       key.classList.toggle('lit', Math.sqrt(dx * dx + dy * dy) < r * 0.95);
     }
-    dark.addEventListener('pointermove', function (e) { move(e.clientX, e.clientY); });
-    dark.addEventListener('pointerdown', function (e) { move(e.clientX, e.clientY); });
-    dark.addEventListener('touchmove', function (e) { var t = e.touches[0]; move(t.clientX, t.clientY); e.preventDefault(); }, { passive: false });
+    document.addEventListener('pointermove', function (e) { if (dark) move(e.clientX, e.clientY); });
+    document.addEventListener('pointerdown', function (e) { if (dark) move(e.clientX, e.clientY); });
+    document.addEventListener('touchmove', function (e) { if (dark) { var t = e.touches[0]; move(t.clientX, t.clientY); } }, { passive: true });
+    document.addEventListener('scroll', function () { if (dark) move(parseFloat(dark.style.getPropertyValue('--mx')) || 0, parseFloat(dark.style.getPropertyValue('--my')) || 0); }, { passive: true });
     move(innerWidth / 2, innerHeight / 2);
     hole.addEventListener('click', function (e) { e.preventDefault(); key.classList.add('open', 'lit'); setTimeout(function () { input.focus(); }, 60); });
     form.addEventListener('submit', async function (e) {
@@ -111,6 +112,7 @@
     if (!dark) return;
     dark.classList.add('off'); document.documentElement.classList.remove('lights-out');
     var d = dark; dark = null; setTimeout(function () { d.remove(); }, 400);
+    document.querySelectorAll('.bo-key').forEach(function (k) { k.remove(); });
   }
   function startHold(e) {
     var banner = e.target.closest && e.target.closest('.banner'); if (!banner || dark) return;
@@ -124,7 +126,7 @@
   document.addEventListener('contextmenu', function (e) { if (e.target.closest && e.target.closest('.banner')) e.preventDefault(); });
   document.addEventListener('keydown', function (e) { if (dark && e.key === 'Escape') lightsOn(); });
   /* coming back with the browser's back button: the page is restored from cache, so put the lights back on */
-  window.addEventListener('pageshow', function () { if (dark) { var d = dark; dark = null; d.remove(); document.documentElement.classList.remove('lights-out'); } });
+  window.addEventListener('pageshow', function () { if (dark) { var d = dark; dark = null; d.remove(); document.documentElement.classList.remove('lights-out'); } document.querySelectorAll('.bo-key').forEach(function (k) { k.remove(); }); });
   window.addEventListener('pagehide', function () { if (dark) { var d = dark; dark = null; d.remove(); document.documentElement.classList.remove('lights-out'); } });
 
   var typed = '';

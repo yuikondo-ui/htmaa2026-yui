@@ -25,7 +25,7 @@
   h1 { opacity:0; transform:translateY(10px); transition:opacity .7s .1s, transform .7s .1s; }
   body.in h1 { opacity:1; transform:translateY(0); }
   body.in input { opacity:0; transition:opacity .3s; }
-  .keyhole { width:22px; height:31px; fill:var(--green); margin-bottom:6px; }
+  .keyhole { width:22px; height:34px; fill:var(--green); color:var(--green); margin-bottom:6px; }
   h1 {
     font-family:"Gridular","ABC Diatype Variable","Geist",sans-serif; font-weight:400;
     font-size:clamp(26px, 4.6vw, 64px); line-height:1.1; text-align:center;
@@ -43,7 +43,7 @@
 </head>
 <body>
   <form id="form" autocomplete="off">
-    <svg class="keyhole" viewBox="0 0 24 34" aria-hidden="true"><circle cx="12" cy="11" r="8"/><path d="M8 17 L4 32 L20 32 L16 17 Z"/></svg>
+    <svg class="keyhole" viewBox="0 0 28 44" aria-hidden="true"><rect x="4" y="2" width="20" height="40" rx="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="14" cy="17" r="4.5"/><path d="M11.8 20 L10 30 H18 L16.2 20 Z"/><circle cx="14" cy="6" r="1.1"/><circle cx="14" cy="38" r="1.1"/></svg>
     <h1>how to break into (almost) anywhere</h1>
     <input id="pw" type="password" placeholder="·······" autocapitalize="off" spellcheck="false" autofocus>
   </form>
