@@ -117,19 +117,20 @@ def blocks(body):
         yt = re.search(r"(?:youtu\.be/|youtube\.com/(?:watch\?v=|embed/|shorts/))([\w-]{11})", url)
         bar = (f'<div class="embed-bar"><span class="embed-title">{esc(title)}</span>'
                f'<a class="embed-open" href="{esc(url)}" target="_blank" rel="noopener">Open in new tab ↗</a></div>')
+        vert = " vertical" if re.search(r"youtube\.com/shorts/", url) else ""   # Shorts are 9:16
         if yt:
             vid = yt.group(1)
             player = (f'<iframe src="https://www.youtube.com/embed/{vid}?autoplay=1&rel=0" title="{esc(title)}" '
                       f'allowfullscreen referrerpolicy="strict-origin-when-cross-origin" '
                       f'allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>')
             # poster + play button; the player is created on click (faster, and no error box while offline)
-            return (f'<div class="embed video">{bar}'
+            return (f'<div class="embed video{vert}">{bar}'
                     f'<button class="yt" type="button" aria-label="Play {esc(title)}" '
                     f'onclick="this.outerHTML=this.dataset.player" data-player="{esc(player)}">'
                     f'<img src="https://i.ytimg.com/vi/{vid}/maxresdefault.jpg" alt="" loading="lazy" '
                     f'onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/{vid}/hqdefault.jpg\'">'
                     f'<span class="yt-play"></span></button></div>\n')
-        return (f'<div class="embed video">{bar}<iframe src="{esc(url)}" loading="lazy" title="{esc(title)}" allowfullscreen></iframe></div>\n')
+        return (f'<div class="embed video{vert}">{bar}<iframe src="{esc(url)}" loading="lazy" title="{esc(title)}" allowfullscreen></iframe></div>\n')
     body = re.sub(r"^:::video\s+(\S+)(?:\s*\|\s*(.+))?\s*$", video, body, flags=re.M)
     return body
 
