@@ -31,7 +31,7 @@ Following the curriculum, I drew the diagrams myself, and the vocabulary finally
 
 ### Soldering the QPad
 
-First, to learn basic soldering and embedded programming, we used the QPad, a teaching board that our TA Quentin designed. In the training he showed us how to assemble it: a microcontroller (the Seeed XIAO RP2040 module), an OLED display and six capacitive touch pads.
+To learn soldering, we used the QPad, a teaching board that our TA Quentin designed. In the training he showed us how to assemble it: a microcontroller (the Seeed XIAO RP2040 module), an OLED display and six capacitive touch pads.
 
 :::cols
 ![Quentin explaining the QPad to a group of students in the lab](img/week02/IMG_7316.jpg)
