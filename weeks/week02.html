@@ -33,7 +33,7 @@
   <div class="project-body">
     <aside class="toc">
   <div class="toc-inner">
-    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#learning-electronics-basics">Learning electronics basics</a></li><li class="lvl2"><a href="#soldering-the-qpad">Soldering the QPad</a></li><li class="lvl2"><a href="#reading-the-datasheet">Reading the datasheet</a></li><li class="lvl2"><a href="#programming-in-the-arduino-ide">Programming in the Arduino IDE</a></li><li class="lvl2"><a href="#writing-and-testing-the-kigo-pad">Writing and Testing the &quot;Kigo Pad&quot;</a></li><li class="lvl3"><a href="#concept-a-spatial-understanding-of-words">Concept: a spatial understanding of words</a></li><li class="lvl3"><a href="#web-prototype">Web prototype</a></li><li class="lvl3"><a href="#rendering-japanese-on-the-oled">Rendering Japanese on the OLED</a></li><li class="lvl3"><a href="#touch-pad-scripts">Touch Pad Scripts</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li></ul>
+    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#learning-electronics-basics">Learning electronics basics</a></li><li class="lvl3"><a href="#soldering-the-qpad">Soldering the QPad</a></li><li class="lvl3"><a href="#reading-the-datasheet">Reading the datasheet</a></li><li class="lvl3"><a href="#programming-in-the-arduino-ide">Programming in the Arduino IDE</a></li><li class="lvl2"><a href="#writing-and-testing-the-kigo-pad">Writing and Testing the &quot;Kigo Pad&quot;</a></li><li class="lvl3"><a href="#concept-a-spatial-understanding-of-words">Concept: a spatial understanding of words</a></li><li class="lvl3"><a href="#web-prototype">Web prototype</a></li><li class="lvl3"><a href="#rendering-japanese-on-the-oled">Rendering Japanese on the OLED</a></li><li class="lvl3"><a href="#touch-pad-scripts">Touch Pad Scripts</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li></ul>
   </div>
 </aside>
     <article class="content">
@@ -52,7 +52,7 @@
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Notebook sketch of the QPad power and I2C connections, with notes on M, J and R" src="../img/week02/IMG_7410.jpg" /><figcaption>My own drawing of how power and the SDA and SCL lines reach the OLED, with a note that M is a module, J a jack and R a resistor.</figcaption></figure>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Whiteboard with a hand-drawn QPad diagram and notes on pull-up resistors" src="../img/week02/IMG_7411.jpg" /><figcaption>Testing myself on the whiteboard during a dinner break.</figcaption></figure>
 </div>
-<h2 id="soldering-the-qpad">Soldering the QPad</h2>
+<h3 id="soldering-the-qpad">Soldering the QPad</h3>
 <p>First, to learn basic soldering and embedded programming, we used the QPad, a teaching board that our TA Quentin designed. In the training he showed us how to assemble it: a microcontroller (the Seeed XIAO RP2040 module), an OLED display and six capacitive touch pads.</p>
 <div class="cols">
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Quentin explaining the QPad to a group of students in the lab" src="../img/week02/IMG_7316.jpg" /><figcaption>Quentin walking us through the board before we started soldering.</figcaption></figure>
@@ -81,7 +81,7 @@
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The finished QPad held in my hand, with the XIAO and the OLED soldered on" src="../img/week02/IMG_7334.jpg" /><figcaption>The finished QPad.</figcaption></figure>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Selfie with classmates at the soldering bench" src="../img/week02/IMG_2832.jpg" /><figcaption>Soldering bench.</figcaption></figure>
 </div>
-<h2 id="reading-the-datasheet">Reading the datasheet</h2>
+<h3 id="reading-the-datasheet">Reading the datasheet</h3>
 <p>I read the <a href="https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf">RP2040 datasheet</a> to understand which GPIO pins can be I2C SDA and SCL, what voltage counts as HIGH, the value of the internal pull-up used by the touch pads, the bits and pins of the ADC, and how much current one pin can supply. It's over 600 pages so I only read the relevant parts. </p>
 <p>The pin locations (section 1.4.1) show the 56 legs of the chip. </p>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="RP2040 pinout for the QFN-56 package" src="../img/week02/pin_location.png" /><figcaption>RP2040 pin locations, datasheet section 1.4.1. Only GPIO26 to GPIO29 can also be ADC inputs.</figcaption></figure>
@@ -89,7 +89,7 @@
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="RP2040 GPIO function select table" src="../img/week02/gpio_functions.png" /><figcaption>The GPIO function table, datasheet section 1.4.3.</figcaption></figure>
 <p>According to the IO electrical characteristics (section 5.5.3.4), any input above 2V is read as HIGH and anything below 0.8V as LOW. The input leakage current is at most 1 µA, which is why an input pin barely draws current and a pull-up resistor holds it at 3.3V.</p>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="RP2040 digital IO characteristics table" src="../img/week02/io_electrical_characteristics.png" /><figcaption>Digital IO characteristics, datasheet section 5.5.3.4.</figcaption></figure>
-<h2 id="programming-in-the-arduino-ide">Programming in the Arduino IDE</h2>
+<h3 id="programming-in-the-arduino-ide">Programming in the Arduino IDE</h3>
 <p>Next I tested Quentin's <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino">example code</a>. Following the Boards Manager instructions, I added the package URL in the IDE settings and installed the Arduino-Pico core, then selected Seeed XIAO RP2040 as the board. Getting my laptop to see the board took a few steps. I held the BOOT button while plugging it in, the red and blue lights came on, the IDE showed an unknown UF2 board, and after pressing the R (reset) button the correct port appeared.</p>
 <p>I went through Quentin's four sketches one by one: <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino/blink_RP2040">blink_RP2040</a>, <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino/test_display_RP2040">test_display_RP2040</a>, <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino/test_serial_RP2040">test_serial_RP2040</a> and <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino/test_touch_RP2040">test_touch_RP2040</a>.</p>
 <div class="cols">
