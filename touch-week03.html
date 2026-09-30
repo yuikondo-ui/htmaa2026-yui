@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Touch Lab — Capacitive touch on the QPad in Arduino IDE (HTMAA Wk 3)</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+:root{
+  --fg:#000; --bg:#fff; --red:#ff0000; --muted:#777;
+  --rule:1px solid var(--fg);
+  --body:"ABC Diatype Variable","Geist","Inter Tight",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --wash:#f4f4f4; --ok:#0a7d28;
+}
+html,body{background:var(--bg);color:var(--fg);}
+body{font-family:var(--body);line-height:1.45;margin:0;font-size:17px;}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px 120px;}
+.top{border-bottom:var(--rule);padding:14px 20px;position:sticky;top:0;background:var(--bg);z-index:20;
+     display:flex;justify-content:space-between;align-items:baseline;gap:12px;}
+.top .home{font-weight:700;color:var(--fg);text-decoration:none;}
+.top .prog{font-family:var(--mono);font-size:13px;color:var(--muted);white-space:nowrap;}
+.hero{padding:48px 0 24px;border-bottom:var(--rule);}
+.kicker{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--red);margin-bottom:12px;}
+.hero h1{font-size:clamp(30px,5vw,46px);line-height:1.05;margin:0 0 14px;font-weight:800;}
+.hero p{font-size:19px;color:#333;margin:0 0 8px;max-width:66ch;}
+.toc{border:var(--rule);padding:16px 18px;margin:26px 0;border-radius:8px;}
+.toc h2{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 10px;}
+.toc ol{margin:0;padding-left:1.3em;}
+.toc a{text-decoration:none;color:var(--fg);border-bottom:1px solid #ddd;}
+.toc li{margin:3px 0;}
+.mod{border-top:var(--rule);padding-top:34px;margin-top:46px;scroll-margin-top:70px;}
+.mod-num{font-family:var(--mono);font-size:13px;color:var(--red);letter-spacing:.05em;}
+.mod h2{font-size:clamp(22px,3.4vw,30px);line-height:1.1;margin:6px 0 16px;font-weight:800;}
+.mod h3{font-size:19px;margin:28px 0 8px;font-weight:700;}
+.mod p{margin:0 0 14px;}
+.mod ul,.mod ol{margin:0 0 14px;padding-left:1.4em;}
+.mod li{margin:5px 0;}
+code{font-family:var(--mono);font-size:.86em;background:var(--wash);padding:1px 5px;border-radius:4px;}
+kbd{font-family:var(--mono);font-size:.8em;border:1px solid #bbb;border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:#fafafa;}
+pre{background:#0e0e0e;color:#eaeaea;border-radius:8px;padding:16px 18px;overflow:auto;font-family:var(--mono);
+    font-size:13.5px;line-height:1.55;margin:0 0 8px;}
+pre code{background:none;padding:0;color:inherit;font-size:inherit;}
+.cap{font-size:14px;color:var(--muted);margin:4px 0 18px;}
+.goal,.predict,.see,.try,.gotcha,.note{border-left:4px solid var(--fg);padding:12px 16px;margin:16px 0;background:var(--wash);border-radius:0 6px 6px 0;font-size:15.5px;}
+.goal b,.predict b,.see b,.try b,.gotcha b,.note b{display:block;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.goal{border-color:var(--red);}
+.predict{border-color:#8a5cf6;}
+.see{border-color:var(--ok);}
+.try{border-color:#1f6feb;}
+.gotcha{border-color:#d97706;}
+details{border:1px solid #ccc;border-radius:8px;padding:10px 14px;margin:12px 0;}
+details summary{cursor:pointer;font-weight:700;}
+details[open] summary{margin-bottom:10px;}
+table{border-collapse:collapse;width:100%;margin:10px 0 18px;font-size:15px;}
+th,td{border:1px solid #ccc;padding:7px 9px;text-align:left;vertical-align:top;}
+th{background:var(--wash);font-family:var(--mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;}
+td input{width:100%;box-sizing:border-box;font-family:var(--mono);font-size:14px;border:1px solid #ddd;border-radius:4px;padding:4px 6px;}
+.done{display:flex;align-items:center;gap:10px;margin:22px 0 0;padding:12px 14px;border:1px dashed var(--fg);border-radius:8px;font-family:var(--mono);font-size:14px;cursor:pointer;}
+.done input{width:18px;height:18px;}
+.diagram{font-family:var(--mono);font-size:13px;background:#fff;border:1px solid #ccc;border-radius:8px;padding:14px;white-space:pre;overflow:auto;line-height:1.35;}
+.footer{border-top:var(--rule);margin-top:60px;padding-top:20px;font-size:14px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="home" href="index.html">← HTMAA 2026</a>
+  <span class="prog" id="topprog">0 / 8 lessons done</span>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Week 3 · Embedded Programming · Touch Lab</div>
+    <h1>Make the QPad feel your finger</h1>
+    <p>A hands-on course on capacitive touch in the Arduino IDE. You build it up yourself, one small sketch at a time. By the end you will have written your own version of Quentin's <code>test_touch</code> from scratch, then made it more reliable.</p>
+    <p style="font-size:16px;color:var(--muted)">For each lesson: <b>type</b> the code yourself (don't paste it), <b>predict</b> what will happen, <b>upload</b>, <b>compare</b> with your prediction, then do the <b>challenge</b>. Solutions are hidden until you open them. Tick the box at the end of a lesson when you're done; it's saved in this browser.</p>
+    <p style="font-size:16px;color:var(--muted)">Companion to <a href="arduino-week03.html">Learn the Arduino Language</a>. If a word like <code>for</code> or <code>array</code> is new to you, look it up there.</p>
+  </header>
+
+  <nav class="toc">
+    <h2>Lessons</h2>
+    <ol start="0">
+      <li><a href="#l0">Ready check: upload anything</a></li>
+      <li><a href="#l1">The idea: a pad is a tiny bucket</a></li>
+      <li><a href="#l2">Read one pad and print a number</a></li>
+      <li><a href="#l3">Threshold: light the LED while touching</a></li>
+      <li><a href="#l4">Press vs. hold: count taps</a></li>
+      <li><a href="#l5">All six pads + map your board</a></li>
+      <li><a href="#l6">Make it reliable: calibrate + hysteresis</a></li>
+      <li><a href="#l7">Mini project: a direction pad</a></li>
+    </ol>
+    <p style="margin:10px 0 0;font-size:14px"><a href="#trouble">Troubleshooting table</a> · <a href="#doc">What to document for Week 3</a></p>
+  </nav>
+
+  <!-- ============================= LESSON 0 ============================= -->
+  <section class="mod" id="l0">
+    <div class="mod-num">Lesson 0 · 10 min</div>
+    <h2>Ready check: upload anything</h2>
+    <div class="goal"><b>Goal</b>Show that the chain laptop → IDE → USB → board works before you touch any touch code.</div>
+
+    <p>You did this in Week 2, so this is a quick check. In the Arduino IDE:</p>
+    <ol>
+      <li><b>Tools → Board →</b> Raspberry Pi Pico/RP2040 → <b>Seeed XIAO RP2040</b>.</li>
+      <li><b>Tools → Port →</b> the XIAO's port. If you don't see one: hold <kbd>B</kbd> (BOOT), plug in, release. It shows up as a UF2 drive. Upload once, and the real port appears after that.</li>
+      <li>Open a new sketch (<b>File → New</b>), type this, press <b>Upload</b> (→ arrow).</li>
+    </ol>
+
+<pre><code>// Lesson 0 — green heartbeat
+#define PIN_GREEN 16   // XIAO RP2040 RGB LED, green channel
+
+void setup() {
+  pinMode(PIN_GREEN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(PIN_GREEN, LOW);   // LOW = ON (active-low LED!)
+  delay(200);
+  digitalWrite(PIN_GREEN, HIGH);  // HIGH = OFF
+  delay(800);
+}</code></pre>
+    <p class="cap">The XIAO's LED legs are connected to 3.3 V, not ground, so <code>LOW</code> turns it on. Red = 17, green = 16, blue = 25.</p>
+
+    <div class="see"><b>You should see</b>A short green blink once per second.</div>
+    <div class="try"><b>Challenge</b>Make it blink blue instead, twice as fast.</div>
+    <details><summary>Solution</summary>
+<pre><code>#define PIN_BLUE 25
+// in setup():  pinMode(PIN_BLUE, OUTPUT);
+// in loop():   use PIN_BLUE, and halve both delays → 100 / 400</code></pre>
+    </details>
+
+    <label class="done"><input type="checkbox" data-lesson="l0"> I uploaded a sketch and saw the LED change</label>
+  </section>
+
+  <!-- ============================= LESSON 1 ============================= -->
+  <section class="mod" id="l1">
+    <div class="mod-num">Lesson 1 · 10 min · no code</div>
+    <h2>The idea: a pad is a tiny bucket</h2>
+    <div class="goal"><b>Goal</b>Understand what the code will measure, so the numbers make sense when you see them.</div>
+
+    <p>The RP2040 has no "touch" hardware, and there is no <code>touchRead()</code> function for it. The copper pad is just a piece of metal connected to a GPIO pin. The trick is to <b>measure time</b>:</p>
+
+    <div class="diagram">  3.3 V
+    │
+   [ ]  internal pull-up resistor (~50–80 kΩ, inside the chip)
+    │
+    ├──────── GPIO pin ───────── copper pad  ▢   ← your finger adds
+    │                                               "bucket size"
+   ═╧═  the pad's own tiny capacitance (a small bucket)
+  </div>
+
+    <ol>
+      <li><b>Empty the bucket:</b> set the pin to <code>OUTPUT</code> + <code>LOW</code>. The pad goes to 0 V.</li>
+      <li><b>Open the tap:</b> switch the pin to <code>INPUT_PULLUP</code>. Current trickles in through the internal resistor and the voltage on the pad rises.</li>
+      <li><b>Count until full:</b> loop <code>while</code> the pin still reads <code>LOW</code>, adding 1 each pass. When the voltage passes ~2 V (the HIGH level you found in the datasheet), the pin reads <code>HIGH</code> and you stop.</li>
+    </ol>
+
+    <p>With no finger, the bucket is tiny and fills almost instantly (count ≈ 0–2). With a finger, your body adds capacitance: the bucket is bigger, fills slower, and the count goes up (you saw ~70 in Week 2).</p>
+
+    <div class="predict"><b>Think first</b>
+      1. Would a <b>bigger</b> pull-up resistor (smaller tap) make the counts bigger or smaller?<br>
+      2. You touched the pad through a water bottle in Week 2 and it still worked. Why?
+    </div>
+    <details><summary>Answers</summary>
+      <p>1. <b>Bigger.</b> A smaller tap fills the same bucket more slowly, so there are more loop passes.<br>
+      2. The electric field goes through thin plastic. Your finger and the pad still form a capacitor, just a weaker one, so the count rises less. This is how touch buttons work under glass.</p>
+    </details>
+
+    <label class="done"><input type="checkbox" data-lesson="l1"> I can explain "empty → open tap → count" in my own words</label>
+  </section>
+
+  <!-- ============================= LESSON 2 ============================= -->
+  <section class="mod" id="l2">
+    <div class="mod-num">Lesson 2 · 20 min</div>
+    <h2>Read one pad and print a number</h2>
+    <div class="goal"><b>Goal</b>Turn Lesson 1 into code for a single pad and watch the number in the Serial Monitor.</div>
+
+    <p>We start with the pad on <b>GPIO 3</b> (the first pin in Quentin's list). Type this in a new sketch:</p>
+
+<pre><code>// Lesson 2 — read one touch pad
+#define PAD 3   // GPIO number of one QPad pad
+
+int readPad(int pin) {
+  pinMode(pin, OUTPUT);          // 1. empty the bucket
+  digitalWriteFast(pin, LOW);
+  delayMicroseconds(25);         //    give it time to fully drain
+
+  pinMode(pin, INPUT_PULLUP);    // 2. open the tap
+
+  int count = 0;                 // 3. count until full
+  while (!digitalReadFast(pin) &amp;&amp; count &lt; 200) {
+    count++;
+  }
+  return count;
+}
+
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  int value = readPad(PAD);
+  Serial.println(value);
+  delay(50);                     // ~20 readings per second
+}</code></pre>
+    <p class="cap"><code>digitalWriteFast</code> / <code>digitalReadFast</code> are faster versions from the RP2040 (arduino-pico) core. A faster loop means finer counts. <code>!</code> means "not", so <code>!digitalReadFast(pin)</code> means "the pin is still LOW". <code>count &lt; 200</code> is a safety limit so the loop can never run forever.</p>
+
+    <p>Upload, then open <b>Tools → Serial Monitor</b>. Over USB the baud rate setting doesn't matter on the RP2040.</p>
+
+    <div class="predict"><b>Predict before you touch</b>Write down what number you expect with no finger, and with a finger pressed firmly.</div>
+    <div class="see"><b>You should see</b>A column of small numbers (0–2) that jumps to tens when you touch <em>one</em> of the six pads. That's GPIO 3. You don't know which pad it is yet, so find it.</div>
+
+    <h3>Record your numbers</h3>
+    <p>This table is your first piece of data for the documentation. Type into it here (it's saved in this browser), and put a screenshot on your week page.</p>
+    <table>
+      <tr><th>Condition</th><th>Typical value</th></tr>
+      <tr><td>No touch</td><td><input data-rec="none"></td></tr>
+      <tr><td>Light fingertip</td><td><input data-rec="light"></td></tr>
+      <tr><td>Firm press, whole finger</td><td><input data-rec="firm"></td></tr>
+      <tr><td>Through a plastic bottle / paper</td><td><input data-rec="through"></td></tr>
+      <tr><td>Finger hovering ~5 mm above</td><td><input data-rec="hover"></td></tr>
+    </table>
+
+    <div class="try"><b>Challenge A</b>Open <b>Tools → Serial Plotter</b> instead of the Monitor. Touch and release a few times. What shape do you see?</div>
+    <div class="try"><b>Challenge B</b>Remove <code>delayMicroseconds(25)</code>. Do the numbers change? Put it back, then try <code>count &lt; 20</code>. What happens when you press hard?</div>
+    <details><summary>What's going on</summary>
+      <p>A: A flat line with square "steps" up while you touch. That's your signal.<br>
+      B: Without the settle time the pad may not fully drain, so readings get smaller and noisier. With a limit of 20 the count <b>saturates</b>: it sticks at 20 no matter how hard you press. The limit has to be above your largest real reading.</p>
+    </details>
+
+    <label class="done"><input type="checkbox" data-lesson="l2"> I saw my own number rise, and filled in the table</label>
+  </section>
+
+  <!-- ============================= LESSON 3 ============================= -->
+  <section class="mod" id="l3">
+    <div class="mod-num">Lesson 3 · 15 min</div>
+    <h2>Threshold: light the LED while touching</h2>
+    <div class="goal"><b>Goal</b>Turn a number into a yes/no decision: <em>is the pad touched?</em></div>
+
+    <p>Pick a <b>threshold</b> between your "no touch" and "light fingertip" values from the table. Quentin uses 6. Keep <code>readPad()</code> from Lesson 2 and change the rest:</p>
+
+<pre><code>// Lesson 3 — touch = green LED on
+#define PAD 3
+#define PIN_GREEN 16
+#define THRESHOLD 6        // ← your choice, from your table
+
+// ... readPad() exactly as in Lesson 2 ...
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(PIN_GREEN, OUTPUT);
+  digitalWrite(PIN_GREEN, HIGH);   // start OFF
+}
+
+void loop() {
+  int value = readPad(PAD);
+  bool touched = value &gt; THRESHOLD;
+
+  if (touched) {
+    digitalWrite(PIN_GREEN, LOW);  // ON
+  } else {
+    digitalWrite(PIN_GREEN, HIGH); // OFF
+  }
+
+  Serial.print(value);
+  Serial.print("  touched=");
+  Serial.println(touched);
+  delay(20);
+}</code></pre>
+    <p class="cap"><code>bool</code> holds only <code>true</code>/<code>false</code>. It prints as 1/0.</p>
+
+    <div class="predict"><b>Predict</b>What happens if THRESHOLD is <b>0</b>? What if it is <b>150</b>?</div>
+    <div class="see"><b>You should see</b>The LED follows your finger exactly: on while touching, off when you let go.</div>
+
+    <div class="try"><b>Challenge</b>Try both extreme thresholds from your prediction. Then find the <b>smallest</b> threshold that never flickers on by itself, and the <b>largest</b> one that still works with a light fingertip. Any value between them works. Write them down; you'll need this idea in Lesson 6.</div>
+    <details><summary>What's going on</summary>
+      <p>0: any noise reading of 1 counts as "touched", so the LED flickers or stays on. 150: only a huge press (or never) crosses it, so the LED rarely comes on. A good threshold sits in the gap between the noise and the touch values, which is why you measured them first.</p>
+    </details>
+
+    <label class="done"><input type="checkbox" data-lesson="l3"> The LED follows my finger, and I chose my own threshold</label>
+  </section>
+
+  <!-- ============================= LESSON 4 ============================= -->
+  <section class="mod" id="l4">
+    <div class="mod-num">Lesson 4 · 20 min</div>
+    <h2>Press vs. hold: count taps</h2>
+    <div class="goal"><b>Goal</b>Detect the <em>moment</em> a finger lands. A button that repeats 50× per second while held is useless for a menu.</div>
+
+    <p>"Touched" is a <b>state</b> (true for as long as you hold). A "press" is an <b>event</b>: the one loop where the state changes from false to true. To catch it, remember last loop's state:</p>
+
+    <table>
+      <tr><th>was</th><th>now</th><th>meaning</th></tr>
+      <tr><td>false</td><td>true</td><td><b>just pressed</b> (event)</td></tr>
+      <tr><td>true</td><td>true</td><td>holding</td></tr>
+      <tr><td>true</td><td>false</td><td><b>just released</b> (event)</td></tr>
+      <tr><td>false</td><td>false</td><td>idle</td></tr>
+    </table>
+
+<pre><code>// Lesson 4 — count taps, toggle LED on each tap
+#define PAD 3
+#define PIN_GREEN 16
+#define THRESHOLD 6
+
+bool wasTouched = false;   // lives OUTSIDE loop(), so it survives between loops
+int taps = 0;
+bool ledOn = false;
+
+// ... readPad() as before ...
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(PIN_GREEN, OUTPUT);
+  digitalWrite(PIN_GREEN, HIGH);
+}
+
+void loop() {
+  bool touched = readPad(PAD) &gt; THRESHOLD;
+
+  if (touched &amp;&amp; !wasTouched) {      // just pressed
+    taps++;
+    ledOn = !ledOn;                    // flip
+    digitalWrite(PIN_GREEN, ledOn ? LOW : HIGH);
+    Serial.print("tap #");
+    Serial.println(taps);
+  }
+
+  wasTouched = touched;                // remember for next loop
+  delay(20);
+}</code></pre>
+    <p class="cap"><code>ledOn ? LOW : HIGH</code> is a short if/else: "if <code>ledOn</code> then <code>LOW</code>, otherwise <code>HIGH</code>". Serial now prints only when something happens, not every loop.</p>
+
+    <div class="predict"><b>Predict</b>If you move <code>bool wasTouched = false;</code> <em>inside</em> <code>loop()</code>, what happens?</div>
+    <div class="see"><b>You should see</b>One "tap #n" per tap, however long you hold. The LED toggles like a light switch.</div>
+
+    <div class="try"><b>Challenge A</b>Also print <code>"released after X ms"</code> when you let go. Hint: save <code>millis()</code> on press, and subtract on release.</div>
+    <div class="try"><b>Challenge B</b>Sometimes a single tap counts as 2 (a "bounce" near the threshold). Can you make it happen? Keep this in mind for Lesson 6.</div>
+    <details><summary>Solution A + answer to the prediction</summary>
+<pre><code>unsigned long pressedAt = 0;   // global
+
+// inside loop(), next to the "just pressed" block:
+if (touched &amp;&amp; !wasTouched) {
+  pressedAt = millis();
+  // ...
+}
+if (!touched &amp;&amp; wasTouched) {          // just released
+  Serial.print("released after ");
+  Serial.print(millis() - pressedAt);
+  Serial.println(" ms");
+}</code></pre>
+      <p>Prediction: a variable declared inside <code>loop()</code> is created fresh every pass, so it is always <code>false</code>. Every loop while you hold then looks like a new press, and the tap counter races up.</p>
+    </details>
+
+    <label class="done"><input type="checkbox" data-lesson="l4"> One tap = one count, and I measured how long I held it</label>
+  </section>
+
+  <!-- ============================= LESSON 5 ============================= -->
+  <section class="mod" id="l5">
+    <div class="mod-num">Lesson 5 · 25 min</div>
+    <h2>All six pads + map your board</h2>
+    <div class="goal"><b>Goal</b>Read all six pads with one loop, and find out which pin is which physical pad.</div>
+
+    <p>The QPad pads are on GPIO <b>3, 4, 2, 27, 1, 26</b> (from Quentin's sketch). Instead of six copies of the code, put the pins in an <b>array</b> and loop over it:</p>
+
+<pre><code>// Lesson 5 — all six pads, Serial Plotter friendly
+#define N_PADS 6
+int padPins[N_PADS] = {3, 4, 2, 27, 1, 26};
+
+// ... readPad() as before ...
+
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  for (int i = 0; i &lt; N_PADS; i++) {
+    Serial.print("p");
+    Serial.print(i);
+    Serial.print(":");
+    Serial.print(readPad(padPins[i]));
+    Serial.print(" ");
+  }
+  Serial.println();
+  delay(30);
+}</code></pre>
+    <p class="cap">The <code>p0:12 p1:0 …</code> format gives each line a name in the <b>Serial Plotter</b>, so you get six labelled coloured lines.</p>
+
+    <div class="see"><b>You should see</b>Six lines in the Plotter. Touch one pad at a time, and exactly one line should rise.</div>
+
+    <h3>Map your board</h3>
+    <p>Touch each pad and note which <code>p</code>-number rises. Draw it as your board looks when you hold it with the OLED at the top. This map is what you'll use in Lesson 7.</p>
+    <table>
+      <tr><th>index</th><th>GPIO</th><th>where on the board (e.g. "top-left")</th></tr>
+      <tr><td>p0</td><td>3</td><td><input data-rec="map0"></td></tr>
+      <tr><td>p1</td><td>4</td><td><input data-rec="map1"></td></tr>
+      <tr><td>p2</td><td>2</td><td><input data-rec="map2"></td></tr>
+      <tr><td>p3</td><td>27</td><td><input data-rec="map3"></td></tr>
+      <tr><td>p4</td><td>1</td><td><input data-rec="map4"></td></tr>
+      <tr><td>p5</td><td>26</td><td><input data-rec="map5"></td></tr>
+    </table>
+
+    <div class="try"><b>Challenge A</b>Touch two pads at once. Do both lines rise? Does touching one pad also nudge its neighbour? (That's called <b>crosstalk</b>.)</div>
+    <div class="try"><b>Challenge B</b>Make an array <code>bool wasTouched[N_PADS]</code> and combine it with Lesson 4, so each pad prints <code>"pad 2 pressed"</code> once per tap.</div>
+    <details><summary>Solution B</summary>
+<pre><code>#define THRESHOLD 6
+bool wasTouched[N_PADS] = {false, false, false, false, false, false};
+
+void loop() {
+  for (int i = 0; i &lt; N_PADS; i++) {
+    bool touched = readPad(padPins[i]) &gt; THRESHOLD;
+    if (touched &amp;&amp; !wasTouched[i]) {
+      Serial.print("pad ");
+      Serial.print(i);
+      Serial.println(" pressed");
+    }
+    wasTouched[i] = touched;
+  }
+  delay(20);
+}</code></pre>
+      <p>Now compare with Quentin's <code>test_touch_RP2040</code>. His <code>pin_touched_now[]</code> / <code>pin_touched_past[]</code> are exactly your <code>touched</code> / <code>wasTouched[]</code>. You've rebuilt it yourself.</p>
+    </details>
+
+    <label class="done"><input type="checkbox" data-lesson="l5"> I read all six pads and filled in my board map</label>
+  </section>
+
+  <!-- ============================= LESSON 6 ============================= -->
+  <section class="mod" id="l6">
+    <div class="mod-num">Lesson 6 · 30 min</div>
+    <h2>Make it reliable: calibrate + hysteresis</h2>
+    <div class="goal"><b>Goal</b>Fix the two real-world problems: every pad (and every day) has a different baseline, and readings near the threshold flicker.</div>
+
+    <h3>Problem 1: one fixed number doesn't fit every pad</h3>
+    <p>Look at your Plotter: the untouched values aren't all identical, and they change if you plug into a different laptop or hold the USB cable. <b>Calibration</b> means that at startup, while nobody touches the board, you measure each pad's resting value (its <b>baseline</b>) and detect touches <em>relative</em> to it.</p>
+
+    <h3>Problem 2: flicker at the edge</h3>
+    <p>If the reading hovers around 6, it goes 5, 7, 6, 7, 5… and you get several "presses" from one touch (Lesson 4, Challenge B). <b>Hysteresis</b> uses two thresholds: a high one to <em>start</em> a touch and a lower one to <em>end</em> it. In the gap between them nothing changes, just like a thermostat.</p>
+
+    <div class="diagram">count
+  │           ___________
+ON├─ ─ ─ ─ ─ /─ ─ ─ ─ ─ ─\─ ─ ─ ─   rise above ON  → touched = true
+  │         /             \
+OFF├ ─ ─ ─ ─/─ ─ ─ ─ ─ ─ ─ ─\─ ─ ─   fall below OFF → touched = false
+  │________/               \______   (in between: keep whatever it was)
+  └──────────────────────────────── time</div>
+
+<pre><code>// Lesson 6 — calibrated + hysteresis, six pads
+#define N_PADS 6
+#define PIN_GREEN 16
+int padPins[N_PADS] = {3, 4, 2, 27, 1, 26};
+
+#define ON_MARGIN  8   // must rise this far above baseline to START a touch
+#define OFF_MARGIN 3   // must fall below baseline + this to END it
+
+int  baseline[N_PADS];
+bool touched[N_PADS];
+
+// ... readPad() as before ...
+
+void calibrate() {
+  for (int i = 0; i &lt; N_PADS; i++) {
+    long sum = 0;
+    for (int k = 0; k &lt; 32; k++) {   // average 32 readings
+      sum += readPad(padPins[i]);
+      delay(2);
+    }
+    baseline[i] = sum / 32;
+    touched[i] = false;
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(PIN_GREEN, OUTPUT);
+  digitalWrite(PIN_GREEN, LOW);      // green = "calibrating, hands off!"
+  delay(500);
+  calibrate();
+  digitalWrite(PIN_GREEN, HIGH);
+}
+
+void loop() {
+  for (int i = 0; i &lt; N_PADS; i++) {
+    int v = readPad(padPins[i]) - baseline[i];   // relative to rest
+
+    if (!touched[i] &amp;&amp; v &gt; ON_MARGIN) {
+      touched[i] = true;
+      Serial.print("pad "); Serial.print(i); Serial.println(" DOWN");
+    } else if (touched[i] &amp;&amp; v &lt; OFF_MARGIN) {
+      touched[i] = false;
+      Serial.print("pad "); Serial.print(i); Serial.println(" up");
+    }
+  }
+  delay(10);
+}</code></pre>
+    <p class="cap">Keep your hands off while the green LED is on at startup. If you touch during calibration, that pad's baseline will be too high. Press the <kbd>R</kbd> (reset) button to recalibrate.</p>
+
+    <div class="predict"><b>Predict</b>What goes wrong if you hold a pad while the board starts up?</div>
+    <div class="see"><b>You should see</b>Exactly one <code>DOWN</code> and one <code>up</code> per touch, even with slow, light, wobbly touches.</div>
+
+    <div class="try"><b>Challenge A</b>Test it: hold a finger on pad 0 and press reset. What happens to pad 0 afterwards? Explain it using the word "baseline".</div>
+    <div class="try"><b>Challenge B (stretch)</b>Baselines drift slowly (temperature, humidity). While a pad is <em>not</em> touched, let its baseline follow the reading a little each loop: <code>baseline[i] += (raw - baseline[i]) / 16;</code>. Why must you only do this while it's untouched?</div>
+    <details><summary>Answers</summary>
+      <p>A: The baseline is recorded with your finger on the pad, so it's high. Once you let go, the reading is <em>below</em> the baseline (negative), and a normal touch only brings it back up to about "zero", which never passes <code>ON_MARGIN</code>. The pad seems dead until you reset again.<br>
+      B: If it tracked during a touch, a long press would slowly become the new "rest", and the pad would release on its own. This is the "baseline tracking while not touched" note in your kigo-pad README. You've now built Step 2 of that plan.</p>
+    </details>
+
+    <label class="done"><input type="checkbox" data-lesson="l6"> Touches are clean (one DOWN, one up), and I understand why</label>
+  </section>
+
+  <!-- ============================= LESSON 7 ============================= -->
+  <section class="mod" id="l7">
+    <div class="mod-num">Lesson 7 · 30–60 min · on your own</div>
+    <h2>Mini project: a direction pad</h2>
+    <div class="goal"><b>Goal</b>Write a sketch mostly by yourself, using your board map from Lesson 5. This is the input layer for the kigo-pad.</div>
+
+    <p><b>Spec:</b></p>
+    <ul>
+      <li>Four pads act as <b>UP / DOWN / LEFT / RIGHT</b>, based on where they actually are on <em>your</em> board.</li>
+      <li>A fifth pad is <b>SELECT</b>, and the sixth is <b>MODE</b>.</li>
+      <li>Each tap prints its name once to Serial, e.g. <code>RIGHT</code>.</li>
+      <li>Keep a position <code>x</code> (0–71) and <code>y</code> (0–6), like the 72 kō × 7 categories grid. LEFT/RIGHT change <code>x</code>, UP/DOWN change <code>y</code>. Print <code>x,y</code> after each move.</li>
+      <li><code>x</code> wraps around (71 → 0), and <code>y</code> stops at its edges.</li>
+      <li>Holding SELECT for 0.4 s prints <code>COLLECTED x,y</code> once (a long press).</li>
+    </ul>
+
+    <p><b>Suggested steps</b> (test after each one; don't write it all at once):</p>
+    <ol>
+      <li>Start from your Lesson 6 sketch. Add <code>const int UP = …;</code> etc. using your map.</li>
+      <li>Replace the <code>DOWN</code> print with a <code>switch (i)</code> or an if-chain that prints the direction name.</li>
+      <li>Add <code>x</code>, <code>y</code> and the movement.</li>
+      <li>Add the wrap-around with <code>%</code>.</li>
+      <li>Add the long press using <code>millis()</code> (Lesson 4, Challenge A).</li>
+    </ol>
+
+    <details><summary>Hint: wrap-around without negative numbers</summary>
+<pre><code>x = (x + 1) % 72;        // RIGHT
+x = (x + 71) % 72;       // LEFT  (adding 71 is "−1" that never goes below 0)
+if (y &gt; 0) y--;          // UP, stops at the edge
+if (y &lt; 6) y++;          // DOWN</code></pre>
+    </details>
+    <details><summary>Hint: long press that fires only once</summary>
+<pre><code>unsigned long selectSince = 0;
+bool collected = false;
+
+// when SELECT goes DOWN:  selectSince = millis(); collected = false;
+// every loop, while touched[SELECT]:
+if (touched[SELECT] &amp;&amp; !collected &amp;&amp; millis() - selectSince &gt; 400) {
+  collected = true;
+  Serial.print("COLLECTED "); Serial.print(x); Serial.print(","); Serial.println(y);
+}</code></pre>
+    </details>
+
+    <div class="try"><b>Extra</b>Show <code>x,y</code> on the OLED instead of Serial (Module 12 of the language page), or light a different LED colour for each direction.</div>
+
+    <label class="done"><input type="checkbox" data-lesson="l7"> My pads move a cursor around a 72 × 7 grid</label>
+  </section>
+
+  <!-- ============================= TROUBLESHOOTING ============================= -->
+  <section class="mod" id="trouble">
+    <div class="mod-num">Reference</div>
+    <h2>Troubleshooting</h2>
+    <table>
+      <tr><th>Symptom</th><th>Likely cause → fix</th></tr>
+      <tr><td>No port in Tools → Port</td><td>Hold <kbd>B</kbd>, plug in, and upload to the UF2 drive once. Also try a different cable: some are charge-only.</td></tr>
+      <tr><td>Serial Monitor is empty</td><td>Wrong port selected, or the Monitor was opened before the upload finished. Close it and reopen it.</td></tr>
+      <tr><td><code>digitalWriteFast was not declared</code></td><td>Wrong board or core. Pick <b>Seeed XIAO RP2040</b> from the <b>Raspberry Pi Pico/RP2040</b> (Earle Philhower) core, not "Arduino Mbed".</td></tr>
+      <tr><td>A pad always reads 0</td><td>Wrong GPIO number, or a cold solder joint on that XIAO pin. Re-check the map and reflow the joint.</td></tr>
+      <tr><td>A pad always reads 200 (the limit)</td><td>The pin is shorted to GND (solder bridge), so it can never go HIGH. Look under the microscope.</td></tr>
+      <tr><td>LED does the opposite of what you expect</td><td>Active-low: <code>LOW</code> = on.</td></tr>
+      <tr><td>Values jump when you hold the USB cable</td><td>Normal: you're adding capacitance to ground. Calibrate (Lesson 6) and don't touch the cable while calibrating.</td></tr>
+      <tr><td>One tap counts twice</td><td>Noise near the threshold. Use hysteresis (Lesson 6).</td></tr>
+    </table>
+  </section>
+
+  <!-- ============================= DOCUMENT ============================= -->
+  <section class="mod" id="doc">
+    <div class="mod-num">Reference</div>
+    <h2>What to document for Week 3</h2>
+    <p>The assignment is to program your board to interact and communicate. Evidence you'll already have from this lab:</p>
+    <ul>
+      <li>Your <b>measurement table</b> (Lesson 2) and a <b>Serial Plotter screenshot</b> of a touch.</li>
+      <li>A short <b>video</b> of the LED following your finger (Lesson 3) or of the direction pad (Lesson 7).</li>
+      <li>Your <b>board map</b> (Lesson 5) as a photo with labels.</li>
+      <li>One paragraph on <b>why</b> the count rises (Lesson 1), and one on what went wrong before you added calibration and hysteresis (Lesson 6).</li>
+      <li>Your final <code>.ino</code> file linked from the page (e.g. <code>files/week03/</code>).</li>
+    </ul>
+  </section>
+
+  <div class="footer">Touch Lab · HTMAA 2026 · pin numbers from Quentin Bolsee's <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino/test_touch_RP2040">test_touch_RP2040</a>.</div>
+</div>
+
+<script>
+(function(){
+  var STORE = "touchlab-wk03";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORE)) || {}; } catch(e){}
+  function save(){ try { localStorage.setItem(STORE, JSON.stringify(saved)); } catch(e){} }
+
+  var boxes = document.querySelectorAll("input[data-lesson]");
+  function updateProg(){
+    var n = 0;
+    boxes.forEach(function(b){ if (b.checked) n++; });
+    document.getElementById("topprog").textContent = n + " / " + boxes.length + " lessons done";
+  }
+  boxes.forEach(function(b){
+    var k = "done_" + b.dataset.lesson;
+    b.checked = !!saved[k];
+    b.addEventListener("change", function(){ saved[k] = b.checked; save(); updateProg(); });
+  });
+
+  document.querySelectorAll("input[data-rec]").forEach(function(inp){
+    var k = "rec_" + inp.dataset.rec;
+    if (saved[k]) inp.value = saved[k];
+    inp.addEventListener("input", function(){ saved[k] = inp.value; save(); });
+  });
+
+  updateProg();
+})();
+</script>
+</body>
+</html>
