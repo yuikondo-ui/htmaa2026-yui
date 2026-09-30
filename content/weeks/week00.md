@@ -22,6 +22,8 @@ Children and adolescents rarely get to see their own inferred profile, let alone
 
 [Prototype v1 ↗](files/week00/data-barbie.html) (Sep 25 2026): a first version of the doll in the browser. Tap a facet to sew it into underwear, a shirt or a coat, then choose who is in the room. The doll speaks only from what is showing, and old inferences are drawn as old cloth.
 
+:::embed files/week00/data-barbie.html | Data Barbie, prototype v1
+
 ## Week 0: Concept making
 
 ### Concept

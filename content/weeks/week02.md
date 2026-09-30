@@ -4,13 +4,34 @@ date: 09/23
 topics: [embedded programming](http://academy.cba.mit.edu/classes/embedded_programming/index.html)
 recitation: electronics
 status: WIP
-hero: img/week02/IMG_7336.jpg
+hero: img/week02/kigopad.jpg
 summary: Soldering Quentin's QPad for the first time, programming it in the Arduino IDE, and learning electronics from zero until the schematic and the datasheet finally made sense.
 ---
+## Assignment 
+
+• browse through the data sheet for a microcontroller
+• write and test a program for an embedded system using a microcontrollet to interact (with input &/or output devices)  dand communicate (with wired or wireless connections)
+
+# Learning electronics basic
+
+I had no electronics knowledge and had not touched physics for ten years, so every word in the lecture was new to me. Before going further I wanted to understand the basics. I first watched [an introductory video](https://www.youtube.com/watch?v=nYuVSG89vg0). Then I gave the assignment and the class links to Claude and asked it to make a curriculum with quizzes for someone with no electronics background.
+
+<!-- TODO: link English versions of the two study pages once they are public -->
+
+I followed two sets of notes. The first, Embedded Bench Notes, goes from electricity basics (voltage, current, resistance, components and schematics) to digital logic and what is inside a microcontroller, then how code reaches the board, and finally inputs, outputs and communication (buttons and touch, LEDs, PWM, the OLED, serial and I2C). The second walks through the QPad schematic step by step: counting the parts, the XIAO pins, power and ground, net labels, the R4 and R5 pull-ups on SDA and SCL, and why the touch pads have no parts at all.
+
+Following the curriculum, I drew the diagrams myself, and the vocabulary finally started to make sense.
+
+:::cols
+![Notebook sketch of the QPad power and I2C connections, with notes on M, J and R](img/week02/IMG_7410.jpg)
+*My own drawing of how power and the SDA and SCL lines reach the OLED, with a note that M is a module, J a jack and R a resistor.*
+![Whiteboard with a hand-drawn QPad diagram and notes on pull-up resistors](img/week02/IMG_7411.jpg)
+*Testing myself on the whiteboard during a dinner break.*
+:::
 
 ## Soldering the QPad
 
-To learn basic soldering and embedded programming, we used the QPad, a teaching board that our TA Quentin designed. In the training he showed us how to assemble it: a microcontroller (the Seeed XIAO RP2040 module), an OLED display and six capacitive touch pads.
+First, to learn basic soldering and embedded programming, we used the QPad, a teaching board that our TA Quentin designed. In the training he showed us how to assemble it: a microcontroller (the Seeed XIAO RP2040 module), an OLED display and six capacitive touch pads.
 
 :::cols
 ![Quentin explaining the QPad to a group of students in the lab](img/week02/IMG_7316.jpg)
@@ -57,8 +78,27 @@ Then I followed the rest of the assembly guide and finished the board. It is not
 ![The finished QPad held in my hand, with the XIAO and the OLED soldered on](img/week02/IMG_7334.jpg)
 *The finished QPad.*
 ![Selfie with classmates at the soldering bench](img/week02/IMG_2832.jpg)
-*Thanks to everyone who figured this out together with me.*
+*Soldering bench.*
 :::
+
+## Reading the datasheet
+
+I read the [RP2040 datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf) to understand which GPIO pins can be I2C SDA and SCL, what voltage counts as HIGH, the value of the internal pull-up used by the touch pads, the bits and pins of the ADC, and how much current one pin can supply. It's over 600 pages so I only read the relevant parts. 
+
+The pin locations (section 1.4.1) show the 56 legs of the chip. 
+
+![RP2040 pinout for the QFN-56 package](img/week02/pin_location.png)
+*RP2040 pin locations, datasheet section 1.4.1. Only GPIO26 to GPIO29 can also be ADC inputs.*
+
+The GPIO function table (section 1.4.3) lists what each pin can become, F1 to F9. GPIO6 and GPIO7 can be I2C1 SDA and SCL, which is why the OLED is wired to D4 and D5. The touch pads only need plain HIGH and LOW (SIO), so they can go on any pin.
+
+![RP2040 GPIO function select table](img/week02/gpio_functions.png)
+*The GPIO function table, datasheet section 1.4.3.*
+
+According to the IO electrical characteristics (section 5.5.3.4), any input above 2V is read as HIGH and anything below 0.8V as LOW. The input leakage current is at most 1 µA, which is why an input pin barely draws current and a pull-up resistor holds it at 3.3V.
+
+![RP2040 digital IO characteristics table](img/week02/io_electrical_characteristics.png)
+*Digital IO characteristics, datasheet section 5.5.3.4.*
 
 ## Programming in the Arduino IDE
 
@@ -82,97 +122,88 @@ The touch sketch prints one number per pad to the Serial Monitor. The number is 
 *Two pads at once, one at about 115 and one at about 70.*
 :::
 
-## Learning electronics from zero
+# Writing and Testing the "Kigo Pad"
 
-I had no electronics knowledge and had not touched physics for ten years, so every word in the lecture was new to me. Before going further I wanted to understand the basics. I first watched [an introductory video](https://www.youtube.com/watch?v=nYuVSG89vg0). Then I gave the assignment and the class links to Claude and asked it to make a curriculum with quizzes for someone with no electronics background.
+I wanted to use QPad for walking a saijiki, the seasonal word dictionary haiku poets use. The map is a grid of the 72 micro-seasons (七十二候) by the 7 traditional categories of season words, 504 cells in all. The OLED is a small window onto one cell of that map.
 
-<!-- TODO: link English versions of the two study pages once they are public -->
+## Concept: a spatial understanding of words
 
-I followed two sets of notes. The first, Embedded Bench Notes, goes from electricity basics (voltage, current, resistance, components and schematics) to digital logic and what is inside a microcontroller, then how code reaches the board, and finally inputs, outputs and communication (buttons and touch, LEDs, PWM, the OLED, serial and I2C). The second walks through the QPad schematic step by step: counting the parts, the XIAO pins, power and ground, net labels, the R4 and R5 pull-ups on SDA and SCL, and why the touch pads have no parts at all.
-
-Following the curriculum, I drew the diagrams myself, and the vocabulary finally started to make sense.
-
-:::cols
-![Notebook sketch of the QPad power and I2C connections, with notes on M, J and R](img/week02/IMG_7410.jpg)
-*My own drawing of how power and the SDA and SCL lines reach the OLED, with a note that M is a module, J a jack and R a resistor.*
-![Whiteboard with a hand-drawn QPad diagram and notes on pull-up resistors](img/week02/IMG_7411.jpg)
-*Testing myself on the whiteboard during a dinner break.*
-:::
-
-### Reading the datasheet
-
-The individual assignment asks us to browse the datasheet of our microcontroller. The [RP2040 datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf) is over 600 pages, so I decided what I was looking for before opening it. I wanted to know which GPIO pins can be I2C SDA and SCL, what voltage counts as HIGH, the value of the internal pull-up used by the touch pads, the bits and pins of the ADC, and how much current one pin can supply.
-
-The pin locations (section 1.4.1) show the 56 legs of the chip. The XIAO only brings 11 of the 30 GPIO out to its edge, which is why the QPad schematic names every pin twice, as in P6/D4: GPIO6 on the chip, D4 on the XIAO.
-
-![RP2040 pinout for the QFN-56 package](img/week02/pin_location.png)
-*RP2040 pin locations, datasheet section 1.4.1. Only GPIO26 to GPIO29 can also be ADC inputs.*
-
-The GPIO function table (section 1.4.3) lists what each pin can become, F1 to F9. GPIO6 and GPIO7 can be I2C1 SDA and SCL, which is why the OLED is wired to D4 and D5. The touch pads only need plain HIGH and LOW (SIO), so they can go on any pin.
-
-![RP2040 GPIO function select table](img/week02/gpio_functions.png)
-*The GPIO function table, datasheet section 1.4.3.*
-
-The IO electrical characteristics (section 5.5.3.4) answered the voltage questions. At 3.3V, any input above 2V is read as HIGH and anything below 0.8V as LOW. The input leakage current is at most 1 µA, which is why an input pin barely draws current and a pull-up resistor holds it at 3.3V.
-
-![RP2040 digital IO characteristics table](img/week02/io_electrical_characteristics.png)
-*Digital IO characteristics, datasheet section 5.5.3.4.*
-
-### Simulations
-
-(WIP)
-
-With the basic knowledge I have now, I want to simulate the circuits before building my own.
-
-## Idea: a map for poets
-
-The QPad becomes a D-pad for walking a saijiki, the seasonal word almanac haiku poets use. The map is a grid of the 72 micro-seasons (七十二候) by the 7 traditional categories of season words, 504 cells in all. The OLED is a small window onto one cell, and the PC draws the path I walked as a circular mandala.
-
-### Step 1: a spatial understanding of words
-
-On the internet we get lost. Everything is zoomed in, and we have very little sense of where one word sits in relation to others. I thought the QPad could be an interesting device for exploring a map of words.
-
-One of my favorite things to do at a book cafe was to collect interesting books, then return them at the end of the day without looking up where they belonged. I had to explore the shelves myself to learn where each book lived, and each piece of knowledge became tied to a place. (Related ideas: topophilia, Bachelard's *The Poetics of Space*, and utamakura, the named places of classical Japanese poetry.)
-
-Online there is no zoom-out, and no way to see where we are in relation to everything else. Keisuke Matsuoka describes the shift from exploring to searching:
-
-> 人々は自己の身体を離脱して全体を相対的に把握するのではなく、常に自己の身体を基準にして現在地とその周辺だけをまなざすことに埋没するようになっているのではないか。
->
+One of my favorite things to do at a book cafe was to collect interesting books, then return them at the end of the day without looking up where they belonged. I had to explore the shelves myself to learn where each book lived, and each piece of knowledge became tied to a place. But on the internet we get lost. Everything is zoomed in, and we have very little sense of where one word sits in relation to others. Keisuke Matsuoka describes the shift from exploring to searching in his book "The Sociology of Google Maps":
 > Rather than stepping outside their own bodies to grasp the whole in relative terms, people may have become absorbed in looking only at their current location and its surroundings, always with their own body as the reference point.
 
-*From 松岡慧祐『グーグルマップの社会学』 (The Sociology of Google Maps).*
+I thought the QPad could be an interesting device for exploring a map of words.
+<!-- (Related ideas: topophilia, Bachelard's *The Poetics of Space*, and utamakura, the named places of classical Japanese poetry.) -->
 
-So on the QPad, the pads are the controller for moving around the space. The OLED shows the word, and the PC shows where you are. Four of the six pads are arrow keys. Left and right walk through time, one micro-season at a time from 立春 (start of spring) to 大寒 (greatest cold). Up and down change the angle, from weather to landscape, daily life, festivals, animals and plants. The other two pads zoom in and out.
+So on the QPad, the pads are the controller for moving around the space. The OLED shows the word and where I am on the map. Four of the six pads are arrow keys. Left and right walk through time, one micro-season at a time from 立春 (start of spring) to 大寒 (greatest cold). Up and down change the angle, from weather to landscape, daily life, festivals, animals and plants. The other two pads zoom in and out.
 
 <!-- TODO: link the project that used four pads as arrow keys and two for other functions to move pixel art -->
 
-Before touching the hardware I made a browser prototype with Claude that simulates the QPad, the OLED and the PC view together. It runs in any browser: [open the prototype](files/week03/kigo-pad/prototype.html). The arrow keys walk, `i` zooms in, `o` zooms out and Space collects a word. All the source is in [files/week03/kigo-pad](files/week03/kigo-pad/).
-
-The first hardware problem was making Chinese characters readable on a 128 × 64 OLED. The Adafruit GFX font has no kanji, so a Python script ([make_font.py](files/week03/kigo-pad/tools/make_font.py)) renders only the characters the almanac actually uses into bitmaps: 209 kanji at 32 px in a Mincho typeface, and 104 kana at 16 px in a bold Gothic, because thin Mincho strokes disappear at small sizes. Together they take about 29 KB, which is small next to the 2 MB of flash on the XIAO. The test sketch [kigo_min.ino](files/week03/kigo-pad/firmware/kigo_min/kigo_min.ino) decodes each UTF-8 string, looks up each glyph and draws it pixel by pixel, stepping through all 72 micro-seasons every 2.5 seconds.
-
-![東風解凍 in 32 px kanji with its reading はるかぜこおりをとく in 16 px kana, drawn as white pixels on black](files/week03/kigo-pad/tools/preview.png)
-*The first micro-season, 東風解凍 (the east wind melts the ice), drawn back from the generated bitmaps at OLED resolution.*
-
-Next is moving in four directions with the touch pads. The full firmware, [kigo_pad.ino](files/week03/kigo-pad/firmware/kigo_pad/kigo_pad.ino), is written but not yet tested on my board. I still need to check the pin of each pad against the schematic and swap in the touch routine from Quentin's test_touch.
-
-### Step 2: zooming out
-
-The device has three zoom levels. The middle one shows a single word, large. Zooming in shows its meaning, reading and a haiku. Zooming out shows the place: a dot for where I am on the whole 72 × 7 map.
+## Web prototype
+Before touching the hardware I made a browser prototype with Claude that simulates the QPad and its OLED. It runs in any browser: [open the prototype](files/week03/kigo-pad/prototype.html). The arrow keys walk, `i` zooms in, `o` zooms out. The device has three zoom levels 
+1. The middle one shows a single word, large. 
+2. Zooming in shows its meaning and reading. 
+3. Zooming out shows the place: a dot for where I am on the whole 72 × 7 map.
 
 ![Four OLED screens stacked: the word view for 春の海, its explanation, the place view with a dot on the map, and the word view for 東風解凍](files/week03/kigo-pad/tools/sim_device.png)
 *Simulated OLED screens. From the top: the word, zoomed in to the explanation, zoomed out to the place, and the first micro-season.*
 
-### Step 3: seeing the path you walked
+All the source is in [files/week03/kigo-pad](files/week03/kigo-pad/).
 
-After exploring, the PC shows where you went on the word map as a circle, like GPS art. The year runs around the ring, and each category is one of the rings. The PC can also rearrange the same words into a "machine map", grouped by meaning instead of by the traditional categories, so you can compare how a person and a machine would lay out the same words.
+## Rendering Japanese on the OLED
+The first hardware problem was making kanji readable on a 128 × 64 OLED. The Adafruit GFX font has no kanji, so I made a Python script ([make_font.py](files/week03/kigo-pad/tools/make_font.py)) with Claude Opus 4.8 to render only the characters the almanac actually uses into bitmaps: 209 kanji at 32 px in a Mincho typeface, and 104 kana at 16 px in a bold Gothic, because thin Mincho strokes disappear at small sizes. Together they take about 29 KB, which is small next to the 2 MB of flash on the XIAO. The test sketch [kigo_min.ino](files/week03/kigo-pad/firmware/kigo_min/kigo_min.ino) decodes each UTF-8 string, looks up each glyph and draws it pixel by pixel, stepping through all 72 micro-seasons every 2.5 seconds.
 
-![Two circular maps side by side. On the left, the human map, the micro-season names crowd onto the inner ring. On the right, the machine map, the same names scatter across the rings](files/week03/kigo-pad/tools/sim_maps.png)
-*The human map (left) and the machine map (right). In the human map every micro-season name sits on the inner ring. In the machine map they scatter into themes.*
+![東風解凍 in 32 px kanji with its reading はるかぜこおりをとく in 16 px kana, drawn as white pixels on black](files/week03/kigo-pad/tools/preview.png)
+*The first micro-season, 東風解凍 (the east wind melts the ice), drawn back from the generated bitmaps at OLED resolution.*
 
-<!-- TODO: add GPS art reference image -->
+## Touch Pad Scripts
 
-For now this only runs in the browser prototype. Next I want the board to send its saved path to the PC over Web Serial, so the same art is drawn from a real walk.
+With the fonts working, I wanted to move through the map with the six pads. From Quentin's `test_touch` example, I learned measuring capacitance by timing can be used as buttons. It drives the pad LOW to empty it, switch it to an input with a pull-up, and count how many loops pass before it charges back to HIGH. A finger adds capacitance, so a touched pad charges more slowly and the count climbs; anything past a small threshold counts as a touch. 
+
+```cpp
+// count how long a pad takes to charge back to HIGH — a finger makes it slower
+int readTouch(int pin){
+  pinMode(pin, OUTPUT); digitalWriteFast(pin, LOW);  // drain the pad
+  delayMicroseconds(25);
+  pinMode(pin, INPUT_PULLUP);                         // let it charge
+  int t = 0; while (!digitalReadFast(pin) && t < TOUCH_TMAX) t++;
+  return t;                                           // touched → larger count
+}
+
+Before mapping pads to directions I had to learn which physical pad was wired to which GPIO. I touched each one and noted which pin value rose, then drew the board as I hold it, with the OLED at the top:
+
+┌──────────────────┬──────┬──────────────────────────────────────┐
+│ pad on the board │ GPIO │                 role                 │
+├──────────────────┼──────┼──────────────────────────────────────┤
+│ top-left         │ 26   │ ↑ up (change category)               │
+├──────────────────┼──────┼──────────────────────────────────────┤
+│ bottom-left      │ 2    │ ↓ down                               │
+├──────────────────┼──────┼──────────────────────────────────────┤
+│ left             │ 27   │ ← left (walk back in time)           │
+├──────────────────┼──────┼──────────────────────────────────────┤
+│ right            │ 1    │ → right (walk forward)               │
+├──────────────────┼──────┼──────────────────────────────────────┤
+│ right pair       │ 4    │ q0 — tap to zoom in, hold to collect │
+├──────────────────┼──────┼──────────────────────────────────────┤
+│ right pair       │ 3    │ q5 — zoom out                        │
+└──────────────────┴──────┴──────────────────────────────────────┘
+
+//                    LEFT RIGHT UP DOWN q0 q5
+int PAD_PIN[N_PAD] = {  27,   1, 26,  2,  4, 3 };
+...
+for (int i = 0; i < N_PAD; i++) {
+  int v = readTouch(PAD_PIN[i]);
+  touchPast[i] = touchNow[i];
+  touchNow[i]  = (v > TOUCH_THRESHOLD);
+  if (touchNow[i] && !touchPast[i]) { pressStart[i] = now; onPress(i); } // just pressed
+  else if (!touchNow[i] && touchPast[i]) onRelease(i);                   // just released
+}
+// q0 held past 0.4 s → collect this word
+if (touchNow[P_ZIN] && !q0Saved && now - pressStart[P_ZIN] >= HOLD_MS) { q0Saved = true; doSave(); }
+
+:::video https://youtube.com/shorts/hCFWrETdXtQ?feature=share | Kigo pad
+
+The full firmware is kigo_pad.ino (files/week03/kigo-pad/firmware/kigo_pad/kigo_pad.ino).
 
 ## Use of AI
 
-I used Claude to build the two study pages and quizzes I learned from, and to answer my questions whenever a word did not make sense. The soldering, the testing and the drawings are my own. For the map for poets, I made the browser prototype, the font generation script and the firmware with Claude, starting from my own idea.
+I used Claude Opus 4.8. to build the two study pages and quizzes I learned from, and to answer my questions whenever a word did not make sense. The soldering, the testing and the drawings are my own. For the map for poets, I made the browser prototype, the font generation script and the firmware with Claude, starting from my own idea.

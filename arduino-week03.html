@@ -1,0 +1,1180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learn the Arduino Language — Embedded Programming (HTMAA Wk 3)</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ---- page-specific styles (self-contained; falls back if style.css is absent) ---- */
+:root{
+  --fg:#000; --bg:#fff; --red:#ff0000; --muted:#777;
+  --rule:1px solid var(--fg);
+  --body:"ABC Diatype Variable","Geist","Inter Tight",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --ok:#0a7d28; --bad:#c81e1e; --wash:#f4f4f4;
+}
+html,body{background:var(--bg);color:var(--fg);}
+body{font-family:var(--body);line-height:1.4;margin:0;font-size:17px;}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px 120px;}
+
+/* header / hero */
+.top{border-bottom:var(--rule);padding:14px 20px;position:sticky;top:0;background:var(--bg);z-index:20;
+     display:flex;justify-content:space-between;align-items:baseline;gap:12px;}
+.top .home{font-weight:700;}
+.top .prog{font-family:var(--mono);font-size:13px;color:var(--muted);white-space:nowrap;}
+.hero{padding:48px 0 24px;border-bottom:var(--rule);margin-bottom:8px;}
+.kicker{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--red);margin-bottom:12px;}
+.hero h1{font-size:clamp(30px,5vw,46px);line-height:1.05;margin:0 0 14px;font-weight:800;}
+.hero p{font-size:19px;color:#333;margin:0 0 6px;max-width:66ch;}
+
+/* table of contents */
+.toc{border:var(--rule);padding:16px 18px;margin:26px 0;border-radius:8px;}
+.toc h2{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 10px;}
+.toc ol{margin:0;padding-left:1.3em;columns:2;column-gap:28px;}
+.toc a{text-decoration:none;color:var(--fg);border-bottom:1px solid #ddd;}
+.toc a:hover{border-color:var(--fg);}
+.toc li{margin:2px 0;break-inside:avoid;}
+
+/* modules */
+.mod{border-top:var(--rule);padding-top:34px;margin-top:46px;scroll-margin-top:70px;}
+.mod-num{font-family:var(--mono);font-size:13px;color:var(--red);letter-spacing:.05em;}
+.mod h2{font-size:clamp(22px,3.4vw,30px);line-height:1.1;margin:6px 0 16px;font-weight:800;}
+.mod h3{font-size:19px;margin:28px 0 8px;font-weight:700;}
+.mod p{margin:0 0 14px;}
+.mod ul,.mod ol{margin:0 0 14px;padding-left:1.4em;}
+.mod li{margin:5px 0;}
+.lead{font-size:18px;color:#333;}
+code{font-family:var(--mono);font-size:.86em;background:var(--wash);padding:1px 5px;border-radius:4px;}
+kbd{font-family:var(--mono);font-size:.8em;border:1px solid #bbb;border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:#fafafa;}
+
+/* code blocks */
+pre{background:#0e0e0e;color:#eaeaea;border-radius:8px;padding:16px 18px;overflow:auto;font-family:var(--mono);
+    font-size:13.5px;line-height:1.55;margin:0 0 8px;}
+pre code{background:none;padding:0;color:inherit;font-size:inherit;}
+pre .cm{color:#7a8b7f;font-style:italic;}   /* comment */
+pre .kw{color:#c792ea;}                      /* keyword */
+pre .fn{color:#82aaff;}                       /* function */
+pre .num{color:#f78c6c;}                       /* number */
+pre .str{color:#c3e88d;}                       /* string */
+.cap{font-size:13px;color:var(--muted);margin:0 0 22px;}
+
+/* callouts */
+.note,.gotcha,.try{border-left:4px solid var(--fg);padding:12px 16px;margin:16px 0;background:var(--wash);border-radius:0 6px 6px 0;font-size:15.5px;}
+.gotcha{border-color:var(--red);background:#fff2f2;}
+.try{border-color:var(--ok);background:#f0faf2;}
+.note b,.gotcha b,.try b{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px;}
+
+/* quiz */
+.quiz{border:var(--rule);border-radius:10px;padding:20px 20px 8px;margin:26px 0;}
+.quiz > h3{margin:0 0 4px;font-size:18px;display:flex;align-items:center;gap:8px;}
+.quiz > h3::before{content:"✎";color:var(--red);}
+.quiz .sub{font-size:13px;color:var(--muted);margin:0 0 14px;font-family:var(--mono);}
+.q{border-top:1px dashed #ccc;padding:16px 0;}
+.q:first-of-type{border-top:none;}
+.q-text{font-weight:600;margin:0 0 10px;}
+.q-text .qn{color:var(--red);font-family:var(--mono);margin-right:8px;}
+.q pre{margin:8px 0 12px;}
+.opts{list-style:none;margin:0;padding:0;}
+.opts li{border:1px solid #ccc;border-radius:7px;padding:9px 12px;margin:7px 0;cursor:pointer;display:flex;gap:10px;align-items:flex-start;transition:background .1s,border-color .1s;}
+.opts li:hover{border-color:var(--fg);background:#fafafa;}
+.opts li .lbl{font-family:var(--mono);font-weight:700;color:var(--muted);flex:none;}
+.opts li.correct{border-color:var(--ok);background:#eaf7ee;}
+.opts li.wrong{border-color:var(--bad);background:#fdecec;}
+.opts li.correct .lbl{color:var(--ok);}
+.opts li.wrong .lbl{color:var(--bad);}
+.q.answered .opts li{cursor:default;}
+.q.answered .opts li:hover{background:inherit;}
+.explain{display:none;margin-top:10px;font-size:15px;background:#f3f6ff;border-radius:6px;padding:11px 13px;border-left:3px solid #82aaff;}
+.q.answered .explain{display:block;}
+.explain .verdict{font-weight:700;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;margin-right:6px;}
+.explain .verdict.ok{color:var(--ok);}
+.explain .verdict.no{color:var(--bad);}
+.quizscore{font-family:var(--mono);font-size:13px;color:var(--muted);border-top:1px dashed #ccc;margin-top:6px;padding-top:12px;}
+
+/* overall progress + reset */
+.dash{border:var(--rule);border-radius:10px;padding:16px 18px;margin:30px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+.dash .bar{flex:1;min-width:180px;height:10px;background:#eee;border-radius:6px;overflow:hidden;}
+.dash .bar > i{display:block;height:100%;width:0;background:var(--red);transition:width .3s;}
+.dash .pct{font-family:var(--mono);font-size:14px;white-space:nowrap;}
+.dash button{font-family:var(--mono);font-size:12px;border:1px solid var(--fg);background:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;}
+.dash button:hover{background:var(--fg);color:#fff;}
+
+.footer{border-top:var(--rule);margin-top:60px;padding-top:20px;font-size:14px;color:var(--muted);}
+.footer a{color:var(--fg);}
+a.ext{border-bottom:1px solid #bbb;}
+a.ext:hover{border-color:var(--fg);}
+@media(max-width:640px){.toc ol{columns:1;}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="home" href="weeks/week03.html">← Week 03</a>
+  <span class="prog" id="topprog">quiz 0 / 0</span>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">HTMAA · Embedded Programming · Self-study</div>
+    <h1>Learn the Arduino Language</h1>
+    <p class="lead">A from-zero curriculum for the <b>Arduino (C++) language</b>, built around the board you already soldered: the <b>Seeed XIAO RP2040</b> on Quentin's QPad. Every code sample runs on your hardware — the onboard LED, the six capacitive touch pads, the OLED, and the Serial Monitor.</p>
+    <p class="lead">Read a module, run the sketch, then take the quiz. Your score is saved in this browser so you can come back.</p>
+  </header>
+
+  <div class="dash">
+    <span class="pct" id="dashpct">0% complete</span>
+    <span class="bar"><i id="dashbar"></i></span>
+    <button id="resetbtn" title="Clear all quiz answers on this device">reset progress</button>
+  </div>
+
+  <nav class="toc">
+    <h2>Modules</h2>
+    <ol>
+      <li><a href="#m0">Arduino in the embedded landscape</a></li>
+      <li><a href="#m1">Anatomy of a sketch: setup &amp; loop</a></li>
+      <li><a href="#m2">Syntax rules that trip everyone up</a></li>
+      <li><a href="#m3">Variables &amp; data types</a></li>
+      <li><a href="#m4">Digital output: blink the LED</a></li>
+      <li><a href="#m5">Timing: delay vs. millis</a></li>
+      <li><a href="#m6">Serial: talking to your laptop</a></li>
+      <li><a href="#m7">Control flow: if / else &amp; logic</a></li>
+      <li><a href="#m8">Loops: for &amp; while</a></li>
+      <li><a href="#m9">Functions</a></li>
+      <li><a href="#m10">Digital input &amp; the touch pads</a></li>
+      <li><a href="#m11">Arrays: handle all six pads</a></li>
+      <li><a href="#m12">Libraries &amp; the OLED (I²C)</a></li>
+      <li><a href="#m13">Capstone: a touch instrument</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============================= MODULE 0 ============================= -->
+  <section class="mod" id="m0">
+    <div class="mod-num">Module 0</div>
+    <h2>Arduino in the embedded landscape</h2>
+    <p class="lead">Before the language, know where it sits.</p>
+
+    <p>The HTMAA group assignment asks you to <em>compare toolchains and development workflows for embedded architectures</em>. "Arduino" is one of those toolchains. It is worth being precise about what the word means, because it refers to three different things:</p>
+    <ul>
+      <li><b>The boards</b> (Uno, Nano, …) — but you are not using one. You're using a <b>Seeed XIAO RP2040</b>, a tiny board built around the Raspberry Pi <b>RP2040</b> chip (dual-core ARM Cortex-M0+, 264&nbsp;KB SRAM, 2&nbsp;MB flash).</li>
+      <li><b>The Arduino <em>language</em></b> — really just <b>C++</b> plus a library of friendly functions (<code>digitalWrite</code>, <code>delay</code>, <code>Serial.print</code>…). That's what this curriculum teaches.</li>
+      <li><b>The Arduino IDE + toolchain</b> — the editor that compiles your C++ into a <code>.uf2</code> machine-code file and uploads it to the chip.</li>
+    </ul>
+
+    <h3>The workflow, end to end</h3>
+    <p>Every embedded platform follows the same loop. In Arduino terms:</p>
+    <ol>
+      <li><b>Write</b> a sketch (a <code>.ino</code> file) in the IDE.</li>
+      <li><b>Compile</b> — the toolchain (GCC for ARM) turns your C++ into RP2040 machine code.</li>
+      <li><b>Upload</b> — the code is copied into the chip's flash. On the XIAO you enter bootloader mode by holding <kbd>BOOT</kbd> while plugging in (or double-tapping reset); it appears as a USB drive and the <code>.uf2</code> is dropped onto it.</li>
+      <li><b>Run</b> — the chip reboots and runs your program forever, with no laptop needed.</li>
+      <li><b>Observe / debug</b> — blink an LED or print over Serial to see what's happening.</li>
+    </ol>
+
+    <div class="note"><b>Why this matters</b>Unlike Python on your laptop, there is no operating system underneath. Your program <em>is</em> the only thing running. It never "finishes" — it loops forever until power is removed. That single fact shapes the whole language.</div>
+
+    <p>Other options exist for the same chip — <b>MicroPython/CircuitPython</b> (interpreted, type-and-run, slower), <b>C with the Pico SDK</b> (more control, more setup), <b>Rust</b>. Arduino is the fastest on-ramp, and everything you learn here (pins, timing, serial, I²C) transfers directly.</p>
+
+    <div class="quiz" data-quiz="m0">
+      <h3>Check yourself</h3>
+      <p class="sub">2 questions</p>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q1</span>When people say "the Arduino language," what is it, technically?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>A brand-new programming language invented by Arduino.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>Python with extra hardware functions.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>C++ plus a library of hardware helper functions like <code>digitalWrite</code>.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Assembly language for the RP2040.</span></li>
+        </ul>
+        <div class="explain">Arduino sketches are compiled as C++. The "Arduino-ness" is a set of libraries and a simplified project structure layered on top of standard C++.</div>
+      </div>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q2</span>After you upload a sketch, when does it stop running?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>When <code>loop()</code> reaches its last line.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>Never, until power is removed or a new sketch is uploaded.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>When you close the Arduino IDE.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>After 60 seconds, then it reboots.</span></li>
+        </ul>
+        <div class="explain">There's no OS to return to. When <code>loop()</code> ends, it is immediately called again — forever. The program runs standalone off USB or any power source.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 1 ============================= -->
+  <section class="mod" id="m1">
+    <div class="mod-num">Module 1</div>
+    <h2>Anatomy of a sketch: <code>setup()</code> and <code>loop()</code></h2>
+
+    <p>Every Arduino sketch has exactly two required functions. This is the skeleton of every program you will ever write:</p>
+<pre><code><span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="cm">// runs ONCE when the board powers on or resets</span>
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cm">// runs over and over, forever, after setup() finishes</span>
+}</code></pre>
+    <p class="cap">The minimal valid sketch. It compiles, uploads, and does nothing — correctly.</p>
+
+    <ul>
+      <li><code>setup()</code> is for <b>one-time preparation</b>: configure pins, start Serial, initialize the display.</li>
+      <li><code>loop()</code> is the <b>heartbeat</b>: read inputs, make decisions, drive outputs — again and again, thousands of times a second.</li>
+    </ul>
+
+    <p>The word <code>void</code> in front means the function returns no value (more on that in Module 9). The <code>()</code> means it takes no inputs. The <code>{ }</code> braces hold the function's body.</p>
+
+    <div class="note"><b>Mental model</b><code>setup()</code> = getting dressed in the morning (once). <code>loop()</code> = your day repeating on a schedule. Anything you set up wrong in the morning affects the whole day.</div>
+
+    <h3>The order things happen</h3>
+    <ol>
+      <li>Power on / reset.</li>
+      <li>Hidden Arduino startup code runs (sets up the chip).</li>
+      <li>Your <code>setup()</code> runs, top to bottom, once.</li>
+      <li>Your <code>loop()</code> runs, top to bottom. When it hits the closing brace, it starts again from the top. Forever.</li>
+    </ol>
+
+    <div class="quiz" data-quiz="m1">
+      <h3>Check yourself</h3>
+      <p class="sub">2 questions</p>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q1</span>You want to configure a pin. Where does that line usually belong?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>In <code>loop()</code>, so it re-configures constantly.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>In <code>setup()</code>, because it only needs to happen once.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>Outside both functions, at the very bottom of the file.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>It doesn't matter at all.</span></li>
+        </ul>
+        <div class="explain">Pin configuration is one-time preparation, so it goes in <code>setup()</code>. Putting it in <code>loop()</code> works but wastes cycles doing the same thing every pass.</div>
+      </div>
+      <div class="q" data-answer="D">
+        <p class="q-text"><span class="qn">Q2</span>What does <code>void</code> mean in <code>void loop()</code>?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>The function is empty.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>The function runs only in an emergency.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>The function is private.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>The function returns no value.</span></li>
+        </ul>
+        <div class="explain"><code>void</code> is the return type meaning "returns nothing." <code>loop()</code> just does work; it doesn't hand a value back.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 2 ============================= -->
+  <section class="mod" id="m2">
+    <div class="mod-num">Module 2</div>
+    <h2>Syntax rules that trip everyone up</h2>
+    <p>C++ is strict. These five rules cause 90% of a beginner's red error messages.</p>
+
+    <h3>1. Every statement ends with a semicolon</h3>
+<pre><code><span class="fn">digitalWrite</span>(LED_BUILTIN, HIGH)<span class="num">;</span>   <span class="cm">// OK  good</span>
+<span class="fn">digitalWrite</span>(LED_BUILTIN, HIGH)    <span class="cm">// ✗  error: expected ';'</span></code></pre>
+    <p>The semicolon says "this instruction is finished." Missing one is the #1 beginner error. Note that <code>{ }</code> blocks and <code>#define</code> lines do <em>not</em> take a semicolon.</p>
+
+    <h3>2. It is case-sensitive</h3>
+    <p><code>digitalWrite</code> ≠ <code>digitalwrite</code> ≠ <code>DigitalWrite</code>. Only the first exists. <code>HIGH</code> is not <code>High</code>.</p>
+
+    <h3>3. Two kinds of comments</h3>
+<pre><code><span class="cm">// single-line comment — everything after // is ignored</span>
+<span class="cm">/* multi-line comment
+   spans as many lines
+   as you like */</span></code></pre>
+    <p>Comments are for humans; the compiler skips them. Use them generously to explain <em>why</em>, not <em>what</em>.</p>
+
+    <h3>4. Braces come in pairs</h3>
+    <p>Every <code>{</code> needs a matching <code>}</code>. The IDE's auto-indent is your friend — if the indentation looks wrong, a brace is probably misplaced.</p>
+
+    <h3>5. Whitespace is (mostly) free</h3>
+    <p>Extra spaces, blank lines, and indentation don't change meaning — they're for readability. (This is the opposite of Python, where indentation <em>is</em> the structure.)</p>
+
+    <div class="gotcha"><b>Classic trap: = vs ==</b>A single <code>=</code> <b>assigns</b> ("put this value here"). A double <code>==</code> <b>compares</b> ("are these equal?"). Writing <code>if (x = 5)</code> when you meant <code>if (x == 5)</code> compiles but does the wrong thing. You'll meet this again in Module 7.</div>
+
+    <div class="quiz" data-quiz="m2">
+      <h3>Check yourself</h3>
+      <p class="sub">3 questions</p>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q1</span>Which line will cause a compile error?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>int x = 5;</code></span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>// this is a note</code></span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>Serial.begin(9600)</code></span></li>
+          <li data-opt="D"><span class="lbl">D</span><span><code>delay(100);</code></span></li>
+        </ul>
+        <div class="explain">Option C is missing its terminating semicolon. Comments (B) never need one; A and D are complete statements.</div>
+      </div>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q2</span>Does <code>digitalWrite</code> mean the same as <code>DigitalWrite</code>?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>Yes — Arduino ignores capitalization.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>No — the language is case-sensitive, and only <code>digitalWrite</code> exists.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>Only inside <code>setup()</code>.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Yes, but it's slower.</span></li>
+        </ul>
+        <div class="explain">C++ distinguishes upper and lower case. The compiler will say the name is "not declared in this scope" if you miscapitalize.</div>
+      </div>
+      <div class="q" data-answer="A">
+        <p class="q-text"><span class="qn">Q3</span><code>if (count = 6)</code> — what's wrong?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>It <em>assigns</em> 6 to count instead of comparing; it should be <code>==</code>.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>Nothing — that's the correct way to compare.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>if</code> can't use numbers.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>It needs a semicolon inside the parentheses.</span></li>
+        </ul>
+        <div class="explain">A single <code>=</code> assigns. To test equality use <code>==</code>. The buggy version stores 6 in <code>count</code> and treats the result as "true" every time.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 3 ============================= -->
+  <section class="mod" id="m3">
+    <div class="mod-num">Module 3</div>
+    <h2>Variables &amp; data types</h2>
+    <p>A <b>variable</b> is a named box in memory. Because a microcontroller has very little memory (the RP2040 has 264&nbsp;KB of RAM — generous for a MCU, tiny compared to a laptop), you must tell the compiler <em>what kind</em> of value each box holds. That's the <b>type</b>.</p>
+
+    <h3>The types you'll actually use</h3>
+<pre><code><span class="kw">int</span>    count   = <span class="num">0</span>;        <span class="cm">// whole number (on RP2040: 32-bit, ±2 billion)</span>
+<span class="kw">long</span>   bigNum  = <span class="num">100000</span>;   <span class="cm">// large whole number</span>
+<span class="kw">float</span>  volts   = <span class="num">3.3</span>;      <span class="cm">// decimal number</span>
+<span class="kw">bool</span>   pressed = <span class="kw">false</span>;    <span class="cm">// true or false only</span>
+<span class="kw">char</span>   letter  = <span class="str">'A'</span>;      <span class="cm">// a single character (note single quotes)</span>
+<span class="kw">byte</span>   raw     = <span class="num">255</span>;      <span class="cm">// 0–255, one byte — great for pin/sensor values</span></code></pre>
+
+    <p>For hardware code you'll also see fixed-width types that state their size exactly — <code>uint8_t</code> (0–255), <code>uint16_t</code>, <code>uint32_t</code>. On a memory-constrained chip, choosing <code>uint8_t</code> instead of <code>int</code> for a small value saves bytes. <code>u</code> = unsigned (no negatives).</p>
+
+    <h3>Constants: values that never change</h3>
+    <p>Two ways to name a fixed value. Prefer <code>const</code>:</p>
+<pre><code><span class="kw">const</span> <span class="kw">int</span> TOUCH_THRESHOLD = <span class="num">6</span>;   <span class="cm">// typed, checked by compiler (preferred)</span>
+<span class="cm">#define</span> TOUCH_THRESHOLD <span class="num">6</span>       <span class="cm">// text substitution before compiling (older style, no ;)</span></code></pre>
+    <p>Naming your "magic numbers" like this — instead of scattering a bare <code>6</code> through the code — is exactly what let you tune the touch sensitivity in Quentin's sketch by changing one line.</p>
+
+    <div class="gotcha"><b>Watch the quotes</b><code>'A'</code> (single quotes) is one <code>char</code>. <code>"A"</code> (double quotes) is a <b>string</b> of text. They are different types. <code>'5'</code> is the character five (value 53), not the number 5.</div>
+
+    <div class="note"><b>Scope</b>A variable declared <em>inside</em> a function only exists there (local). A variable declared <em>above</em> <code>setup()</code> exists everywhere (global) and keeps its value between <code>loop()</code> passes — that's how you remember things from one pass to the next, like a counter.</div>
+
+    <div class="quiz" data-quiz="m3">
+      <h3>Check yourself</h3>
+      <p class="sub">3 questions</p>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q1</span>You need to store <code>3.3</code> (a voltage). Which type?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>int</code></span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>bool</code></span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>float</code></span></li>
+          <li data-opt="D"><span class="lbl">D</span><span><code>char</code></span></li>
+        </ul>
+        <div class="explain"><code>float</code> holds decimals. An <code>int</code> would throw away the <code>.3</code> and store just <code>3</code>.</div>
+      </div>
+      <div class="q" data-answer="A">
+        <p class="q-text"><span class="qn">Q2</span>What's the difference between <code>'A'</code> and <code>"A"</code>?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>'A'</code> is a single <code>char</code>; <code>"A"</code> is a text string.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>They're identical.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>'A'</code> is a string; <code>"A"</code> is a number.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Double quotes are just for comments.</span></li>
+        </ul>
+        <div class="explain">Single quotes = one character. Double quotes = a string (a sequence of characters). Mixing them up is a common type error.</div>
+      </div>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q3</span>Why declare a counter as a <b>global</b> variable (above <code>setup()</code>) instead of inside <code>loop()</code>?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>Globals run faster.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>A global keeps its value between <code>loop()</code> passes; a local one is recreated (reset) each pass.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>You can't declare variables inside <code>loop()</code>.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Globals use less memory.</span></li>
+        </ul>
+        <div class="explain">A variable declared inside <code>loop()</code> is created fresh and destroyed every pass, so it can't accumulate. A global persists, which is what a counter needs.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 4 ============================= -->
+  <section class="mod" id="m4">
+    <div class="mod-num">Module 4</div>
+    <h2>Digital output: blink the LED</h2>
+    <p>Time for the "hello world" of embedded — making a light blink. This uses three functions and one hardware idea.</p>
+
+    <h3>The three functions</h3>
+    <ul>
+      <li><code>pinMode(pin, mode)</code> — configure a pin as <code>OUTPUT</code> (drive a voltage) or <code>INPUT</code> (read a voltage). Set once in <code>setup()</code>.</li>
+      <li><code>digitalWrite(pin, value)</code> — set an OUTPUT pin to <code>HIGH</code> (3.3&nbsp;V) or <code>LOW</code> (0&nbsp;V).</li>
+      <li><code>delay(ms)</code> — pause for a number of milliseconds (1000&nbsp;ms = 1&nbsp;s).</li>
+    </ul>
+
+    <h3>Blink, on your XIAO RP2040</h3>
+<pre><code><span class="cm">// LED_BUILTIN is the XIAO's on-board user LED.</span>
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">pinMode</span>(LED_BUILTIN, OUTPUT);   <span class="cm">// this pin will drive the LED</span>
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="fn">digitalWrite</span>(LED_BUILTIN, LOW);    <span class="cm">// LED ON  (see gotcha!)</span>
+  <span class="fn">delay</span>(<span class="num">500</span>);                       <span class="cm">// wait 0.5 s</span>
+  <span class="fn">digitalWrite</span>(LED_BUILTIN, HIGH);   <span class="cm">// LED OFF</span>
+  <span class="fn">delay</span>(<span class="num">500</span>);                       <span class="cm">// wait 0.5 s, then loop repeats</span>
+}</code></pre>
+    <p class="cap">Upload this and the LED blinks once per second. This is Quentin's <code>blink_RP2040</code> in miniature.</p>
+
+    <div class="gotcha"><b>Active-low LED — a real datasheet gotcha</b>On the XIAO RP2040 the built-in RGB LED is wired <b>active-low</b>: the pin must be pulled <code>LOW</code> to turn the LED <em>on</em>, and <code>HIGH</code> turns it <em>off</em>. That's the opposite of a classic Arduino Uno. The core also gives you <code>LED_RED</code>, <code>LED_GREEN</code>, <code>LED_BLUE</code> (each active-low) if you want color. Always confirm polarity from the schematic — this is exactly the kind of detail the datasheet exercise trains you to check.</div>
+
+    <h3>What HIGH and LOW really are</h3>
+    <p>These aren't magic words — they map to voltages. From the RP2040 datasheet you already read: at 3.3&nbsp;V logic, <code>HIGH</code> ≈ 3.3&nbsp;V and <code>LOW</code> ≈ 0&nbsp;V, and an input reads anything above ~2&nbsp;V as HIGH. <code>digitalWrite(pin, HIGH)</code> literally connects that pin to 3.3&nbsp;V.</p>
+
+    <div class="try"><b>Try it</b>Change both <code>500</code>s to <code>100</code>. What happens? Now change one to <code>100</code> and the other to <code>900</code>. You've just built a duty cycle — the seed of PWM (Module 5's cousin).</div>
+
+    <div class="quiz" data-quiz="m4">
+      <h3>Check yourself</h3>
+      <p class="sub">3 questions</p>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q1</span>Which function configures a pin as an output, and where does it go?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>digitalWrite()</code>, in <code>loop()</code>.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>pinMode(pin, OUTPUT)</code>, in <code>setup()</code>.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>delay()</code>, in <code>setup()</code>.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span><code>Serial.begin()</code>, in <code>loop()</code>.</span></li>
+        </ul>
+        <div class="explain"><code>pinMode(pin, OUTPUT)</code> sets the pin's direction, and it belongs in <code>setup()</code> since it's a one-time configuration.</div>
+      </div>
+      <div class="q" data-answer="D">
+        <p class="q-text"><span class="qn">Q2</span>On the XIAO RP2040's active-low built-in LED, which call turns the LED <b>on</b>?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>digitalWrite(LED_BUILTIN, HIGH);</code></span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>pinMode(LED_BUILTIN, HIGH);</code></span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>delay(LED_BUILTIN);</code></span></li>
+          <li data-opt="D"><span class="lbl">D</span><span><code>digitalWrite(LED_BUILTIN, LOW);</code></span></li>
+        </ul>
+        <div class="explain">Active-low means LOW = on. This is a board-specific quirk — on an Uno it'd be the opposite, which is why you check the schematic.</div>
+      </div>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q3</span><code>delay(2000)</code> pauses for how long?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>2000 seconds.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>20 seconds.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>2 seconds.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>0.2 seconds.</span></li>
+        </ul>
+        <div class="explain"><code>delay()</code> takes milliseconds. 2000&nbsp;ms ÷ 1000 = 2&nbsp;seconds.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 5 ============================= -->
+  <section class="mod" id="m5">
+    <div class="mod-num">Module 5</div>
+    <h2>Timing: <code>delay()</code> vs. <code>millis()</code></h2>
+    <p><code>delay()</code> is simple but has a hidden cost: while the chip is delaying, it can do <b>nothing else</b> — it's frozen. If a finger touches a pad during <code>delay(500)</code>, you'll miss it. For a blinking light that's fine; for a responsive instrument it's fatal.</p>
+
+    <h3>The blocking problem</h3>
+<pre><code><span class="fn">digitalWrite</span>(LED_BUILTIN, LOW);
+<span class="fn">delay</span>(<span class="num">1000</span>);   <span class="cm">// ← board is asleep here. Can't read touch, can't update OLED.</span></code></pre>
+
+    <h3>The non-blocking pattern: <code>millis()</code></h3>
+    <p><code>millis()</code> returns the number of milliseconds since the board powered on — a clock that keeps ticking. Instead of <em>waiting</em>, you <em>check the clock</em> and act when enough time has passed:</p>
+<pre><code><span class="kw">unsigned</span> <span class="kw">long</span> lastBlink = <span class="num">0</span>;   <span class="cm">// global: remembers when we last toggled</span>
+<span class="kw">bool</span> ledOn = <span class="kw">false</span>;
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">unsigned</span> <span class="kw">long</span> now = <span class="fn">millis</span>();
+
+  <span class="kw">if</span> (now - lastBlink &gt;= <span class="num">500</span>) {   <span class="cm">// has 500 ms passed?</span>
+    ledOn = !ledOn;                    <span class="cm">// flip the state (! means "not")</span>
+    <span class="fn">digitalWrite</span>(LED_BUILTIN, ledOn ? LOW : HIGH);
+    lastBlink = now;                   <span class="cm">// remember this moment</span>
+  }
+
+  <span class="cm">// ...meanwhile the loop keeps spinning, free to read touch pads!</span>
+}</code></pre>
+    <p class="cap">The LED still blinks every 500&nbsp;ms, but the loop never stalls — it can do other work on every pass.</p>
+
+    <div class="note"><b>Rule of thumb</b>Learning / one thing at a time → <code>delay()</code> is fine. Doing several things "at once" (blink + sense + display) → <code>millis()</code>. <code>millis()</code> is the single most important step from toy sketches to real embedded programs.</div>
+
+    <p><code>unsigned long</code> is used because time only counts up and gets large (it rolls over after ~49 days). The <code>?&nbsp;:</code> is the <b>ternary</b> operator: <code>condition ? valueIfTrue : valueIfFalse</code> — a one-line if.</p>
+
+    <div class="quiz" data-quiz="m5">
+      <h3>Check yourself</h3>
+      <p class="sub">2 questions</p>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q1</span>What is the main drawback of <code>delay()</code>?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>It uses too much memory.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>It blocks — the board can't do anything else while it waits.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>It only works inside <code>setup()</code>.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>It's less accurate than a stopwatch app.</span></li>
+        </ul>
+        <div class="explain"><code>delay()</code> halts the whole program for its duration, so inputs during that window are missed.</div>
+      </div>
+      <div class="q" data-answer="A">
+        <p class="q-text"><span class="qn">Q2</span>What does <code>millis()</code> return?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>Milliseconds elapsed since the board powered on.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>The current time of day.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>How many milliseconds to wait.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>The loop number.</span></li>
+        </ul>
+        <div class="explain">It's a free-running counter of milliseconds since boot. You compare it against a saved timestamp to schedule actions without blocking.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 6 ============================= -->
+  <section class="mod" id="m6">
+    <div class="mod-num">Module 6</div>
+    <h2>Serial: talking to your laptop</h2>
+    <p>The Serial Monitor is your window into the board. Since there's no screen or console by default, <code>Serial.print</code> is how you see values and debug — you already used it to watch the touch counts climb.</p>
+
+    <h3>Starting Serial and printing</h3>
+<pre><code><span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="fn">Serial</span>.<span class="fn">begin</span>(<span class="num">115200</span>);   <span class="cm">// open the serial link at 115200 baud</span>
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="fn">Serial</span>.<span class="fn">print</span>(<span class="str">"count = "</span>);   <span class="cm">// print, stay on same line</span>
+  <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="num">42</span>);         <span class="cm">// print, then move to a NEW line</span>
+  <span class="fn">delay</span>(<span class="num">1000</span>);
+}</code></pre>
+    <p class="cap">Open <b>Tools → Serial Monitor</b> and set the baud to match (115200). You'll see <code>count = 42</code> once a second.</p>
+
+    <ul>
+      <li><code>Serial.begin(baud)</code> — start the link. <b>Baud</b> is the speed; the Monitor's setting must match, or you'll see garbage. 9600 and 115200 are the common values (the XIAO handles 115200 easily).</li>
+      <li><code>Serial.print(x)</code> — send text or a number, no newline.</li>
+      <li><code>Serial.println(x)</code> — same, plus a newline (the <code>ln</code>).</li>
+    </ul>
+
+    <div class="gotcha"><b>Native USB timing</b>The XIAO RP2040 has native USB, so the serial port can take a moment to enumerate after upload. If you want to guarantee you see the first messages, you can wait for the port in <code>setup()</code> with <code>while(!Serial){}</code> — but only add that if the board will always be connected to a computer, or it will hang when running standalone.</div>
+
+    <h3>Formatting a whole row (like the touch demo)</h3>
+<pre><code><span class="fn">Serial</span>.<span class="fn">print</span>(pad0);
+<span class="fn">Serial</span>.<span class="fn">print</span>(<span class="str">"\t"</span>);   <span class="cm">// \t = a tab, lines the columns up</span>
+<span class="fn">Serial</span>.<span class="fn">print</span>(pad1);
+<span class="fn">Serial</span>.<span class="fn">println</span>();      <span class="cm">// end the row</span></code></pre>
+    <p>That's exactly the shape of Quentin's touch sketch output: one number per pad, tab-separated, one row per loop.</p>
+
+    <div class="quiz" data-quiz="m6">
+      <h3>Check yourself</h3>
+      <p class="sub">3 questions</p>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q1</span>The Serial Monitor shows garbled characters. Most likely cause?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>The LED is active-low.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>You used <code>print</code> instead of <code>println</code>.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>The Monitor's baud rate doesn't match <code>Serial.begin()</code>.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>You forgot <code>pinMode</code>.</span></li>
+        </ul>
+        <div class="explain">Baud mismatch = garbage. If your sketch says <code>Serial.begin(115200)</code>, set the Monitor to 115200 too.</div>
+      </div>
+      <div class="q" data-answer="A">
+        <p class="q-text"><span class="qn">Q2</span>Difference between <code>Serial.print</code> and <code>Serial.println</code>?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>println</code> adds a newline at the end; <code>print</code> does not.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>println</code> is faster.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>print</code> only works with numbers.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>No difference.</span></li>
+        </ul>
+        <div class="explain">The <code>ln</code> = line: <code>println</code> moves the cursor to a new line after printing, so each entry lands on its own row.</div>
+      </div>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q3</span>Where should <code>Serial.begin(115200)</code> go?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>In <code>loop()</code>, so it restarts each pass.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>In <code>setup()</code>, once.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>It's not needed to print.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Outside both functions.</span></li>
+        </ul>
+        <div class="explain">Opening the serial link is one-time setup. Calling it every loop would needlessly re-initialize the port.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 7 ============================= -->
+  <section class="mod" id="m7">
+    <div class="mod-num">Module 7</div>
+    <h2>Control flow: <code>if</code> / <code>else</code> &amp; logic</h2>
+    <p>Decisions are how a program reacts. "If the touch count is above the threshold, treat the pad as pressed."</p>
+
+<pre><code><span class="kw">if</span> (count &gt; TOUCH_THRESHOLD) {
+  <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"pressed!"</span>);
+} <span class="kw">else</span> {
+  <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"not pressed"</span>);
+}</code></pre>
+
+    <h3>Comparison operators</h3>
+    <ul>
+      <li><code>==</code> equal to &nbsp;·&nbsp; <code>!=</code> not equal to</li>
+      <li><code>&gt;</code> greater &nbsp;·&nbsp; <code>&lt;</code> less &nbsp;·&nbsp; <code>&gt;=</code> greater-or-equal &nbsp;·&nbsp; <code>&lt;=</code> less-or-equal</li>
+    </ul>
+    <p>Each of these produces a <code>bool</code> — <code>true</code> or <code>false</code>. That's what <code>if</code> tests.</p>
+
+    <h3>Combining conditions</h3>
+    <ul>
+      <li><code>&amp;&amp;</code> — AND (both must be true)</li>
+      <li><code>||</code> — OR (either can be true)</li>
+      <li><code>!</code> — NOT (flips true↔false)</li>
+    </ul>
+<pre><code><span class="kw">if</span> (pad0 &gt; THRESH &amp;&amp; pad1 &gt; THRESH) {
+  <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"two-finger chord"</span>);   <span class="cm">// both pads touched at once</span>
+}</code></pre>
+
+    <h3>Many branches: <code>else if</code></h3>
+<pre><code><span class="kw">if</span> (count &gt; <span class="num">100</span>) {
+  <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"hard press"</span>);
+} <span class="kw">else</span> <span class="kw">if</span> (count &gt; <span class="num">6</span>) {
+  <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"light touch"</span>);
+} <span class="kw">else</span> {
+  <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"nothing"</span>);
+}</code></pre>
+    <p>Branches are checked top to bottom; the first true one runs and the rest are skipped.</p>
+
+    <div class="gotcha"><b>The #1 logic bug, again</b><code>if (count = 6)</code> assigns 6 and is always "true." You want <code>if (count == 6)</code>. Some people write <code>if (6 == count)</code> so a typo'd <code>=</code> becomes a compile error instead of a silent bug.</div>
+
+    <div class="quiz" data-quiz="m7">
+      <h3>Check yourself</h3>
+      <p class="sub">3 questions</p>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q1</span>Which operator means "not equal to"?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>=/=</code></span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>&lt;&gt;</code></span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>!=</code></span></li>
+          <li data-opt="D"><span class="lbl">D</span><span><code>==</code></span></li>
+        </ul>
+        <div class="explain"><code>!=</code> is "not equal." <code>==</code> is "equal." The others aren't valid C++.</div>
+      </div>
+      <div class="q" data-answer="A">
+        <p class="q-text"><span class="qn">Q2</span>You want to act only when <b>both</b> pad0 and pad1 are pressed. Which operator?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>&amp;&amp;</code> (AND)</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>||</code> (OR)</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>!</code> (NOT)</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span><code>==</code></span></li>
+        </ul>
+        <div class="explain"><code>&amp;&amp;</code> requires both sides true. <code>||</code> would fire if <em>either</em> pad was pressed.</div>
+      </div>
+      <div class="q" data-answer="D">
+        <p class="q-text"><span class="qn">Q3</span>In an <code>if / else if / else</code> chain, how many branches run?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>All that are true.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>Always exactly two.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>The last one, always.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Only the first true branch (or <code>else</code> if none match).</span></li>
+        </ul>
+        <div class="explain">Evaluation stops at the first true condition. That's why order matters — put the most specific test first.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 8 ============================= -->
+  <section class="mod" id="m8">
+    <div class="mod-num">Module 8</div>
+    <h2>Loops: <code>for</code> &amp; <code>while</code></h2>
+    <p>Your board has six touch pads. You don't want to write the same code six times — you write it once and loop. (This is loops <em>inside</em> your program, distinct from the <code>loop()</code> function.)</p>
+
+    <h3>The <code>for</code> loop</h3>
+<pre><code><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">6</span>; i++) {
+  <span class="fn">Serial</span>.<span class="fn">print</span>(<span class="str">"pad "</span>);
+  <span class="fn">Serial</span>.<span class="fn">println</span>(i);
+}</code></pre>
+    <p>Three parts, separated by semicolons:</p>
+    <ol>
+      <li><code>int i = 0</code> — <b>start</b>: create counter <code>i</code> at 0.</li>
+      <li><code>i &lt; 6</code> — <b>condition</b>: keep going while true (runs for i = 0,1,2,3,4,5).</li>
+      <li><code>i++</code> — <b>step</b>: add 1 to <code>i</code> after each pass (<code>i++</code> is shorthand for <code>i = i + 1</code>).</li>
+    </ol>
+    <p>Result: the body runs 6 times, with <code>i</code> = 0 through 5. Starting at 0 (not 1) is a universal programming convention and matches how arrays are numbered (Module 11).</p>
+
+    <div class="gotcha"><b>Off-by-one</b><code>i &lt; 6</code> runs 6 times (0–5). <code>i &lt;= 6</code> runs 7 times (0–6) — usually a bug. Count the iterations, not the last value.</div>
+
+    <h3>The <code>while</code> loop</h3>
+    <p>Use <code>while</code> when you don't know the count in advance — "keep going <em>until</em> something happens." This is the heart of capacitive sensing: charge a pad and count loops until it reads HIGH.</p>
+<pre><code><span class="kw">int</span> ticks = <span class="num">0</span>;
+<span class="kw">while</span> (<span class="fn">digitalRead</span>(padPin) == LOW) {   <span class="cm">// until the pad charges to HIGH...</span>
+  ticks++;                              <span class="cm">// ...count how long it takes</span>
+}
+<span class="cm">// a finger adds capacitance → charges slower → higher tick count</span></code></pre>
+    <div class="gotcha"><b>Infinite loop</b>A <code>while</code> whose condition never becomes false runs forever and freezes the board. Make sure something inside can change the condition (here, the pad eventually charges).</div>
+
+    <div class="quiz" data-quiz="m8">
+      <h3>Check yourself</h3>
+      <p class="sub">3 questions</p>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q1</span>How many times does <code>for (int i = 0; i &lt; 6; i++)</code> run its body?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>5</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>7</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>6 (i = 0,1,2,3,4,5)</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Forever</span></li>
+        </ul>
+        <div class="explain">It runs while <code>i &lt; 6</code>, i.e. for i = 0 through 5 — six iterations.</div>
+      </div>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q2</span>What does <code>i++</code> do?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>Doubles <code>i</code>.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>Adds 1 to <code>i</code> (same as <code>i = i + 1</code>).</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>Compares <code>i</code> to 1.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Resets <code>i</code> to 0.</span></li>
+        </ul>
+        <div class="explain"><code>++</code> is the increment operator: increase by one. (<code>--</code> decreases by one.)</div>
+      </div>
+      <div class="q" data-answer="A">
+        <p class="q-text"><span class="qn">Q3</span>In the capacitive-sense <code>while</code> loop, why does a finger raise the count?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>The finger adds capacitance, so the pad charges slower and the loop counts more ticks before it reads HIGH.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>The finger increases the voltage instantly.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>The finger changes <code>THRESHOLD</code>.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>It doesn't; the count is random.</span></li>
+        </ul>
+        <div class="explain">Extra capacitance = slower charge = more loop passes before the pin crosses to HIGH. That tick count is your touch signal — exactly what you watched climb in the Serial Monitor.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 9 ============================= -->
+  <section class="mod" id="m9">
+    <div class="mod-num">Module 9</div>
+    <h2>Functions</h2>
+    <p>A function is a named, reusable block of code. You've been <em>calling</em> functions (<code>digitalWrite</code>, <code>delay</code>) since Module 4; now you'll <em>write</em> your own. This keeps <code>loop()</code> readable and avoids repetition.</p>
+
+<pre><code><span class="cm">// returns the tick-count for one pad</span>
+<span class="kw">int</span> <span class="fn">readPad</span>(<span class="kw">int</span> pin) {
+  <span class="kw">int</span> ticks = <span class="num">0</span>;
+  <span class="fn">pinMode</span>(pin, OUTPUT); <span class="fn">digitalWrite</span>(pin, LOW);   <span class="cm">// discharge</span>
+  <span class="fn">pinMode</span>(pin, INPUT);                             <span class="cm">// let it charge via pull-up</span>
+  <span class="kw">while</span> (<span class="fn">digitalRead</span>(pin) == LOW) ticks++;
+  <span class="kw">return</span> ticks;                                    <span class="cm">// hand the answer back</span>
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">int</span> t = <span class="fn">readPad</span>(<span class="num">2</span>);      <span class="cm">// call it — reuse the logic for any pad</span>
+  <span class="fn">Serial</span>.<span class="fn">println</span>(t);
+}</code></pre>
+    <p class="cap">One definition, called as many times as you like — for pad 2, pad 3, or all six in a loop.</p>
+
+    <h3>Reading a function signature</h3>
+    <p><code>int readPad(int pin)</code> unpacks as:</p>
+    <ul>
+      <li><code>int</code> (first) — the <b>return type</b>: it hands back an <code>int</code>. Use <code>void</code> if it returns nothing.</li>
+      <li><code>readPad</code> — the <b>name</b> you call.</li>
+      <li><code>(int pin)</code> — the <b>parameter</b>: an input you pass in, usable inside as <code>pin</code>.</li>
+      <li><code>return ticks;</code> — sends a value back to whoever called it.</li>
+    </ul>
+
+    <div class="note"><b>Why bother</b>Compare "read pad 2, read pad 3, read pad 4…" written out six times (copy-paste bugs waiting to happen) versus one <code>readPad()</code> called in a loop. Fix a bug once, and it's fixed everywhere. <code>setup()</code> and <code>loop()</code> are themselves just functions Arduino calls for you.</div>
+
+    <div class="quiz" data-quiz="m9">
+      <h3>Check yourself</h3>
+      <p class="sub">2 questions</p>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q1</span>In <code>int readPad(int pin)</code>, what is the first <code>int</code>?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>The parameter.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>The return type — the kind of value the function hands back.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>The function's name.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>An error.</span></li>
+        </ul>
+        <div class="explain">The leading type is what the function returns. Here it returns an <code>int</code> (the tick count) via <code>return</code>.</div>
+      </div>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q2</span>A function that just drives outputs and returns nothing should have which return type?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>int</code></span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>bool</code></span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>void</code></span></li>
+          <li data-opt="D"><span class="lbl">D</span><span><code>return</code></span></li>
+        </ul>
+        <div class="explain"><code>void</code> means "returns nothing" — which is why <code>setup()</code> and <code>loop()</code> are both <code>void</code>.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 10 ============================= -->
+  <section class="mod" id="m10">
+    <div class="mod-num">Module 10</div>
+    <h2>Digital input &amp; the touch pads</h2>
+    <p>Reading the world back in. The counterpart to <code>digitalWrite</code> is <code>digitalRead(pin)</code>, which returns <code>HIGH</code> or <code>LOW</code>.</p>
+
+    <h3>Input modes &amp; pull-ups</h3>
+    <p>An input pin left floating (connected to nothing) picks up noise and reads randomly. You need a known default, a <b>pull</b>. Two ways:</p>
+    <ul>
+      <li><code>pinMode(pin, INPUT)</code> — plain input; you supply an external resistor (like the <b>R4/R5 10k pull-ups</b> on your QPad's SDA/SCL lines).</li>
+      <li><code>pinMode(pin, INPUT_PULLUP)</code> — turns on the RP2040's <b>internal</b> pull-up resistor, so the pin idles HIGH with no external part. This is why the touch pads on your board need no components — the chip pulls them up internally.</li>
+    </ul>
+
+    <div class="note"><b>Connecting the datasheet</b>From the RP2040 datasheet you read: an input reads HIGH above ~2&nbsp;V and draws at most ~1&nbsp;µA of leakage. That tiny leakage is why a pull-up resistor can quietly hold a pin at 3.3&nbsp;V — the input barely loads it. Language and hardware meet exactly here.</div>
+
+    <h3>How capacitive touch works, in code</h3>
+    <p>There's no special "touch" function — it's built from primitives you already know. Discharge the pad LOW, switch to input, then count loops (a <code>while</code>) until the pull-up charges it to HIGH. A finger adds capacitance, slowing the charge, so the count rises:</p>
+<pre><code><span class="kw">int</span> <span class="fn">touchCount</span>(<span class="kw">int</span> pin) {
+  <span class="fn">pinMode</span>(pin, OUTPUT);
+  <span class="fn">digitalWrite</span>(pin, LOW);          <span class="cm">// drain any charge</span>
+  <span class="fn">pinMode</span>(pin, INPUT_PULLUP);       <span class="cm">// now it charges through the internal pull-up</span>
+  <span class="kw">int</span> n = <span class="num">0</span>;
+  <span class="kw">while</span> (<span class="fn">digitalRead</span>(pin) == LOW &amp;&amp; n &lt; <span class="num">1000</span>) n++;  <span class="cm">// count, with a safety cap</span>
+  <span class="kw">return</span> n;
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">int</span> n = <span class="fn">touchCount</span>(<span class="num">2</span>);
+  <span class="kw">if</span> (n &gt; TOUCH_THRESHOLD) <span class="fn">Serial</span>.<span class="fn">println</span>(<span class="str">"touched!"</span>);
+}</code></pre>
+    <p class="cap">Note the <code>n &lt; 1000</code> guard in the <code>while</code> — it prevents an infinite loop if the pad never charges. Real embedded code always bounds its loops.</p>
+
+    <div class="quiz" data-quiz="m10">
+      <h3>Check yourself</h3>
+      <p class="sub">3 questions</p>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q1</span>What does <code>digitalRead(pin)</code> return?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>A voltage in volts, like 3.3.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>HIGH</code> or <code>LOW</code>.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>The pin number.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>A float between 0 and 1.</span></li>
+        </ul>
+        <div class="explain"><code>digitalRead</code> is digital: two states only, HIGH or LOW. (For a continuous voltage you'd use <code>analogRead</code> on an ADC-capable pin.)</div>
+      </div>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q2</span>Why use <code>INPUT_PULLUP</code> for the touch pads?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>It makes the pin an output.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>It increases the LED brightness.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>It enables the chip's internal pull-up so the pad has a defined HIGH default with no external resistor.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>It's required for Serial.</span></li>
+        </ul>
+        <div class="explain">The internal pull-up gives the pad a known resting state and is what charges it — which is why the pads need no soldered components.</div>
+      </div>
+      <div class="q" data-answer="A">
+        <p class="q-text"><span class="qn">Q3</span>Why include <code>&amp;&amp; n &lt; 1000</code> in the <code>while</code> condition?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>As a safety cap, so the loop can't run forever and freeze the board if the pad never charges.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>To make the count exactly 1000 every time.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>To set the baud rate.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>It has no effect.</span></li>
+        </ul>
+        <div class="explain">It bounds the loop. Without a cap, a fault (pad stuck LOW) would hang the program. Defensive limits are standard practice in embedded code.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 11 ============================= -->
+  <section class="mod" id="m11">
+    <div class="mod-num">Module 11</div>
+    <h2>Arrays: handle all six pads</h2>
+    <p>An <b>array</b> is a numbered list of variables of the same type, under one name. Perfect for six pads.</p>
+
+<pre><code><span class="cm">// the GPIO pins wired to the six pads (example numbers)</span>
+<span class="kw">const</span> <span class="kw">int</span> padPins[<span class="num">6</span>] = { <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">26</span>, <span class="num">27</span> };
+<span class="kw">int</span> counts[<span class="num">6</span>];   <span class="cm">// room to store six results</span></code></pre>
+
+    <p>Access elements by <b>index</b>, starting at <b>0</b>:</p>
+<pre><code>padPins[<span class="num">0</span>]   <span class="cm">// → 1  (the FIRST element)</span>
+padPins[<span class="num">5</span>]   <span class="cm">// → 27 (the SIXTH / last element)</span></code></pre>
+
+    <div class="gotcha"><b>Zero-indexed</b>A 6-element array has indexes 0–5. There is no <code>padPins[6]</code> — reading it is "out of bounds" and gives garbage (or a crash). This is why <code>for</code> loops use <code>i &lt; 6</code>, not <code>i &lt;= 6</code>.</div>
+
+    <h3>Arrays + loops: the whole board in four lines</h3>
+<pre><code><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">6</span>; i++) {
+  counts[i] = <span class="fn">touchCount</span>(padPins[i]);   <span class="cm">// read pad i, store its count</span>
+  <span class="fn">Serial</span>.<span class="fn">print</span>(counts[i]);
+  <span class="fn">Serial</span>.<span class="fn">print</span>(<span class="str">"\t"</span>);
+}
+<span class="fn">Serial</span>.<span class="fn">println</span>();   <span class="cm">// end the row — this reproduces the touch demo's output</span></code></pre>
+    <p class="cap">This is the payoff of Modules 8, 9, and 11 together: array + loop + function reads and prints all six pads in a handful of lines instead of sixty.</p>
+
+    <div class="quiz" data-quiz="m11">
+      <h3>Check yourself</h3>
+      <p class="sub">2 questions</p>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q1</span>For <code>int padPins[6]</code>, what is the index of the <b>last</b> element?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>6</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>5</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>1</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>0</span></li>
+        </ul>
+        <div class="explain">Indexes start at 0, so a 6-element array runs 0–5. <code>padPins[6]</code> is out of bounds.</div>
+      </div>
+      <div class="q" data-answer="D">
+        <p class="q-text"><span class="qn">Q2</span>Why does the <code>for</code> loop over the pads use <code>i &lt; 6</code> rather than <code>i &lt;= 6</code>?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>It's just a style choice.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>&lt;=</code> is not allowed in a <code>for</code> loop.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>To make the loop run faster.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span><code>i &lt;= 6</code> would access <code>padPins[6]</code>, which is out of bounds (garbage/crash).</span></li>
+        </ul>
+        <div class="explain">Valid indexes are 0–5. <code>i &lt;= 6</code> would try index 6, reading past the end of the array — a classic off-by-one bug.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 12 ============================= -->
+  <section class="mod" id="m12">
+    <div class="mod-num">Module 12</div>
+    <h2>Libraries &amp; the OLED (I²C)</h2>
+    <p>You don't drive the OLED byte by byte — someone wrote a <b>library</b> for that. A library is reusable code you include and call. This is how you reuse the whole community's work.</p>
+
+    <h3>Including a library</h3>
+<pre><code><span class="cm">#include</span> <span class="str">&lt;Wire.h&gt;</span>               <span class="cm">// I²C communication (built in)</span>
+<span class="cm">#include</span> <span class="str">&lt;Adafruit_SSD1306.h&gt;</span>   <span class="cm">// the OLED driver (install via Library Manager)</span></code></pre>
+    <p><code>#include</code> pastes the library's declarations into your sketch (no semicolon — it's a preprocessor directive, like <code>#define</code>). You install libraries once via <b>Tools → Manage Libraries</b>.</p>
+
+    <h3>I²C = two wires, many devices</h3>
+    <p>The OLED talks over <b>I²C</b>: two shared lines, <b>SDA</b> (data) and <b>SCL</b> (clock). On your QPad those are GPIO6/GPIO7 (D4/D5), and R4/R5 are their required pull-ups. Each device has an <b>address</b> (the SSD1306 is usually <code>0x3C</code>) so several can share the same two wires.</p>
+
+<pre><code>Adafruit_SSD1306 display(<span class="num">128</span>, <span class="num">64</span>, &amp;Wire);   <span class="cm">// 128×64 px, using the Wire (I²C) bus</span>
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  display.<span class="fn">begin</span>(SSD1306_SWITCHCAPVCC, <span class="num">0x3C</span>);   <span class="cm">// start it at address 0x3C</span>
+  display.<span class="fn">clearDisplay</span>();
+  display.<span class="fn">setTextSize</span>(<span class="num">2</span>);
+  display.<span class="fn">setTextColor</span>(SSD1306_WHITE);
+  display.<span class="fn">setCursor</span>(<span class="num">0</span>, <span class="num">0</span>);
+  display.<span class="fn">println</span>(<span class="str">"Yui is cool!"</span>);
+  display.<span class="fn">display</span>();   <span class="cm">// nothing shows until you call display()!</span>
+}</code></pre>
+    <p class="cap">The object <code>display</code> bundles data + functions. <code>display.clearDisplay()</code> means "call clearDisplay on this display" — the dot is how you use a library object, exactly like <code>Serial.println</code>.</p>
+
+    <div class="gotcha"><b>Forgot the update</b>Library drawing calls (<code>println</code>, <code>drawPixel</code>…) only change an off-screen buffer. Nothing appears until <code>display.display()</code> pushes it to the screen. "My OLED is blank" is almost always a missing <code>display.display()</code>.</div>
+
+    <div class="note"><b>Objects &amp; the dot</b><code>Serial</code> and <code>display</code> are <em>objects</em>. The dot (<code>.</code>) calls a function that belongs to that object. You've used this since Module 6 — <code>Serial.begin</code>, <code>Serial.println</code> — it's the same pattern the OLED uses.</div>
+
+    <div class="quiz" data-quiz="m12">
+      <h3>Check yourself</h3>
+      <p class="sub">3 questions</p>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q1</span>What does <code>#include &lt;Wire.h&gt;</code> do?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>Declares a variable named Wire.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>Blinks the LED.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>Pulls in a library (here, the I²C library) so you can use its functions.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Uploads the sketch.</span></li>
+        </ul>
+        <div class="explain"><code>#include</code> brings a library's code into your sketch. <code>Wire</code> is Arduino's built-in I²C library.</div>
+      </div>
+      <div class="q" data-answer="A">
+        <p class="q-text"><span class="qn">Q2</span>Which two signals does I²C use?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>SDA (data) and SCL (clock).</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>TX and RX.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>HIGH and LOW.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>VCC and GND.</span></li>
+        </ul>
+        <div class="explain">I²C is a two-wire bus: SDA carries data, SCL the clock. On your QPad they're GPIO6/7 with R4/R5 as pull-ups.</div>
+      </div>
+      <div class="q" data-answer="D">
+        <p class="q-text"><span class="qn">Q3</span>You drew text but the OLED stays blank. Most likely fix?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>Call <code>Serial.begin()</code>.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>Add a <code>delay()</code>.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>Change the LED polarity.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Call <code>display.display()</code> to push the buffer to the screen.</span></li>
+        </ul>
+        <div class="explain">Drawing calls only write an in-memory buffer; <code>display.display()</code> actually renders it. Forgetting it is the most common OLED mistake.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <!-- ============================= MODULE 13 ============================= -->
+  <section class="mod" id="m13">
+    <div class="mod-num">Module 13</div>
+    <h2>Capstone: a touch instrument</h2>
+    <p>Everything so far, in one sketch. Read all six pads, and when one is touched, print which one and show it on the OLED — without ever blocking. Read it top to bottom and name the concept each line uses.</p>
+
+<pre><code><span class="cm">#include</span> <span class="str">&lt;Wire.h&gt;</span>
+<span class="cm">#include</span> <span class="str">&lt;Adafruit_SSD1306.h&gt;</span>
+
+<span class="kw">const</span> <span class="kw">int</span> padPins[<span class="num">6</span>] = { <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">26</span>, <span class="num">27</span> };  <span class="cm">// M11: array</span>
+<span class="kw">const</span> <span class="kw">int</span> TOUCH_THRESHOLD = <span class="num">6</span>;                          <span class="cm">// M3: named constant</span>
+Adafruit_SSD1306 display(<span class="num">128</span>, <span class="num">64</span>, &amp;Wire);              <span class="cm">// M12: library object</span>
+
+<span class="kw">int</span> <span class="fn">touchCount</span>(<span class="kw">int</span> pin) {                            <span class="cm">// M9: function</span>
+  <span class="fn">pinMode</span>(pin, OUTPUT); <span class="fn">digitalWrite</span>(pin, LOW);        <span class="cm">// M4: output</span>
+  <span class="fn">pinMode</span>(pin, INPUT_PULLUP);                          <span class="cm">// M10: input + pull-up</span>
+  <span class="kw">int</span> n = <span class="num">0</span>;
+  <span class="kw">while</span> (<span class="fn">digitalRead</span>(pin) == LOW &amp;&amp; n &lt; <span class="num">1000</span>) n++;   <span class="cm">// M8: bounded while</span>
+  <span class="kw">return</span> n;
+}
+
+<span class="kw">void</span> <span class="fn">setup</span>() {                                       <span class="cm">// M1: runs once</span>
+  <span class="fn">Serial</span>.<span class="fn">begin</span>(<span class="num">115200</span>);                             <span class="cm">// M6: serial</span>
+  display.<span class="fn">begin</span>(SSD1306_SWITCHCAPVCC, <span class="num">0x3C</span>);        <span class="cm">// M12: I2C address</span>
+  display.<span class="fn">setTextSize</span>(<span class="num">2</span>); display.<span class="fn">setTextColor</span>(SSD1306_WHITE);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {                                        <span class="cm">// M1: runs forever</span>
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">6</span>; i++) {                   <span class="cm">// M8/M11: loop over array</span>
+    <span class="kw">int</span> n = <span class="fn">touchCount</span>(padPins[i]);
+    <span class="kw">if</span> (n &gt; TOUCH_THRESHOLD) {                        <span class="cm">// M7: decision</span>
+      <span class="fn">Serial</span>.<span class="fn">print</span>(<span class="str">"pad "</span>); <span class="fn">Serial</span>.<span class="fn">println</span>(i);
+      display.<span class="fn">clearDisplay</span>(); display.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">0</span>);
+      display.<span class="fn">print</span>(<span class="str">"PAD "</span>); display.<span class="fn">println</span>(i);
+      display.<span class="fn">display</span>();                              <span class="cm">// M12: push to screen</span>
+    }
+  }
+}</code></pre>
+    <p class="cap">If you can explain every commented line, you've learned the Arduino language. This is a complete, real embedded program — input, logic, output, and communication, the exact goals of the HTMAA individual assignment.</p>
+
+    <div class="try"><b>Extend it (extra credit ideas)</b>
+      <ul style="margin:8px 0 0;">
+        <li>Light <code>LED_RED</code>/<code>LED_GREEN</code>/<code>LED_BLUE</code> a different color per pad.</li>
+        <li>Replace <code>delay</code>-based logic with a <code>millis()</code> timer so a message auto-clears after 1&nbsp;s (Module 5).</li>
+        <li>Detect a two-pad "chord" with <code>&amp;&amp;</code> (Module 7).</li>
+        <li>Add wireless: on an ESP32-C3 XIAO, print touches over Wi-Fi/BLE — the assignment's communication bonus.</li>
+      </ul>
+    </div>
+
+    <div class="quiz" data-quiz="m13">
+      <h3>Final check</h3>
+      <p class="sub">3 questions</p>
+      <div class="q" data-answer="C">
+        <p class="q-text"><span class="qn">Q1</span>In the capstone, why can it read all six pads responsively without a chord being missed?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>Because it uses long <code>delay()</code> calls.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>Because the OLED is fast.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>Because <code>loop()</code> re-reads every pad each pass with no blocking delays.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Because it uses <code>float</code> variables.</span></li>
+        </ul>
+        <div class="explain">The tight, non-blocking <code>loop()</code> re-scans all pads continuously. Add a big <code>delay()</code> and it would stall and miss touches — the Module 5 lesson.</div>
+      </div>
+      <div class="q" data-answer="B">
+        <p class="q-text"><span class="qn">Q2</span>Which single line, if deleted, would make the OLED stop updating (but Serial still works)?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span><code>Serial.begin(115200);</code></span></li>
+          <li data-opt="B"><span class="lbl">B</span><span><code>display.display();</code></span></li>
+          <li data-opt="C"><span class="lbl">C</span><span><code>return n;</code></span></li>
+          <li data-opt="D"><span class="lbl">D</span><span><code>pinMode(pin, INPUT_PULLUP);</code></span></li>
+        </ul>
+        <div class="explain">Without <code>display.display()</code> the drawing buffer never reaches the screen, so the OLED goes blank while Serial output continues.</div>
+      </div>
+      <div class="q" data-answer="D">
+        <p class="q-text"><span class="qn">Q3</span>Which HTMAA individual-assignment goals does this one sketch demonstrate?</p>
+        <ul class="opts">
+          <li data-opt="A"><span class="lbl">A</span><span>Only output.</span></li>
+          <li data-opt="B"><span class="lbl">B</span><span>Only reading a datasheet.</span></li>
+          <li data-opt="C"><span class="lbl">C</span><span>Only 3D printing.</span></li>
+          <li data-opt="D"><span class="lbl">D</span><span>Input (touch), output (OLED/serial), logic, and a path to communication — a program interacting with I/O devices.</span></li>
+        </ul>
+        <div class="explain">The assignment asks for a program that interacts with input/output devices (and ideally communication). Touch in, OLED/serial out, decisions in between — that's the whole loop.</div>
+      </div>
+      <div class="quizscore"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p><b>Where this maps in HTMAA.</b> This covers the <em>Arduino language</em> strand of the <a class="ext" href="https://academy.cba.mit.edu/classes/embedded_programming/index.html">embedded programming class</a>. For the group assignment (comparing toolchains) you'd contrast this Arduino workflow with MicroPython, the Pico&nbsp;SDK (C), or Rust on the same RP2040. For the individual assignment, the capstone is your program-interacting-with-I/O.</p>
+    <p><b>Next steps:</b> read the <a class="ext" href="https://www.arduino.cc/reference/en/">Arduino Language Reference</a>, then browse your <a class="ext" href="https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf">RP2040 datasheet</a> again — the pin, voltage, and pull-up sections will read very differently now.</p>
+    <p class="muted">Self-study page · built for Yui's HTMAA 2026 · Arduino examples target Seeed XIAO RP2040 / QPad. Pin numbers in array examples are placeholders — confirm against your board's schematic.</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var STORE = "arduino-wk3-progress";
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORE) || "{}"); } catch(e){ saved = {}; }
+
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll(".quiz"));
+  var totalQ = document.querySelectorAll(".q").length;
+
+  function save(){ try{ localStorage.setItem(STORE, JSON.stringify(saved)); }catch(e){} }
+
+  function answeredCount(){
+    var n = 0;
+    for (var k in saved){ if (saved.hasOwnProperty(k)) n += Object.keys(saved[k]).length; }
+    return n;
+  }
+
+  function updateDash(){
+    var done = answeredCount();
+    var pct = totalQ ? Math.round(done/totalQ*100) : 0;
+    document.getElementById("dashbar").style.width = pct + "%";
+    document.getElementById("dashpct").textContent = pct + "% complete";
+    document.getElementById("topprog").textContent = done + " / " + totalQ + " answered";
+  }
+
+  function scoreLine(quiz){
+    var qs = quiz.querySelectorAll(".q");
+    var right = 0, ans = 0;
+    qs.forEach(function(q){
+      if (q.classList.contains("answered")){
+        ans++;
+        if (q.dataset.correct === "1") right++;
+      }
+    });
+    var el = quiz.querySelector(".quizscore");
+    if (ans === 0){ el.textContent = ""; return; }
+    var msg = "score: " + right + " / " + qs.length;
+    if (ans === qs.length){ msg += right === qs.length ? "  ✓ perfect" : "  — review the ✗ items"; }
+    else { msg += "  (" + (qs.length - ans) + " left)"; }
+    el.textContent = msg;
+  }
+
+  function markAnswered(q, chosen){
+    var correct = q.dataset.answer;
+    q.classList.add("answered");
+    q.dataset.correct = (chosen === correct) ? "1" : "0";
+    var opts = q.querySelectorAll(".opts li");
+    opts.forEach(function(li){
+      var o = li.dataset.opt;
+      if (o === correct) li.classList.add("correct");
+      if (o === chosen && chosen !== correct) li.classList.add("wrong");
+    });
+    var exp = q.querySelector(".explain");
+    if (exp && !exp.querySelector(".verdict")){
+      var v = document.createElement("span");
+      var ok = (chosen === correct);
+      v.className = "verdict " + (ok ? "ok" : "no");
+      v.textContent = ok ? "Correct." : "Not quite.";
+      exp.insertBefore(v, exp.firstChild);
+    }
+  }
+
+  quizzes.forEach(function(quiz){
+    var qid = quiz.dataset.quiz;
+    if (!saved[qid]) saved[qid] = {};
+    var qEls = quiz.querySelectorAll(".q");
+
+    qEls.forEach(function(q, idx){
+      var key = "q" + idx;
+      // restore
+      if (saved[qid][key]){ markAnswered(q, saved[qid][key]); }
+
+      q.querySelectorAll(".opts li").forEach(function(li){
+        li.addEventListener("click", function(){
+          if (q.classList.contains("answered")) return;   // lock after first answer
+          var chosen = li.dataset.opt;
+          markAnswered(q, chosen);
+          saved[qid][key] = chosen;
+          save();
+          scoreLine(quiz);
+          updateDash();
+        });
+      });
+    });
+    scoreLine(quiz);
+  });
+
+  document.getElementById("resetbtn").addEventListener("click", function(){
+    if (!confirm("Clear all your quiz answers on this device?")) return;
+    saved = {};
+    try{ localStorage.removeItem(STORE); }catch(e){}
+    location.reload();
+  });
+
+  updateDash();
+})();
+</script>
+</body>
+</html>
