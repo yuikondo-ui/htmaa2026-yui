@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ポケット歳時記 — 基本季語700（Model B）</title>
+<style>
+  :root{
+    --ink:#1b1a17; --paper:#f7f4ec; --line:#d8d2c4; --red:#c6423c; --muted:#8a8577;
+    --mincho:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;
+    --gothic:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--gothic);}
+  body{padding:22px clamp(14px,3vw,40px) 80px;}
+  h1{font-family:var(--mincho);font-weight:600;font-size:clamp(22px,3vw,30px);margin:0 0 2px;letter-spacing:.04em;}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 18px;} .sub b{color:var(--ink);}
+  .layout{display:grid;grid-template-columns:minmax(340px,420px) 1fr;gap:28px;align-items:start;}
+  @media(max-width:880px){.layout{grid-template-columns:1fr;}}
+  .device{background:#20242b;border-radius:20px;padding:20px 20px 24px;box-shadow:0 10px 30px rgba(0,0,0,.18);}
+  .device .brand{color:#8fa0b3;font-family:var(--mincho);font-size:12px;letter-spacing:.3em;text-align:center;margin-bottom:12px;}
+  .screen-wrap{position:relative;width:100%;aspect-ratio:2/1;border-radius:8px;overflow:hidden;background:#05070a;border:2px solid #0c0f14;}
+  #oled{width:100%;height:100%;display:block;}
+  .scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0 3px,rgba(0,0,0,.12) 3px 4px);mix-blend-mode:multiply;}
+  .pads{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:10px;margin-top:18px;}
+  .pad{position:relative;border:none;border-radius:12px;background:#2c323b;color:#c7d0da;font-family:var(--gothic);
+       padding:12px 6px 10px;cursor:pointer;user-select:none;-webkit-user-select:none;transition:background .08s,transform .06s;
+       display:flex;flex-direction:column;align-items:center;gap:2px;}
+  .pad:hover{background:#3a424e;} .pad.on{background:var(--red);color:#fff;transform:translateY(1px);}
+  .pad .arw{font-size:20px;line-height:1;} .pad .nm{font-size:10.5px;opacity:.85;text-align:center;}
+  .pad .qn{position:absolute;top:5px;left:8px;font-size:9px;color:#6f7c8b;}
+  .pad.hidden{visibility:hidden;} .pad .ring{position:absolute;inset:4px;border-radius:9px;border:2px solid transparent;}
+  .hint{color:#8a94a1;font-size:11px;text-align:center;margin-top:12px;line-height:1.7;}
+  .hint kbd{background:#12151a;border:1px solid #333b45;border-radius:4px;padding:1px 5px;color:#c7d0da;}
+  .panel{min-height:520px;}
+  .tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+  .tab{font-size:13px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 16px;cursor:pointer;color:var(--ink);}
+  .tab.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .tools{margin-left:auto;display:flex;gap:6px;}
+  .tools button{font-size:12px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;cursor:pointer;color:var(--muted);}
+  .tools button:hover{color:var(--ink);}
+  .view{display:none;} .view.active{display:block;}
+  .art-wrap{background:#faf8f2;border:1px solid var(--line);border-radius:14px;padding:10px;}
+  #art{width:100%;height:auto;display:block;border-radius:8px;}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px;padding:0 6px;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;} .sw{width:14px;height:14px;border-radius:3px;display:inline-block;}
+  .stat{font-family:var(--mincho);font-size:14px;margin:10px 4px 0;}
+  .card-stage{display:flex;flex-direction:column;align-items:center;}
+  .card{width:100%;max-width:560px;aspect-ratio:1.6/1;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.06);padding:26px 30px;cursor:pointer;position:relative;font-family:var(--mincho);}
+  .card .front{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;}
+  .card .front .big{font-size:clamp(38px,7vw,64px);letter-spacing:.08em;} .card .front .yomi{color:var(--muted);font-size:16px;margin-top:14px;letter-spacing:.14em;}
+  .card .back{display:none;height:100%;flex-direction:column;} .card.flip .front{display:none;} .card.flip .back{display:flex;}
+  .card .meta{color:var(--red);font-size:13px;letter-spacing:.1em;margin-bottom:14px;font-family:var(--gothic);}
+  .card .desc{font-size:19px;line-height:1.8;}
+  .card .stamp{position:absolute;top:18px;right:20px;width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-family:var(--gothic);}
+  .card-nav{margin-top:16px;color:var(--muted);font-size:13px;} .card-nav b{color:var(--ink);}
+  .empty{color:var(--muted);text-align:center;padding:80px 20px;font-family:var(--mincho);font-size:16px;line-height:2;}
+  .foot{margin-top:26px;font-size:12px;color:var(--muted);line-height:1.8;max-width:70ch;}
+</style>
+</head>
+<body>
+  <h1>ポケット歳時記 <span style="font-size:.6em;color:var(--muted);">— 基本季語700</span></h1>
+  <p class="sub"><b>↑↓＝分類（7つのレンズ）</b>を選び、<b>←→＝その分類の季語を 春→冬 に歩く</b>。きごさい「基本季語700」より。<br>q0タップ＝説明／長押し＝採集、q5＝場所。歩いた跡と採集は右の曼荼羅とカードに。</p>
+
+  <div class="layout">
+    <div class="device">
+      <div class="brand">歳 時 記</div>
+      <div class="screen-wrap"><canvas id="oled" width="512" height="256"></canvas><div class="scan"></div></div>
+      <div class="pads">
+        <button class="pad hidden"></button>
+        <button class="pad" data-pad="1"><span class="qn">q1</span><span class="arw">▲</span><span class="nm">分類 上</span></button>
+        <button class="pad hidden"></button>
+        <button class="pad" data-pad="2"><span class="qn">q2</span><span class="arw">◀</span><span class="nm">前の季語</span></button>
+        <button class="pad" data-pad="5"><span class="qn">q5</span><span class="arw">－</span><span class="nm">場所</span></button>
+        <button class="pad" data-pad="3"><span class="qn">q3</span><span class="arw">▶</span><span class="nm">次の季語</span></button>
+        <button class="pad" data-pad="0"><span class="ring"></span><span class="qn">q0</span><span class="arw">＋</span><span class="nm">説明｜長押 採集</span></button>
+        <button class="pad" data-pad="4"><span class="qn">q4</span><span class="arw">▼</span><span class="nm">分類 下</span></button>
+        <button class="pad hidden"></button>
+      </div>
+      <p class="hint"><kbd>← →</kbd> 季語を歩く ・ <kbd>↑ ↓</kbd> 分類<br><kbd>i</kbd> 説明 ・ <kbd>o</kbd> 場所 ・ <kbd>Space</kbd> 採集</p>
+    </div>
+
+    <div class="panel">
+      <div class="tabs">
+        <button class="tab active" data-view="art">軌跡アート</button>
+        <button class="tab" data-view="cards">フラッシュカード <span id="cardCount">(0)</span></button>
+        <div class="tools"><button id="demoBtn">デモ散歩</button><button id="resetBtn">リセット</button></div>
+      </div>
+      <div class="view active" id="view-art">
+        <div class="art-wrap"><canvas id="art" width="1040" height="1040"></canvas></div>
+        <div class="legend">
+          <span><span class="sw" style="background:rgb(236,150,175)"></span>春</span>
+          <span><span class="sw" style="background:rgb(110,190,205)"></span>夏</span>
+          <span><span class="sw" style="background:rgb(222,148,70)"></span>秋</span>
+          <span><span class="sw" style="background:rgb(130,140,170)"></span>冬</span>
+          <span><span class="sw" style="background:rgb(200,175,120)"></span>新年</span>
+          <span>内側→外側＝時候…植物</span>
+          <span><span class="sw" style="background:var(--red);border-radius:50%"></span>採集</span>
+        </div>
+        <div class="stat" id="artStat"></div>
+      </div>
+      <div class="view" id="view-cards"><div class="card-stage" id="cardStage"></div></div>
+    </div>
+  </div>
+
+  <p class="foot">704語をこの器（72候×7マス）に1語ずつは入らないので、<b>分類ごとに年順で歩く（Model B）</b>方式。曼荼羅は 角度＝一年のどこ／半径＝分類。読み・解説はきごさい各ページから取得し、長い解説は要約（個人利用）。</p>
+
+<script src="pad-data.js"></script>
+<script>
+(function(){
+  const PAD = window.PAD;
+  const CATS = PAD.cats, ROWS = PAD.rows, SC = PAD.seasonColor;
+  const NROW = CATS.length;
+  const firstChar = s => s ? Array.from(s)[0] : "";
+
+  // ---- state ----
+  let row = 0, idx = 0, zoom = 0;      // zoom: -1 場所 / 0 語 / +1 説明
+  let track = [], saved = [], enteredAt = performance.now();
+  let holdTimer=null, holdStart=0, q0Fired=false, flash=0;
+  const rowLen = r => ROWS[r].length;
+  const cur = () => ROWS[row][Math.min(idx, rowLen(row)-1)];
+
+  // ---- OLED ----
+  const oled=document.getElementById("oled"), ox=oled.getContext("2d");
+  const OW=512, OH=256, FONT='"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif';
+  const GOTH='"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif';
+  const seasonCss = s => { const c=SC[s]||[200,200,200]; return `rgb(${c[0]},${c[1]},${c[2]})`; };
+  function fillBg(){ ox.fillStyle="#05070a"; ox.fillRect(0,0,OW,OH); }
+
+  function drawStatus(k){
+    ox.fillStyle=seasonCss(k.season); ox.fillRect(0,0,OW,34);
+    ox.fillStyle="#05070a"; ox.font=`600 20px ${FONT}`; ox.textBaseline="middle"; ox.textAlign="left";
+    ox.fillText(`${k.season} ${k.part}`, 12, 18);
+    ox.textAlign="right"; ox.fillText(`${CATS[row]}  ★${saved.length}`, OW-12, 18);
+  }
+  function drawBig(k, cx, cy){
+    const label=k.w||"──";
+    ox.fillStyle="#d7f0ff"; ox.textAlign="center"; ox.textBaseline="middle";
+    const n=Array.from(label).length, size=n>=6?38:(n>=4?50:(n===3?62:76));
+    ox.font=`600 ${size}px ${FONT}`; ox.fillText(label, cx, cy);
+  }
+  function drawNeighbors(){
+    ox.fillStyle="rgba(215,240,255,0.22)"; ox.textBaseline="middle";
+    const L=ROWS[row][(idx-1+rowLen(row))%rowLen(row)], R=ROWS[row][(idx+1)%rowLen(row)];
+    ox.font=`500 30px ${FONT}`;
+    ox.textAlign="left"; ox.fillText(firstChar(L.w), 8, OH/2+14);
+    ox.textAlign="right"; ox.fillText(firstChar(R.w), OW-8, OH/2+14);
+    // 上下の分類名
+    ox.font=`500 20px ${GOTH}`; ox.textAlign="center";
+    if(row>0) ox.fillText(CATS[row-1], OW/2, 52);
+    if(row<NROW-1) ox.fillText(CATS[row+1], OW/2, OH-18);
+  }
+  function drawSub(k){ if(!k.y) return; ox.fillStyle="rgba(215,240,255,0.7)"; ox.textAlign="center"; ox.font=`500 22px ${FONT}`; ox.fillText(k.y, OW/2, OH-30); }
+  function wrapJP(text,x,y,maxW,lineH){
+    let line=""; for(const ch of Array.from(text||"")){ if(ox.measureText(line+ch).width>maxW && line){ ox.fillText(line,x,y); y+=lineH; line=ch; } else line+=ch; }
+    if(line) ox.fillText(line,x,y); return y+lineH;
+  }
+  function drawExplain(k){
+    ox.textAlign="left"; ox.textBaseline="top";
+    ox.fillStyle="#d7f0ff"; ox.font=`600 38px ${FONT}`; ox.fillText(k.w, 14, 40);
+    ox.fillStyle="rgba(215,240,255,0.55)"; ox.font=`500 18px ${FONT}`; ox.fillText(k.y||"", 16, 88);
+    if(k.d){ ox.fillStyle="rgba(215,240,255,0.92)"; ox.font=`500 22px ${FONT}`; wrapJP(k.d,14,120,OW-28,30); }
+  }
+  function drawPlace(k){
+    // 一年の帯（5季）＋現在地
+    const x0=30,y0=90,w=OW-60,h=40;
+    for(let i=0;i<4;i++){ const c=SC[["春","夏","秋","冬"][i]]; ox.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},0.30)`; ox.fillRect(x0+w*i/4,y0,w/4,h); }
+    ox.strokeStyle="rgba(215,240,255,0.4)"; ox.strokeRect(x0,y0,w,h);
+    const px=x0+k.frac*w;
+    ox.strokeStyle="#d7f0ff"; ox.beginPath(); ox.moveTo(px,y0-8); ox.lineTo(px,y0+h+8); ox.stroke();
+    ox.fillStyle="#d7f0ff"; ox.beginPath(); ox.arc(px,y0+h/2,6,0,Math.PI*2); ox.fill();
+    ox.fillStyle="rgba(215,240,255,0.85)"; ox.textAlign="center"; ox.textBaseline="middle"; ox.font=`500 22px ${FONT}`;
+    ox.fillText(`${k.w}  ·  ${k.season}${k.part} · ${CATS[row]}`, OW/2, 44);
+    ox.font=`500 16px ${GOTH}`; ox.fillText(`${idx+1} / ${rowLen(row)}`, OW/2, y0+h+30);
+  }
+  function drawContent(k){
+    drawStatus(k);
+    if(zoom===1) drawExplain(k);
+    else if(zoom===-1) drawPlace(k);
+    else { drawNeighbors(); drawBig(k, OW/2, OH/2+6); drawSub(k); }
+  }
+  function drawOled(){
+    fillBg(); drawContent(cur());
+    if(flash>0){ ox.fillStyle=`rgba(255,255,255,${flash})`; ox.fillRect(0,0,OW,OH); flash-=0.08; requestAnimationFrame(drawOled); }
+  }
+
+  // ---- slide (←→ / ↑↓) ----
+  const slide={axis:null,off:0,sign:1,prev:null}; let sliding=false;
+  function drawSlideFrame(){
+    fillBg(); const k=cur(); drawStatus(k);
+    let cx=OW/2,cy=OH/2+6,px=cx,py=cy;
+    if(slide.axis==='x'){ cx=OW/2+slide.off; px=cx-slide.sign*OW; } else { cy=OH/2+6+slide.off; py=cy-slide.sign*OH; }
+    if(slide.prev) drawBig(slide.prev,px,py); drawBig(k,cx,cy);
+  }
+  function animateSlide(){ if(!slide.axis){sliding=false;return;} slide.off*=0.6;
+    if(Math.abs(slide.off)<2){slide.axis=null;slide.prev=null;slide.off=0;sliding=false;drawOled();return;} drawSlideFrame(); requestAnimationFrame(animateSlide); }
+
+  // ---- zoom pop ----
+  let zoomRAF=null;
+  function animateZoom(dir){ cancelAnimationFrame(zoomRAF); const k=cur(); const from=dir>0?0.86:1.12; let t=0;
+    const step=()=>{ t=Math.min(1,t+0.22); const s=from+(1-from)*t,a=0.25+0.75*t; fillBg(); ox.save(); ox.globalAlpha=a; ox.translate(OW/2,OH/2); ox.scale(s,s); ox.translate(-OW/2,-OH/2); drawContent(k); ox.restore(); if(t<1) zoomRAF=requestAnimationFrame(step); else drawOled(); };
+    step(); }
+  function setZoom(z){ const nz=Math.max(-1,Math.min(1,z)); if(nz===zoom) return; const dir=nz-zoom; zoom=nz; animateZoom(dir); }
+
+  // ---- logging / move / save ----
+  function logEvent(ev){ const now=performance.now(); const k=cur(); track.push({ev,row,frac:k.frac,t:now,dwell:now-enteredAt}); enteredAt=now; }
+  function moveIdx(d){ const pk=cur(); logEvent('M'); idx=(idx+d+rowLen(row))%rowLen(row);
+    if(zoom===0){ slide.prev=pk; slide.axis='x'; slide.sign=Math.sign(d); slide.off=Math.sign(d)*OW; if(!sliding){sliding=true;requestAnimationFrame(animateSlide);} else drawSlideFrame(); }
+    else drawOled();
+    drawArt(); updateArtStat(); }
+  function moveRow(d){ const pk=cur(); logEvent('M'); row=(row+d+NROW)%NROW; if(idx>rowLen(row)-1) idx=rowLen(row)-1;
+    if(zoom===0){ slide.prev=pk; slide.axis='y'; slide.sign=Math.sign(d); slide.off=Math.sign(d)*OH; if(!sliding){sliding=true;requestAnimationFrame(animateSlide);} else drawSlideFrame(); }
+    else drawOled();
+    drawArt(); updateArtStat(); }
+  function zoomIn(){ setZoom(zoom+1); } function zoomOut(){ setZoom(zoom-1); }
+  function doSave(){ const k=cur(); logEvent('S'); const now=new Date();
+    saved.push({...k, cat:CATS[row], date:`${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`, dwell:performance.now()-enteredAt});
+    flash=0.9; cardIndex=saved.length-1; cardFlipped=false; drawOled(); drawArt(); renderCards(); updateCardCount(); updateArtStat(); }
+
+  // ---- pads ----
+  const padEls={};
+  document.querySelectorAll(".pad[data-pad]").forEach(el=>{ const id=+el.dataset.pad; padEls[id]=el;
+    const dn=e=>{e.preventDefault();padDown(id);}, up=e=>{e.preventDefault();padUp(id);};
+    el.addEventListener("mousedown",dn); el.addEventListener("touchstart",dn,{passive:false});
+    el.addEventListener("mouseup",up); el.addEventListener("mouseleave",up); el.addEventListener("touchend",up,{passive:false}); });
+  const rep={};
+  function actPad(id){ if(id===1)moveRow(-1); else if(id===4)moveRow(1); else if(id===2)moveIdx(-1); else if(id===3)moveIdx(1); }
+  function padDown(id){ padEls[id]?.classList.add("on");
+    if(id===0){ q0Fired=false; holdStart=performance.now(); padEls[0].classList.add("saving");
+      holdTimer=setInterval(()=>{ const p=Math.min(1,(performance.now()-holdStart)/400); padEls[0].querySelector(".ring").style.borderColor=`rgba(255,210,122,${0.3+0.7*p})`;
+        if(p>=1){ clearInterval(holdTimer); holdTimer=null; q0Fired=true; doSave(); padEls[0].classList.remove("saving"); } },16);
+    } else if(id===5){ zoomOut(); }
+    else { actPad(id); rep[id]=setInterval(()=>actPad(id),220); } }
+  function padUp(id){ padEls[id]?.classList.remove("on");
+    if(id===0){ if(holdTimer){clearInterval(holdTimer);holdTimer=null;} padEls[0].classList.remove("saving"); padEls[0].querySelector(".ring").style.borderColor="transparent"; if(!q0Fired) zoomIn(); }
+    if(rep[id]){ clearInterval(rep[id]); rep[id]=null; } }
+
+  // ---- keyboard ----
+  let spaceHeld=false;
+  document.addEventListener("keydown",e=>{
+    const cards=document.getElementById("view-cards").classList.contains("active");
+    if(cards && ["ArrowLeft","ArrowRight"].includes(e.key)) return;
+    if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," "].includes(e.key)) e.preventDefault();
+    switch(e.key){
+      case "ArrowLeft": padEls[2].classList.add("on"); moveIdx(-1); break;
+      case "ArrowRight": padEls[3].classList.add("on"); moveIdx(1); break;
+      case "ArrowUp": padEls[1].classList.add("on"); moveRow(-1); break;
+      case "ArrowDown": padEls[4].classList.add("on"); moveRow(1); break;
+      case "i": case "I": zoomIn(); break;
+      case "o": case "O": zoomOut(); break;
+      case " ": if(!spaceHeld){spaceHeld=true; doSave();} break;
+    }
+  });
+  document.addEventListener("keyup",e=>{ [1,2,3,4].forEach(i=>{ const m={1:"ArrowUp",2:"ArrowLeft",3:"ArrowRight",4:"ArrowDown"}; if(e.key===m[i]) padEls[i].classList.remove("on"); }); if(e.key===" ") spaceHeld=false; });
+
+  // ---- ART: 曼荼羅 ----
+  const art=document.getElementById("art"), ax=art.getContext("2d");
+  const AW=1040,AH=1040,ACX=AW/2,ACY=AH/2,R_IN=150,R_OUT=470;
+  function polar(frac,r){ const a=frac*Math.PI*2-Math.PI/2; const rad=R_IN+(r/(NROW-1))*(R_OUT-R_IN); return [ACX+Math.cos(a)*rad, ACY+Math.sin(a)*rad]; }
+  function drawArt(){
+    ax.clearRect(0,0,AW,AH); ax.fillStyle="#faf8f2"; ax.fillRect(0,0,AW,AH);
+    for(const [nm,i] of [["春",0],["夏",1],["秋",2],["冬",3]]){ const a0=(i/4)*Math.PI*2-Math.PI/2, a1=((i+1)/4)*Math.PI*2-Math.PI/2; const c=SC[nm];
+      ax.beginPath(); ax.moveTo(ACX,ACY); ax.arc(ACX,ACY,R_OUT+30,a0,a1); ax.closePath(); ax.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},0.10)`; ax.fill(); }
+    ax.strokeStyle="rgba(0,0,0,0.10)"; for(let r=0;r<NROW;r++){ const rad=R_IN+(r/(NROW-1))*(R_OUT-R_IN); ax.beginPath(); ax.arc(ACX,ACY,rad,0,Math.PI*2); ax.stroke(); }
+    // 分類名
+    ax.fillStyle="rgba(0,0,0,0.5)"; ax.font='600 18px "Hiragino Kaku Gothic ProN",sans-serif'; ax.textAlign="center"; ax.textBaseline="middle";
+    for(let r=0;r<NROW;r++){ const A=-Math.PI/2+0.28, rad=R_IN+(r/(NROW-1))*(R_OUT-R_IN); ax.fillText(CATS[r], ACX+Math.cos(A)*rad, ACY+Math.sin(A)*rad); }
+    // 全語ノード
+    for(let r=0;r<NROW;r++) for(const k of ROWS[r]){ const [x,y]=polar(k.frac,r); const c=SC[k.season]||[120,120,120];
+      ax.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},0.5)`; ax.beginPath(); ax.arc(x,y,3.2,0,Math.PI*2); ax.fill(); }
+    // 軌跡
+    ax.lineCap="round"; ax.lineJoin="round";
+    for(let i=1;i<track.length;i++){ const a=track[i-1],b=track[i]; const [x1,y1]=polar(a.frac,ROWfromEvent(a)),[x2,y2]=polar(b.frac,ROWfromEvent(b));
+      const c=seasonAt(b.frac); ax.strokeStyle=`rgba(${c[0]},${c[1]},${c[2]},0.5)`; ax.lineWidth=Math.max(1.2,Math.min(12,Math.sqrt(b.dwell)/6));
+      const mx=(x1+x2)*0.42+ACX*0.16,my=(y1+y2)*0.42+ACY*0.16; ax.beginPath(); ax.moveTo(x1,y1); ax.quadraticCurveTo(mx,my,x2,y2); ax.stroke(); }
+    for(const t of track.filter(t=>t.ev==='S')){ const [x,y]=polar(t.frac,ROWfromEvent(t)); ax.fillStyle="rgba(198,52,48,0.92)"; ax.beginPath(); ax.arc(x,y,10,0,Math.PI*2); ax.fill(); ax.fillStyle="#faf8f2"; ax.beginPath(); ax.arc(x,y,4,0,Math.PI*2); ax.fill(); }
+    const k=cur(); const [cx,cy]=polar(k.frac,row); ax.strokeStyle="rgba(27,26,23,0.85)"; ax.lineWidth=2;
+    ax.beginPath(); ax.arc(cx,cy,14,0,Math.PI*2); ax.stroke(); ax.beginPath(); ax.moveTo(cx-9,cy); ax.lineTo(cx+9,cy); ax.moveTo(cx,cy-9); ax.lineTo(cx,cy+9); ax.stroke();
+    ax.fillStyle="rgba(27,26,23,0.55)"; ax.textAlign="center"; ax.textBaseline="middle"; ax.font='600 26px "Hiragino Mincho ProN",serif'; ax.fillText("歳", ACX, ACY-16); ax.fillText("時記", ACX, ACY+18);
+  }
+  function ROWfromEvent(e){ return e.row!==undefined ? e.row : row; }
+  function seasonAt(frac){ const n=["春","夏","秋","冬"][Math.min(3,Math.floor(frac*4))]; return SC[n]||[80,80,80]; }
+  function updateArtStat(){ const picks=track.filter(t=>t.ev==='S').length; const k=cur();
+    document.getElementById("artStat").textContent=`分類：${CATS[row]}（${idx+1}/${rowLen(row)}）　採集 ${picks}語　現在：${k.w}・${k.season}${k.part}`; }
+
+  // store row in track for art
+  const _log=logEvent; // (logEvent already pushes row)
+
+  // ---- cards ----
+  let cardIndex=0, cardFlipped=false;
+  function updateCardCount(){ document.getElementById("cardCount").textContent=`(${saved.length})`; }
+  function renderCards(){ const st=document.getElementById("cardStage");
+    if(!saved.length){ st.innerHTML='<div class="empty">まだ採集していません。<br>気になる季語で <b>q0 を長押し</b>すると札がたまります。</div>'; return; }
+    cardIndex=Math.max(0,Math.min(saved.length-1,cardIndex)); const c=saved[cardIndex];
+    st.innerHTML=`<div class="card${cardFlipped?' flip':''}" id="theCard"><div class="stamp">採</div>
+      <div class="front"><div class="big">${c.w}</div><div class="yomi">${c.y||""}</div></div>
+      <div class="back"><div class="meta">${c.season}｜${c.part}｜${c.cat}</div><div class="desc">${c.d||"（解説なし）"}</div>
+      <div class="meta" style="margin-top:14px;color:var(--muted)">採集 ${c.date}　滞在 ${(c.dwell/1000).toFixed(1)}秒</div></div></div>
+      <div class="card-nav"><b>${cardIndex+1}</b> / ${saved.length}　← → めくる　クリックで裏返す</div>`;
+    document.getElementById("theCard").addEventListener("click",()=>{cardFlipped=!cardFlipped;renderCards();}); }
+  document.addEventListener("keydown",e=>{ if(!document.getElementById("view-cards").classList.contains("active")||!saved.length) return;
+    if(e.key==="ArrowRight"){e.preventDefault();cardIndex=(cardIndex+1)%saved.length;cardFlipped=false;renderCards();}
+    if(e.key==="ArrowLeft"){e.preventDefault();cardIndex=(cardIndex-1+saved.length)%saved.length;cardFlipped=false;renderCards();} },true);
+
+  // ---- tabs / tools ----
+  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active")); document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active"); document.getElementById("view-"+t.dataset.view).classList.add("active");
+    if(t.dataset.view==="cards") renderCards(); else drawArt(); }));
+  document.getElementById("resetBtn").addEventListener("click",()=>{ track=[];saved=[];row=0;idx=0;zoom=0;enteredAt=performance.now();cardIndex=0; drawOled();drawArt();updateArtStat();renderCards();updateCardCount(); });
+  document.getElementById("demoBtn").addEventListener("click",()=>{ track=[];saved=[];enteredAt=performance.now(); let t=performance.now();
+    // 各分類を1つずつ巡り、途中で採集
+    for(let r=0;r<NROW;r++){ const L=rowLen(r); const steps=8; for(let s=0;s<steps;s++){ const ii=Math.floor(s/steps*L); const k=ROWS[r][ii]; t+=300+Math.random()*900; track.push({ev:'M',row:r,frac:k.frac,t,dwell:300+Math.random()*900}); if(s%3===1){ t+=800; track.push({ev:'S',row:r,frac:k.frac,t,dwell:800}); saved.push({...k,cat:CATS[r],date:"デモ",dwell:800}); } } }
+    row=0;idx=0;cardIndex=saved.length-1;cardFlipped=false; drawOled();drawArt();updateArtStat();renderCards();updateCardCount(); });
+
+  // ---- init ----
+  drawOled(); drawArt(); updateArtStat(); updateCardCount();
+})();
+</script>
+</body>
+</html>
