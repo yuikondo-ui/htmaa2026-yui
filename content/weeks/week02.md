@@ -206,7 +206,7 @@ for (int i = 0; i < N_PAD; i++) {
 if (touchNow[P_ZIN] && !q0Saved && now - pressStart[P_ZIN] >= HOLD_MS) { q0Saved = true; doSave(); }
 ```
 
-:::video https://youtube.com/shorts/hCFWrETdXtQ?feature=share | Kigo pad
+:::video https://youtu.be/HDwx_JXa9X0 | Kigo pad
 
 The full firmware is [kigo_pad.ino](files/week03/kigo-pad/firmware/kigo_pad/kigo_pad.ino).
 
