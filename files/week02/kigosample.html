@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>QPad 歳時記 — Simulator</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #17181c; color: #cfd2d8;
+    font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    display: flex; gap: 28px; padding: 28px; flex-wrap: wrap;
+  }
+  h1 { font-size: 15px; letter-spacing: .1em; color: #8d93a0; margin: 0 0 14px; font-weight: 600; }
+  .panel { background: #1e2026; border: 1px solid #2c2f38; border-radius: 12px; padding: 20px; }
+
+  /* ---- device ---- */
+  #device { width: 380px; }
+  #screen {
+    width: 336px; height: 168px; display: block; margin: 0 auto 6px;
+    image-rendering: pixelated; border-radius: 4px;
+    border: 7px solid #0c0d10; box-shadow: 0 0 34px rgba(120,200,255,.13);
+  }
+  .board {
+    margin-top: 16px; background: #143d2a; border-radius: 8px; padding: 14px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    border: 1px solid #1d5c3e;
+  }
+  .pad {
+    aspect-ratio: 1.35; border-radius: 6px; background: #c9a227;
+    border: 2px solid #8d7118; color: #3a2f06; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 11px; line-height: 1.3; user-select: none; transition: .05s;
+  }
+  .pad b { font-size: 19px; }
+  .pad.on { background: #ffe680; transform: scale(.95); box-shadow: 0 0 16px #ffe68088; }
+  .pad .id { font-size: 9px; opacity: .5; }
+  .hint { font-size: 11px; color: #6d7280; margin-top: 12px; line-height: 1.8; }
+
+  /* ---- pc ---- */
+  #pc { flex: 1; min-width: 480px; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+  .tab {
+    padding: 6px 15px; border-radius: 999px; font-size: 12px; cursor: pointer;
+    background: #262a33; color: #8d93a0; border: 1px solid #333844;
+  }
+  .tab.sel { background: #3d4757; color: #eef1f5; }
+  #art { background: #f8f5ee; border-radius: 8px; display: block; }
+  .stats { font-size: 12px; color: #7b818e; margin-top: 10px; }
+
+  #card {
+    width: 100%; max-width: 520px; aspect-ratio: 1.6; background: #fdfcf9;
+    border-radius: 8px; color: #23242a; padding: 30px; position: relative;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+  }
+  #card .big { font-size: 62px; letter-spacing: .1em; }
+  #card .yomi { font-size: 15px; color: #8a8f99; margin-top: 18px; letter-spacing: .2em; }
+  #card .back { text-align: left; width: 100%; align-self: flex-start; }
+  #card .meta { font-size: 12px; color: #a8adb6; letter-spacing: .15em; margin-bottom: 16px; }
+  #card .desc { font-size: 19px; line-height: 1.9; }
+  #card .haiku { font-size: 17px; color: #4c525e; margin-top: 22px; line-height: 1.9; }
+  #card .stamp { font-size: 11px; color: #c0392b; position: absolute; bottom: 22px; right: 26px; }
+  .nav { display: flex; gap: 8px; align-items: center; margin-top: 14px; font-size: 12px; color: #7b818e; }
+  .nav button { background: #262a33; color: #cfd2d8; border: 1px solid #333844; border-radius: 6px; padding: 6px 13px; cursor: pointer; }
+  #csv { width: 100%; height: 130px; background: #14161a; color: #7fc7a0; border: 1px solid #2c2f38;
+         border-radius: 6px; font: 11px/1.6 ui-monospace, monospace; padding: 10px; }
+</style>
+</head>
+<body>
+
+<div class="panel" id="device">
+  <h1>QPAD-XIAO / ポケット歳時記</h1>
+  <canvas id="screen" width="128" height="64"></canvas>
+  <div class="board" id="board"></div>
+  <div class="hint">
+    ← → 候をあるく　／　↑ ↓ 分類をかえる<br>
+    <b>S を長押し（0.4秒）</b>で季語を採集　／　M モード切替<br>
+    押しっぱなしで連続移動。何もしないと滞在時間が溜まります。
+  </div>
+</div>
+
+<div class="panel" id="pc">
+  <h1>PC — 歩いた軌跡</h1>
+  <div class="tabs">
+    <div class="tab sel" data-v="ART">軌跡アート</div>
+    <div class="tab" data-v="CARDS">フラッシュカード</div>
+    <div class="tab" data-v="CSV">track.csv（シリアル）</div>
+  </div>
+  <div id="vArt">
+    <canvas id="art" width="520" height="520"></canvas>
+    <div class="stats" id="stats"></div>
+  </div>
+  <div id="vCards" style="display:none">
+    <div id="card"></div>
+    <div class="nav">
+      <button id="prev">◀</button><button id="flip">裏返す</button><button id="next">▶</button>
+      <span id="cardNum"></span>
+    </div>
+  </div>
+  <div id="vCsv" style="display:none"><textarea id="csv" readonly></textarea></div>
+</div>
+
+<script>
+/* ============ データ ============ */
+const CATS = ['時候','天文','地理','生活','行事','動物','植物'];
+const SEKKI = ['立春','雨水','啓蟄','春分','清明','穀雨','立夏','小満','芒種','夏至','小暑','大暑',
+               '立秋','処暑','白露','秋分','寒露','霜降','立冬','小雪','大雪','冬至','小寒','大寒'];
+const PHASE = ['初候','次候','末候'];
+const sekkiOf  = c => SEKKI[Math.floor(c/3)];
+const phaseOf  = c => PHASE[c%3];
+const seasonOf = c => ['春','夏','秋','冬'][Math.floor(c/18)];
+
+// "col-row" : [季語, 読み, 解説, 句, 作者]
+const K = {
+  '0-0':['立春','りっしゅん','暦の上で春が始まる日。寒の明け。'],
+  '1-5':['鶯','うぐいす','春を告げる声。初音ともいう。'],
+  '2-2':['薄氷','うすごおり','春先の朝に薄く張る氷。日に溶ける。'],
+  '3-1':['霞','かすみ','春の大気にかかる淡いもや。'],
+  '4-6':['菜の花','なのはな','一面の黄。畑を明るくする。','菜の花や月は東に日は西に','与謝蕪村'],
+  '5-2':['雪解','ゆきげ','雪がとけて水になる季節。','雪とけて村一ぱいの子ども哉','小林一茶'],
+  '6-5':['蛙','かわず','冬眠から覚めて鳴きはじめる。','古池や蛙飛びこむ水の音','松尾芭蕉'],
+  '7-6':['桃の花','もものはな','淡紅の花。桃の節句の花。'],
+  '9-1':['朧月','おぼろづき','春の湿った大気に霞んだ月。'],
+  '10-6':['桜','さくら','花といえば桜。日本の春の中心。'],
+  '11-4':['花見','はなみ','桜の下で飲食し春を惜しむ行事。'],
+  '12-5':['燕','つばめ','南から渡ってきて軒に巣をかける。'],
+  '14-1':['虹','にじ','春のにわか雨のあとに立つ。'],
+  '15-2':['春の海','はるのうみ','うららかに凪いだ海。'],
+  '17-6':['牡丹','ぼたん','百花の王。春の終わりを告げる大輪。'],
+  '18-0':['立夏','りっか','夏に入る日。新緑がまぶしい。'],
+  '19-6':['青葉','あおば','木々の若葉が濃くなった頃。','目には青葉山ほととぎす初鰹','山口素堂'],
+  '20-5':['時鳥','ほととぎす','夏の夜に鳴きわたる鳥。'],
+  '21-3':['衣更','ころもがえ','夏の衣に替える暮らしの節目。'],
+  '24-1':['五月雨','さみだれ','梅雨の長雨。','五月雨をあつめて早し最上川','松尾芭蕉'],
+  '25-5':['蛍','ほたる','水辺に光を運ぶ夏の虫。'],
+  '26-6':['青梅','あおうめ','熟す前の固い梅の実。'],
+  '27-0':['夏至','げし','昼が最も長い日。'],
+  '30-3':['涼み','すずみ','暑さを避けて涼を取ること。'],
+  '33-5':['蝉','せみ','盛夏の声。','閑さや岩にしみ入る蝉の声','松尾芭蕉'],
+  '34-3':['打水','うちみず','門前に水をまいて涼を呼ぶ。'],
+  '36-0':['立秋','りっしゅう','残暑の中に秋が立つ。'],
+  '37-4':['七夕','たなばた','初秋の星の行事。'],
+  '39-1':['天の川','あまのがわ','秋の夜空を渡る銀の帯。','荒海や佐渡によこたふ天河','松尾芭蕉'],
+  '42-1':['露','つゆ','草に宿る秋の水。白露の頃。'],
+  '43-6':['朝顔','あさがお','朝だけ開く蔓の花。','朝顔に釣瓶とられてもらひ水','加賀千代女'],
+  '45-4':['彼岸','ひがん','秋分をはさむ七日。墓参りの頃。'],
+  '46-5':['蟋蟀','きりぎりす','戸のあたりで鳴く秋の虫。'],
+  '47-6':['柿','かき','秋の果実。','柿くへば鐘が鳴るなり法隆寺','正岡子規'],
+  '48-5':['雁','かり','北から列をなして渡ってくる。'],
+  '49-6':['菊','きく','霜に耐えて香る秋の花。'],
+  '50-4':['月見','つきみ','名月を賞する行事。'],
+  '51-1':['霜','しも','夜のうちに降りる白い結晶。'],
+  '53-6':['紅葉','もみじ','山が燃える秋の終わり。'],
+  '54-0':['立冬','りっとう','冬に入る日。'],
+  '55-6':['山茶花','さざんか','冬のはじめに咲く白や紅。'],
+  '57-1':['時雨','しぐれ','降ってはやむ初冬の雨。'],
+  '60-1':['初雪','はつゆき','その冬はじめて降る雪。'],
+  '61-3':['炬燵','こたつ','人が集まる冬のぬくもり。'],
+  '63-0':['冬至','とうじ','昼が最も短い日。一陽来復。'],
+  '64-3':['柚子湯','ゆずゆ','冬至の日に柚子を浮かべる湯。'],
+  '66-6':['水仙','すいせん','寒の中に香る白い花。'],
+  '67-2':['氷','こおり','張りつめて厚くなる冬の水。'],
+  '69-6':['蕗の薹','ふきのとう','雪の下から出る春のさきがけ。'],
+  '70-2':['氷柱','つらら','軒に垂れる冬の造形。'],
+  '71-5':['寒雀','かんすずめ','ふくらんで枝に並ぶ雀。'],
+};
+const cell = (c,r) => {
+  const k = K[`${c}-${r}`];
+  return {
+    exists: !!k, kigo: k ? k[0] : '──', yomi: k ? k[1] : '',
+    desc: k ? k[2] : '', haiku: k ? k[3] || '' : '', author: k ? k[4] || '' : '',
+    cat: CATS[r], sekki: sekkiOf(c), phase: phaseOf(c), season: seasonOf(c), col: c, row: r
+  };
+};
+
+/* ============ 状態 ============ */
+let col = 0, row = 0, mode = 0, slide = 0, slideAxis = 0;
+let enteredAt = performance.now(), flash = 0, holdMs = 0;
+const pads = [
+  {id:'q0', label:'保存', sub:'長押し', key:'s'},
+  {id:'q1', label:'▲',   sub:'分類↑',  key:'ArrowUp'},
+  {id:'q5', label:'MODE',sub:'表示',   key:'m'},
+  {id:'q2', label:'◀',   sub:'候を戻る',key:'ArrowLeft'},
+  {id:'q4', label:'▼',   sub:'分類↓',  key:'ArrowDown'},
+  {id:'q3', label:'▶',   sub:'候を進む',key:'ArrowRight'},
+];
+const down = {}; const repeatAt = {};
+let track = [], saved = [];
+
+/* ============ パッド UI ============ */
+const board = document.getElementById('board');
+pads.forEach(p => {
+  const el = document.createElement('div');
+  el.className = 'pad'; el.dataset.key = p.key;
+  el.innerHTML = `<span class="id">${p.id}</span><b>${p.label}</b><span>${p.sub}</span>`;
+  el.addEventListener('pointerdown', e => { e.preventDefault(); press(p.key, true); });
+  window.addEventListener('pointerup', () => press(p.key, false));
+  el.addEventListener('pointerleave', () => press(p.key, false));
+  board.appendChild(el);
+});
+function press(k, v) {
+  if (down[k] === v) return;
+  down[k] = v;
+  document.querySelectorAll(`.pad[data-key="${k}"]`).forEach(e => e.classList.toggle('on', v));
+  if (v) { repeatAt[k] = performance.now() + 340; act(k); }
+  if (!v && k === 's') holdMs = 0;
+}
+addEventListener('keydown', e => {
+  const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  if (pads.some(p => p.key === k)) { e.preventDefault(); press(k, true); }
+});
+addEventListener('keyup', e => {
+  const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  press(k, false);
+});
+
+function act(k) {
+  if (k === 'ArrowLeft')  move(-1, 0);
+  if (k === 'ArrowRight') move(+1, 0);
+  if (k === 'ArrowUp')    move(0, -1);
+  if (k === 'ArrowDown')  move(0, +1);
+  if (k === 'm')          mode = (mode + 1) % 4;
+}
+function move(dc, dr) {
+  log('M');
+  col = (col + dc + 72) % 72;                        // 一年は円環
+  row = Math.max(0, Math.min(6, row + dr));          // 分類は端で止まる
+  slide = dc || dr; slideAxis = dc ? 0 : 1;
+  enteredAt = performance.now();
+}
+function log(ev) {
+  const dwell = Math.round(performance.now() - enteredAt);
+  track.push({ ev, col, row, t: Math.round(performance.now()), dwell });
+  if (track.length > 4000) track.shift();
+}
+function doSave() {
+  const c = cell(col, row);
+  if (!c.exists) { flash = 6; return; }              // 季なしは採れない
+  log('S'); flash = 18;
+  saved.push({ ...c, dwell: Math.round(performance.now() - enteredAt),
+               date: new Date().toLocaleTimeString('ja-JP') });
+  enteredAt = performance.now();
+  refreshCard();
+}
+
+/* ============ OLED 描画（1bit 化） ============ */
+const vis = document.getElementById('screen'), vctx = vis.getContext('2d');
+const oc = Object.assign(document.createElement('canvas'), {width:128, height:64});
+const g = oc.getContext('2d');
+let dimRects = [];
+
+function txt(s, x, y, size, align = 'center', font = 'serif') {
+  g.font = `${size}px ${font}`; g.textAlign = align; g.textBaseline = 'middle';
+  g.fillText(s, x, y);
+}
+function drawOled() {
+  dimRects = [];
+  g.fillStyle = '#000'; g.fillRect(0, 0, 128, 64);
+  g.fillStyle = '#fff';
+  const c = cell(col, row);
+  const ox = slideAxis === 0 ? slide * 62 : 0;
+  const oy = slideAxis === 1 ? slide * 30 : 0;
+
+  // ヘッダ
+  txt(`${c.season} ${c.sekki}${c.phase}`, 2, 6, 8, 'left', 'sans-serif');
+  txt(`${c.cat} ★${saved.length}`, 126, 6, 8, 'right', 'sans-serif');
+  g.fillRect(0, 11, 128, 1);
+
+  if (mode === 3) {                                  // 現在地マップ
+    for (let cc = 0; cc < 72; cc++) for (let rr = 0; rr < 7; rr++) {
+      if (!K[`${cc}-${rr}`]) continue;
+      g.fillRect(6 + cc * 1.62, 18 + rr * 6, 1, 1);
+    }
+    saved.forEach(s => g.fillRect(5 + s.col * 1.62, 17 + s.row * 6, 2, 2));
+    const cx = 6 + col * 1.62, cy = 18 + row * 6;
+    if (Math.floor(performance.now() / 300) % 2) {
+      g.fillRect(cx - 3, cy, 7, 1); g.fillRect(cx, cy - 3, 1, 7);
+    }
+    txt('◀ 72候 / 7分類 ▶', 64, 60, 8, 'center', 'sans-serif');
+  } else {
+    // 隣の気配（左右の1文字をディザで薄く）
+    const nb = (dc, dr) => {
+      const n = cell((col + dc + 72) % 72, Math.max(0, Math.min(6, row + dr)));
+      return n.exists ? n.kigo[0] : '·';
+    };
+    txt(nb(-1,0), 5 + ox, 36 + oy, 13);  dimRects.push([0, 24, 14, 26]);
+    txt(nb(+1,0), 123 + ox, 36 + oy, 13); dimRects.push([114, 24, 14, 26]);
+    txt(nb(0,-1), 64 + ox, 18 + oy, 10);  dimRects.push([48, 13, 32, 10]);
+    txt(nb(0,+1), 64 + ox, 56 + oy, 10);  dimRects.push([48, 50, 32, 12]);
+
+    if (mode === 0) {
+      const n = c.kigo.length;
+      txt(c.kigo, 64 + ox, 37 + oy, n >= 4 ? 25 : n === 3 ? 30 : 34);
+    } else if (mode === 1) {
+      txt(c.kigo, 64 + ox, 32 + oy, c.kigo.length >= 4 ? 20 : 25);
+      txt(c.yomi || '—', 64 + ox, 51 + oy, 8, 'center', 'sans-serif');
+    } else {
+      const h = c.haiku ? `${c.haiku}　${c.author}` : `${c.kigo}　${c.desc}`;
+      const w = (g.font = '11px serif', g.measureText(h).width);
+      const sx = 128 - ((performance.now() / 34) % (w + 140));
+      txt(h, sx, 37, 11, 'left');
+    }
+  }
+
+  // 1bit しきい値 + OLED 発色 + ディザ
+  const img = g.getImageData(0, 0, 128, 64), d = img.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const on = d[i]*0.3 + d[i+1]*0.6 + d[i+2]*0.1 > 92;
+    d[i]   = on ? 205 : 9;  d[i+1] = on ? 240 : 11;
+    d[i+2] = on ? 255 : 15; d[i+3] = 255;
+  }
+  dimRects.forEach(([x, y, w, h]) => {
+    for (let yy = y; yy < y+h; yy++) for (let xx = x; xx < x+w; xx++) {
+      if ((xx + yy) % 2) { const i = (yy*128+xx)*4; d[i]=9; d[i+1]=11; d[i+2]=15; }
+    }
+  });
+  if (flash > 0) for (let i = 0; i < d.length; i += 4) {
+    d[i] = 255 - d[i]; d[i+1] = 255 - d[i+1]; d[i+2] = 255 - d[i+2];
+  }
+  g.putImageData(img, 0, 0);
+  vctx.imageSmoothingEnabled = false;
+  vctx.drawImage(oc, 0, 0, 128, 64);
+}
+
+/* ============ 軌跡アート（歳時記曼荼羅） ============ */
+const art = document.getElementById('art'), a = art.getContext('2d');
+const R_IN = 78, R_OUT = 232;
+const SC = { 春:[224,132,164], 夏:[ 92,178,196], 秋:[214,140, 58], 冬:[126,138,176] };
+const polar = (c, r) => {
+  const th = (c / 72) * Math.PI * 2 - Math.PI / 2;
+  const rr = R_IN + (R_OUT - R_IN) * (r / 6);
+  return [260 + Math.cos(th) * rr, 260 + Math.sin(th) * rr];
+};
+function drawArt() {
+  a.fillStyle = '#f8f5ee'; a.fillRect(0, 0, 520, 520);
+  // 地：季節の扇
+  for (let s = 0; s < 4; s++) {
+    a.beginPath(); a.moveTo(260, 260);
+    a.arc(260, 260, R_OUT + 12, (s*18/72)*Math.PI*2 - Math.PI/2, ((s+1)*18/72)*Math.PI*2 - Math.PI/2);
+    a.closePath();
+    const col4 = SC[['春','夏','秋','冬'][s]];
+    a.fillStyle = `rgba(${col4.join(',')},0.07)`; a.fill();
+  }
+  a.strokeStyle = 'rgba(0,0,0,.10)'; a.lineWidth = 1;
+  for (let r = 0; r <= 6; r++) {
+    a.beginPath(); a.arc(260, 260, R_IN + (R_OUT-R_IN)*(r/6), 0, Math.PI*2); a.stroke();
+  }
+  for (let c = 0; c < 72; c++) {
+    const [x1,y1] = polar(c, 0), [x2,y2] = polar(c, 6);
+    a.strokeStyle = c % 3 === 0 ? 'rgba(0,0,0,.22)' : 'rgba(0,0,0,.06)';
+    a.beginPath(); a.moveTo(x1,y1); a.lineTo(x2,y2); a.stroke();
+  }
+  a.fillStyle = 'rgba(0,0,0,.18)';
+  Object.keys(K).forEach(k => {
+    const [c, r] = k.split('-').map(Number), [x,y] = polar(c, r);
+    a.beginPath(); a.arc(x, y, 1.6, 0, Math.PI*2); a.fill();
+  });
+  // 軌跡：滞在時間＝線の太さ、季節＝墨の色
+  for (let i = 1; i < track.length; i++) {
+    const p = track[i-1], q = track[i];
+    const [x1,y1] = polar(p.col, p.row), [x2,y2] = polar(q.col, q.row);
+    const cc = SC[seasonOf(q.col)] || [80,80,80];
+    a.strokeStyle = `rgba(${cc.join(',')},0.42)`;
+    a.lineWidth = Math.min(9, 0.7 + Math.sqrt(q.dwell) / 12);
+    a.lineCap = 'round';
+    const mx = 260 + (x1 + x2 - 520) * 0.40, my = 260 + (y1 + y2 - 520) * 0.40;
+    a.beginPath(); a.moveTo(x1,y1); a.quadraticCurveTo(mx, my, x2, y2); a.stroke();
+  }
+  // 採集点＝朱の印
+  saved.forEach(s => {
+    const [x,y] = polar(s.col, s.row);
+    a.fillStyle = 'rgba(198,52,48,.92)'; a.beginPath(); a.arc(x,y,5.5,0,Math.PI*2); a.fill();
+    a.fillStyle = '#f8f5ee'; a.beginPath(); a.arc(x,y,1.9,0,Math.PI*2); a.fill();
+  });
+  // 現在地
+  const [cx,cy] = polar(col, row);
+  a.strokeStyle = '#222'; a.lineWidth = 1.4;
+  a.beginPath(); a.arc(cx, cy, 8 + Math.sin(performance.now()/300)*1.6, 0, Math.PI*2); a.stroke();
+  // 落款
+  a.fillStyle = '#5a5f6a'; a.font = '13px serif'; a.textAlign = 'left';
+  a.fillText('歳時記曼荼羅', 18, 30);
+  a.font = '11px sans-serif'; a.fillStyle = '#9aa0ab';
+  a.fillText('内＝時候 → 外＝植物 ／ 上＝立春 時計回りに一年', 18, 48);
+}
+
+/* ============ フラッシュカード ============ */
+let ci = 0, flipped = false;
+const cardEl = document.getElementById('card');
+function refreshCard() {
+  if (!saved.length) {
+    cardEl.innerHTML = '<div style="color:#b6bac2;font-size:16px">まだ採集していません。<br>デバイスで <b>S を長押し</b>してみてください。</div>';
+    document.getElementById('cardNum').textContent = ''; return;
+  }
+  ci = Math.min(ci, saved.length - 1);
+  const c = saved[ci];
+  cardEl.innerHTML = flipped
+    ? `<div class="back">
+         <div class="meta">${c.season}　${c.cat}　${c.sekki}${c.phase}</div>
+         <div class="desc">${c.desc}</div>
+         ${c.haiku ? `<div class="haiku">　${c.haiku}<br>　　　　　　${c.author}</div>` : ''}
+         <div class="stamp">採集 ${c.date}　滞在 ${(c.dwell/1000).toFixed(1)}秒</div>
+       </div>`
+    : `<div><div class="big">${c.kigo}</div><div class="yomi">${c.yomi}</div></div>`;
+  document.getElementById('cardNum').textContent = `${ci+1} / ${saved.length}　（カードをクリックで裏返す）`;
+}
+cardEl.onclick = () => { flipped = !flipped; refreshCard(); };
+document.getElementById('flip').onclick = () => { flipped = !flipped; refreshCard(); };
+document.getElementById('next').onclick = () => { ci = (ci+1) % saved.length; flipped = false; refreshCard(); };
+document.getElementById('prev').onclick = () => { ci = (ci-1+saved.length) % saved.length; flipped = false; refreshCard(); };
+
+/* ============ タブ ============ */
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('sel', x === t));
+  vArt.style.display   = t.dataset.v === 'ART'   ? '' : 'none';
+  vCards.style.display = t.dataset.v === 'CARDS' ? '' : 'none';
+  vCsv.style.display   = t.dataset.v === 'CSV'   ? '' : 'none';
+});
+
+/* ============ メインループ ============ */
+function loop(now) {
+  // オートリピート
+  for (const k in down) if (down[k] && k !== 's' && k !== 'm' && now > repeatAt[k]) {
+    act(k); repeatAt[k] = now + 130;
+  }
+  // 長押し保存
+  if (down['s']) { holdMs += 16; if (holdMs > 400) { doSave(); holdMs = -600; } }
+  slide *= 0.80; if (Math.abs(slide) < 0.004) slide = 0;
+  if (flash > 0) flash--;
+
+  drawOled(); drawArt();
+  document.getElementById('stats').textContent =
+    `歩いた候 ${new Set(track.map(t=>t.col)).size}/72　　採集 ${saved.length} 語　　` +
+    `イベント ${track.length} 行　　現在地 ${cell(col,row).kigo}（${CATS[row]}・${sekkiOf(col)}${phaseOf(col)}）`;
+  if (vCsv.style.display !== 'none')
+    document.getElementById('csv').value =
+      track.slice(-40).map(t => `${t.ev},${t.col},${t.row},${t.t},${t.dwell}`).join('\n');
+  requestAnimationFrame(loop);
+}
+refreshCard(); requestAnimationFrame(loop);
+</script>
+</body>
+</html>
