@@ -82,12 +82,6 @@ The touch sketch prints one number per pad to the Serial Monitor. The number is 
 *Two pads at once, one at about 115 and one at about 70.*
 :::
 
-## MicroPython
-
-(WIP)
-
-I have not tested MicroPython yet, but I expect a difference for the touch pads. Arduino C++ is compiled into machine code on the laptop, so one pass of the counting loop takes only a few clock cycles. MicroPython interprets each instruction on the microcontroller itself, so one pass takes tens of times longer. If the pad charges in under a microsecond, a Python loop may run only once or twice, and the difference between touched and untouched would not show up in the numbers. On the other hand, MicroPython can run code right after I type it, which should make it better for trying things out with serial echo or the OLED.
-
 ## Learning electronics from zero
 
 I had no electronics knowledge and had not touched physics for ten years, so every word in the lecture was new to me. Before going further I wanted to understand the basics. I first watched [an introductory video](https://www.youtube.com/watch?v=nYuVSG89vg0). Then I gave the assignment and the class links to Claude and asked it to make a curriculum with quizzes for someone with no electronics background.
@@ -105,7 +99,7 @@ Following the curriculum, I drew the diagrams myself, and the vocabulary finally
 *Testing myself on the whiteboard during a dinner break.*
 :::
 
-## Reading the datasheet
+### Reading the datasheet
 
 The individual assignment asks us to browse the datasheet of our microcontroller. The [RP2040 datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf) is over 600 pages, so I decided what I was looking for before opening it. I wanted to know which GPIO pins can be I2C SDA and SCL, what voltage counts as HIGH, the value of the internal pull-up used by the touch pads, the bits and pins of the ADC, and how much current one pin can supply.
 
@@ -124,15 +118,11 @@ The IO electrical characteristics (section 5.5.3.4) answered the voltage questio
 ![RP2040 digital IO characteristics table](img/week02/io_electrical_characteristics.png)
 *Digital IO characteristics, datasheet section 5.5.3.4.*
 
-## Simulations
+### Simulations
 
 (WIP)
 
 With the basic knowledge I have now, I want to simulate the circuits before building my own.
-
-## Program
-
-(WIP)
 
 ## Idea: a map for poets
 
