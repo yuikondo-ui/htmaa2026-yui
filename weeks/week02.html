@@ -22,7 +22,7 @@
 
 <main class="project">
   <section class="cover">
-    <img class="cover-img" src="../img/week02/hero.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
+    <img class="cover-img" src="../img/week02/IMG_7336.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
     <div class="cover-title" data-title="EMBEDDED PROGRAMMING" aria-hidden="true"><span>EMBEDDED PROGRAMMING</span></div>
     <h2 class="cover-label">Week 2<span class="sr">: EMBEDDED PROGRAMMING</span></h2>
     <div class="cover-strip" aria-label="Yui Kondo — MIT Media Lab, 2026">
@@ -33,29 +33,106 @@
   <div class="project-body">
     <aside class="toc">
   <div class="toc-inner">
-    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#process">Process</a></li><li class="lvl3"><a href="#step-one">Step one</a></li><li class="lvl3"><a href="#step-two">Step two</a></li><li class="lvl2"><a href="#what-i-learned">What I learned</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
+    <ul><li class="lvl2"><a href="#soldering-the-qpad">Soldering the QPad</a></li><li class="lvl2"><a href="#programming-in-the-arduino-ide">Programming in the Arduino IDE</a></li><li class="lvl2"><a href="#micropython">MicroPython</a></li><li class="lvl2"><a href="#learning-electronics-from-zero">Learning electronics from zero</a></li><li class="lvl2"><a href="#reading-the-datasheet">Reading the datasheet</a></li><li class="lvl2"><a href="#simulations">Simulations</a></li><li class="lvl2"><a href="#program">Program</a></li><li class="lvl2"><a href="#idea-a-map-for-poets">Idea: a map for poets</a></li><li class="lvl3"><a href="#step-1-a-spatial-understanding-of-words">Step 1: a spatial understanding of words</a></li><li class="lvl3"><a href="#step-2-zooming-out">Step 2: zooming out</a></li><li class="lvl3"><a href="#step-3-seeing-the-path-you-walked">Step 3: seeing the path you walked</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li></ul>
   </div>
 </aside>
     <article class="content">
-<h2 id="assignment">Assignment</h2>
-<p>What this week asked for, in a sentence or two.</p>
-<h2 id="what-i-made">What I made</h2>
-<p>Describe the outcome. Put the main photo first:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Main result" src="../img/week02/hero.jpg" /></figure>
-<h2 id="process">Process</h2>
-<h3 id="step-one">Step one</h3>
-<p>Walk through what you did. Inline images are fine anywhere:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Work in progress" src="../img/week02/01.jpg" /></figure>
-<h3 id="step-two">Step two</h3>
-<p>Code blocks render too:</p>
-<pre><code class="language-python">print(&quot;hello, week 03&quot;)
-</code></pre>
-<h2 id="what-i-learned">What I learned</h2>
-<p>Reflections, mistakes, what you'd do differently.</p>
-<h2 id="files">Files</h2>
-<ul>
-<li><a href="../files/week02/">Design files</a> — CAD, code, exports</li>
-</ul>
+<h2 id="soldering-the-qpad">Soldering the QPad</h2>
+<p>To learn basic soldering and embedded programming, we used the QPad, a teaching board that our TA Quentin designed. In the training he showed us how to assemble it: a microcontroller (the Seeed XIAO RP2040 module), an OLED display and six capacitive touch pads.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Quentin explaining the QPad to a group of students in the lab" src="../img/week02/IMG_7316.jpg" /><figcaption>Quentin walking us through the board before we started soldering.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Quentin holding up his phone with the QPad schematic" src="../img/week02/IMG_7324.jpg" /><figcaption>Quentin showing the QPad schematic on his phone: the XIAO pins on the left, with the six touch pads, SDA and SCL.</figcaption></figure>
+</div>
+<p>The README of the <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao">QPad repository</a> lists what the board needs.</p>
+<blockquote>
+<p>To assemble this board, you need: OLED module, xiao rp2040, resistors: 2x 10k, or anything in the 2-10k range, circuit board, 3D printed support (optional), 3D printed jig (optional).</p>
+</blockquote>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The QPad parts laid out: XIAO RP2040, OLED module, 3D-printed support, blue circuit board and the light blue jig" src="../img/week02/items.jpg" /><figcaption>Everything that goes into one QPad: the XIAO RP2040, the OLED module, the 3D-printed support, the bare board and the jig that holds it while soldering.</figcaption></figure>
+<p>The iron was set to 350°C, and we took turns trying it at the bench. Under the microscope I could see that the solder wire is hollow, with flux inside the core, and I could watch Quentin's joints form up close.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Microscope screen showing the tip of the flux-core solder wire" src="../img/week02/IMG_7322.jpg" /><figcaption>The flux-core solder wire under the microscope.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Microscope screen showing Quentin soldering a pin on the board" src="../img/week02/IMG_7328.jpg" /><figcaption>Watching Quentin solder under the microscope.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A tiny 1206 resistor on the bench" src="../img/week02/IMG_7320.jpg" /><figcaption>One 10k resistor in the 1206 size, about 3 mm long.</figcaption></figure>
+</div>
+<p>After the training I tried soldering on my own for the first time, following Quentin's <a href="https://pub.cba.mit.edu/quentin.bolsee/qpad-page/soldering/">soldering guide</a>. I struggled to melt the solder. It went everywhere, and I needed a flux pen to clean up the mess.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The bare QPad board with the two 10k resistors R4 and R5 soldered next to the XIAO footprint" src="../img/week02/IMG_7333.jpg" /><figcaption>My first joints: R4 and R5 next to the XIAO footprint, with more solder than they needed.</figcaption></figure>
+<p>Quentin helped me fix it, and together we figured out that the thin conical tip I had started with made the solder much harder to melt. I switched to a larger tip and it worked much better.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The thin conical soldering tip" src="../img/week02/IMG_2825.jpg" /><figcaption>The thin tip I started with. It touches the joint at a single point, so heat moves into the pad slowly.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The larger chisel soldering tip" src="../img/week02/IMG_2826.jpg" /><figcaption>The larger tip I switched to. More contact area, so the pad heats up and the solder flows.</figcaption></figure>
+</div>
+<p>Then I followed the rest of the assembly guide and finished the board. It is not beautiful, but hopefully I will improve as the course goes on.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The finished QPad held in my hand, with the XIAO and the OLED soldered on" src="../img/week02/IMG_7334.jpg" /><figcaption>The finished QPad.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Selfie with classmates at the soldering bench" src="../img/week02/IMG_2832.jpg" /><figcaption>Thanks to everyone who figured this out together with me.</figcaption></figure>
+</div>
+<h2 id="programming-in-the-arduino-ide">Programming in the Arduino IDE</h2>
+<p>Next I tested Quentin's <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino">example code</a>. Following the Boards Manager instructions, I added the package URL in the IDE settings and installed the Arduino-Pico core, then selected Seeed XIAO RP2040 as the board. Getting my laptop to see the board took a few steps. I held the BOOT button while plugging it in, the red and blue lights came on, the IDE showed an unknown UF2 board, and after pressing the R (reset) button the correct port appeared.</p>
+<p>I went through Quentin's four sketches one by one: <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino/blink_RP2040">blink_RP2040</a>, <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino/test_display_RP2040">test_display_RP2040</a>, <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino/test_serial_RP2040">test_serial_RP2040</a> and <a href="https://forge.cba.mit.edu/quentin.bolsee/qpad-xiao/src/branch/main/code/Arduino/test_touch_RP2040">test_touch_RP2040</a>.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The QPad plugged in over USB-C, with text on the OLED" src="../img/week02/IMG_7337.jpg" /><figcaption>The display sketch running on my board.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The OLED showing the text Yui is cool!" src="../img/week02/IMG_7336.jpg" /><figcaption>Changing the text in test_display to my own message.</figcaption></figure>
+</div>
+<p>The touch sketch prints one number per pad to the Serial Monitor. The number is how many times the loop runs before the pad charges up to HIGH, so it grows when a finger adds capacitance. The sketch counts a pad as touched when the number goes above 6. I tried it with my fingers and through a water bottle.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Serial Monitor showing six columns of touch values, with the second column around 70" src="../img/week02/IMG_7406.jpg" /><figcaption>Touching pad 1: its count rises to about 70 while the untouched pads stay at 0 or 1.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Serial Monitor showing touch values, with one column around 115 and another around 70" src="../img/week02/IMG_7408.jpg" /><figcaption>Two pads at once, one at about 115 and one at about 70.</figcaption></figure>
+</div>
+<h2 id="micropython">MicroPython</h2>
+<p>(WIP)</p>
+<p>I have not tested MicroPython yet, but I expect a difference for the touch pads. Arduino C++ is compiled into machine code on the laptop, so one pass of the counting loop takes only a few clock cycles. MicroPython interprets each instruction on the microcontroller itself, so one pass takes tens of times longer. If the pad charges in under a microsecond, a Python loop may run only once or twice, and the difference between touched and untouched would not show up in the numbers. On the other hand, MicroPython can run code right after I type it, which should make it better for trying things out with serial echo or the OLED.</p>
+<h2 id="learning-electronics-from-zero">Learning electronics from zero</h2>
+<p>I had no electronics knowledge and had not touched physics for ten years, so every word in the lecture was new to me. Before going further I wanted to understand the basics. I first watched <a href="https://www.youtube.com/watch?v=nYuVSG89vg0">an introductory video</a>. Then I gave the assignment and the class links to Claude and asked it to make a curriculum with quizzes for someone with no electronics background.</p>
+<!-- TODO: link English versions of the two study pages once they are public -->
+
+<p>I followed two sets of notes. The first, Embedded Bench Notes, goes from electricity basics (voltage, current, resistance, components and schematics) to digital logic and what is inside a microcontroller, then how code reaches the board, and finally inputs, outputs and communication (buttons and touch, LEDs, PWM, the OLED, serial and I2C). The second walks through the QPad schematic step by step: counting the parts, the XIAO pins, power and ground, net labels, the R4 and R5 pull-ups on SDA and SCL, and why the touch pads have no parts at all.</p>
+<p>Following the curriculum, I drew the diagrams myself, and the vocabulary finally started to make sense.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Notebook sketch of the QPad power and I2C connections, with notes on M, J and R" src="../img/week02/IMG_7410.jpg" /><figcaption>My own drawing of how power and the SDA and SCL lines reach the OLED, with a note that M is a module, J a jack and R a resistor.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Whiteboard with a hand-drawn QPad diagram and notes on pull-up resistors" src="../img/week02/IMG_7411.jpg" /><figcaption>Testing myself on the whiteboard during a dinner break.</figcaption></figure>
+</div>
+<h2 id="reading-the-datasheet">Reading the datasheet</h2>
+<p>The individual assignment asks us to browse the datasheet of our microcontroller. The <a href="https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf">RP2040 datasheet</a> is over 600 pages, so I decided what I was looking for before opening it. I wanted to know which GPIO pins can be I2C SDA and SCL, what voltage counts as HIGH, the value of the internal pull-up used by the touch pads, the bits and pins of the ADC, and how much current one pin can supply.</p>
+<p>The pin locations (section 1.4.1) show the 56 legs of the chip. The XIAO only brings 11 of the 30 GPIO out to its edge, which is why the QPad schematic names every pin twice, as in P6/D4: GPIO6 on the chip, D4 on the XIAO.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="RP2040 pinout for the QFN-56 package" src="../img/week02/pin_location.png" /><figcaption>RP2040 pin locations, datasheet section 1.4.1. Only GPIO26 to GPIO29 can also be ADC inputs.</figcaption></figure>
+<p>The GPIO function table (section 1.4.3) lists what each pin can become, F1 to F9. GPIO6 and GPIO7 can be I2C1 SDA and SCL, which is why the OLED is wired to D4 and D5. The touch pads only need plain HIGH and LOW (SIO), so they can go on any pin.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="RP2040 GPIO function select table" src="../img/week02/gpio_functions.png" /><figcaption>The GPIO function table, datasheet section 1.4.3.</figcaption></figure>
+<p>The IO electrical characteristics (section 5.5.3.4) answered the voltage questions. At 3.3V, any input above 2V is read as HIGH and anything below 0.8V as LOW. The input leakage current is at most 1 µA, which is why an input pin barely draws current and a pull-up resistor holds it at 3.3V.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="RP2040 digital IO characteristics table" src="../img/week02/io_electrical_characteristics.png" /><figcaption>Digital IO characteristics, datasheet section 5.5.3.4.</figcaption></figure>
+<h2 id="simulations">Simulations</h2>
+<p>(WIP)</p>
+<p>With the basic knowledge I have now, I want to simulate the circuits before building my own.</p>
+<h2 id="program">Program</h2>
+<p>(WIP)</p>
+<h2 id="idea-a-map-for-poets">Idea: a map for poets</h2>
+<p>The QPad becomes a D-pad for walking a saijiki, the seasonal word almanac haiku poets use. The map is a grid of the 72 micro-seasons (七十二候) by the 7 traditional categories of season words, 504 cells in all. The OLED is a small window onto one cell, and the PC draws the path I walked as a circular mandala.</p>
+<h3 id="step-1-a-spatial-understanding-of-words">Step 1: a spatial understanding of words</h3>
+<p>On the internet we get lost. Everything is zoomed in, and we have very little sense of where one word sits in relation to others. I thought the QPad could be an interesting device for exploring a map of words.</p>
+<p>One of my favorite things to do at a book cafe was to collect interesting books, then return them at the end of the day without looking up where they belonged. I had to explore the shelves myself to learn where each book lived, and each piece of knowledge became tied to a place. (Related ideas: topophilia, Bachelard's <em>The Poetics of Space</em>, and utamakura, the named places of classical Japanese poetry.)</p>
+<p>Online there is no zoom-out, and no way to see where we are in relation to everything else. Keisuke Matsuoka describes the shift from exploring to searching:</p>
+<blockquote>
+<p>人々は自己の身体を離脱して全体を相対的に把握するのではなく、常に自己の身体を基準にして現在地とその周辺だけをまなざすことに埋没するようになっているのではないか。</p>
+<p>Rather than stepping outside their own bodies to grasp the whole in relative terms, people may have become absorbed in looking only at their current location and its surroundings, always with their own body as the reference point.</p>
+</blockquote>
+<p><em>From 松岡慧祐『グーグルマップの社会学』 (The Sociology of Google Maps).</em></p>
+<p>So on the QPad, the pads are the controller for moving around the space. The OLED shows the word, and the PC shows where you are. Four of the six pads are arrow keys. Left and right walk through time, one micro-season at a time from 立春 (start of spring) to 大寒 (greatest cold). Up and down change the angle, from weather to landscape, daily life, festivals, animals and plants. The other two pads zoom in and out.</p>
+<!-- TODO: link the project that used four pads as arrow keys and two for other functions to move pixel art -->
+
+<p>Before touching the hardware I made a browser prototype with Claude that simulates the QPad, the OLED and the PC view together. It runs in any browser: <a href="../files/week03/kigo-pad/prototype.html">open the prototype</a>. The arrow keys walk, <code>i</code> zooms in, <code>o</code> zooms out and Space collects a word. All the source is in <a href="../files/week03/kigo-pad/">files/week03/kigo-pad</a>.</p>
+<p>The first hardware problem was making Chinese characters readable on a 128 × 64 OLED. The Adafruit GFX font has no kanji, so a Python script (<a href="../files/week03/kigo-pad/tools/make_font.py">make_font.py</a>) renders only the characters the almanac actually uses into bitmaps: 209 kanji at 32 px in a Mincho typeface, and 104 kana at 16 px in a bold Gothic, because thin Mincho strokes disappear at small sizes. Together they take about 29 KB, which is small next to the 2 MB of flash on the XIAO. The test sketch <a href="../files/week03/kigo-pad/firmware/kigo_min/kigo_min.ino">kigo_min.ino</a> decodes each UTF-8 string, looks up each glyph and draws it pixel by pixel, stepping through all 72 micro-seasons every 2.5 seconds.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="東風解凍 in 32 px kanji with its reading はるかぜこおりをとく in 16 px kana, drawn as white pixels on black" src="../files/week03/kigo-pad/tools/preview.png" /><figcaption>The first micro-season, 東風解凍 (the east wind melts the ice), drawn back from the generated bitmaps at OLED resolution.</figcaption></figure>
+<p>Next is moving in four directions with the touch pads. The full firmware, <a href="../files/week03/kigo-pad/firmware/kigo_pad/kigo_pad.ino">kigo_pad.ino</a>, is written but not yet tested on my board. I still need to check the pin of each pad against the schematic and swap in the touch routine from Quentin's test_touch.</p>
+<h3 id="step-2-zooming-out">Step 2: zooming out</h3>
+<p>The device has three zoom levels. The middle one shows a single word, large. Zooming in shows its meaning, reading and a haiku. Zooming out shows the place: a dot for where I am on the whole 72 × 7 map.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Four OLED screens stacked: the word view for 春の海, its explanation, the place view with a dot on the map, and the word view for 東風解凍" src="../files/week03/kigo-pad/tools/sim_device.png" /><figcaption>Simulated OLED screens. From the top: the word, zoomed in to the explanation, zoomed out to the place, and the first micro-season.</figcaption></figure>
+<h3 id="step-3-seeing-the-path-you-walked">Step 3: seeing the path you walked</h3>
+<p>After exploring, the PC shows where you went on the word map as a circle, like GPS art. The year runs around the ring, and each category is one of the rings. The PC can also rearrange the same words into a "machine map", grouped by meaning instead of by the traditional categories, so you can compare how a person and a machine would lay out the same words.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Two circular maps side by side. On the left, the human map, the micro-season names crowd onto the inner ring. On the right, the machine map, the same names scatter across the rings" src="../files/week03/kigo-pad/tools/sim_maps.png" /><figcaption>The human map (left) and the machine map (right). In the human map every micro-season name sits on the inner ring. In the machine map they scatter into themes.</figcaption></figure>
+<!-- TODO: add GPS art reference image -->
+
+<p>For now this only runs in the browser prototype. Next I want the board to send its saved path to the PC over Web Serial, so the same art is drawn from a real walk.</p>
+<h2 id="use-of-ai">Use of AI</h2>
+<p>I used Claude to build the two study pages and quizzes I learned from, and to answer my questions whenever a word did not make sense. The soldering, the testing and the drawings are my own. For the map for poets, I made the browser prototype, the font generation script and the firmware with Claude, starting from my own idea.</p>
     </article>
   </div>
   <nav class="pager"><a href="week01.html">← Week 1</a><a href="week03.html">Week 3 →</a></nav>
