@@ -156,6 +156,20 @@ The first hardware problem was making kanji readable on a 128 × 64 OLED. The Ad
 ![東風解凍 in 32 px kanji with its reading はるかぜこおりをとく in 16 px kana, drawn as white pixels on black](files/week03/kigo-pad/tools/preview.png)
 *The first micro-season, 東風解凍 (the east wind melts the ice), drawn back from the generated bitmaps at OLED resolution.*
 
+### Finding and drawing a character
+
+The OLED does not know what 春 is, so the firmware has to look up a picture of it. Every character goes through three steps in [kigo_pad.ino](files/week03/kigo-pad/firmware/kigo_pad/kigo_pad.ino).
+
+1. **Decode.** In the source, `"春"` is stored as three bytes, `E6 98 A5` (UTF-8). `utf8Next()` removes the marker bits from each byte and joins what is left into one number, 0x6625, which is 26149 in decimal.
+2. **Find.** The font header holds the bitmaps and, next to them, a list of the character numbers in the same order, sorted from small to large. `glyphIndex()` runs a binary search on that list: look at the middle, go left or right, repeat. In my font, the 32 px list has 536 characters, and 春 is number 172. The search finds it in 8 steps instead of checking up to 536 entries one by one. It returns -1 if the character is not in the font.
+3. **Draw.** The bitmap at position 172 is 32 rows of 4 bytes each. `blit()` reads every bit from left to right, and puts a white pixel on the screen wherever the bit is 1.
+
+```cpp
+// simplified from the firmware
+int gi = glyphIndex(GLYPH32_CP, N_GLYPH32, 26149);   // 春 → 172
+blit(GLYPH32, 32, gi, x, y);                         // draw that bitmap at (x, y)
+```
+
 ### Touch Pad Scripts
 
 With the fonts working, I wanted to move through the map with the six pads. From Quentin's `test_touch` example, I learned measuring capacitance by timing can be used as buttons. It drives the pad LOW to empty it, switch it to an input with a pull-up, and count how many loops pass before it charges back to HIGH. A finger adds capacitance, so a touched pad charges more slowly and the count climbs; anything past a small threshold counts as a touch. 
