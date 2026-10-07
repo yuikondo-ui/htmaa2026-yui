@@ -2,7 +2,7 @@
 title: Final Project
 ref: HTMAA/FINAL
 status: WIP
-hero: img/final/hero.jpg
+hero: img/final/doll-facets.jpg
 summary: Working title, one-line idea, and where it's headed.
 ---
 
