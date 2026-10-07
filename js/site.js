@@ -163,3 +163,24 @@
     return result;
   }
 })();
+
+/* --- black and green mode: the moon / sun next to About flips it; remembered per browser --- */
+(function () {
+  var root = document.documentElement, btns = document.querySelectorAll('.theme-toggle');
+  function sync() { var on = root.getAttribute('data-theme') === 'dark';
+    for (var i = 0; i < btns.length; i++) { btns[i].setAttribute('aria-pressed', on ? 'true' : 'false'); btns[i].setAttribute('aria-label', on ? 'Switch to light mode' : 'Switch to dark mode'); } }
+  for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function () {
+    var on = root.getAttribute('data-theme') !== 'dark';
+    if (on) root.setAttribute('data-theme', 'dark'); else root.removeAttribute('data-theme');
+    try { localStorage.setItem('theme', on ? 'dark' : 'light'); } catch (e) {}
+    sync();
+  });
+  sync();
+})();
+
+/* --- natural image rows: give each figure a share of the row equal to its aspect ratio, so heights match --- */
+(function () {
+  var imgs = document.querySelectorAll('.cols.natural figure img');
+  function set(img) { if (img.naturalWidth) img.closest('figure').style.flexGrow = (img.naturalWidth / img.naturalHeight).toFixed(4); }
+  for (var i = 0; i < imgs.length; i++) { if (imgs[i].complete) set(imgs[i]); else imgs[i].addEventListener('load', set.bind(null, imgs[i])); }
+})();

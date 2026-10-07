@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wdth,wght@1,125,900&family=Geist:wght@100..900&family=Geist+Mono:wght@400..600&family=Inter+Tight:wght@100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
 <script src="js/site.js" defer></script>
 </head>
 <body>
@@ -17,7 +18,10 @@
     <a href="index.html" class="active"><span class="box"></span>Index</a>
     <a href="grid.html"><span class="box"></span>Grid</a>
   </nav>
-  <a class="site-about" href="about.html">About</a>
+  <span class="site-right">
+    <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Dark / light"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" fill="currentColor"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg></button>
+    <a class="site-about" href="about.html">About</a>
+  </span>
 </header>
 <h1 class="banner" aria-label="How to make anything?"><div class="marquee"><div class="marquee-group"><span class="mq-item">How to make anything?</span><span class="mq-item">How to make anything?</span><span class="mq-item">How to make anything?</span></div><div class="marquee-group" aria-hidden="true"><span class="mq-item">How to make anything?</span><span class="mq-item">How to make anything?</span><span class="mq-item">How to make anything?</span></div></div></h1>
 <script>
@@ -30,7 +34,7 @@
   <a class="row" href="weeks/week00.html"><span class="c1"><span class="wk">Week 0</span></span><span class="c2">final project proposal &amp; log</span><span class="c3"><span class="status status-wip">[WIP]</span></span></a>
   <a class="row" href="weeks/week01.html"><span class="c1"><span class="wk">Week 1</span></span><span class="c2">computer-controlled cutting</span><span class="c3"><span class="status status-wip">[WIP]</span></span></a>
   <a class="row" href="weeks/week02.html"><span class="c1"><span class="wk">Week 2</span></span><span class="c2">embedded programming</span><span class="c3"><span class="status status-wip">[WIP]</span></span></a>
-  <a class="row todo" href="weeks/week03.html"><span class="c1"><span class="wk">Week 3</span></span><span class="c2">3D scanning and printing</span><span class="c3"><span class="status status-wip">[WIP]</span></span></a>
+  <a class="row" href="weeks/week03.html"><span class="c1"><span class="wk">Week 3</span></span><span class="c2">3D scanning and printing</span><span class="c3"><span class="status status-wip">[WIP]</span></span></a>
   <a class="row todo" href="weeks/week04.html"><span class="c1"><span class="wk">Week 4</span></span><span class="c2">electronics design</span><span class="c3"><span class="status status-wip">[WIP]</span></span></a>
   <a class="row todo" href="weeks/week05.html"><span class="c1"><span class="wk">Week 5</span></span><span class="c2">electronics production</span><span class="c3"><span class="status status-wip">[WIP]</span></span></a>
   <a class="row todo" href="weeks/week06.html"><span class="c1"><span class="wk">Week 6</span></span><span class="c2">computer-controlled machining</span><span class="c3"><span class="status status-wip">[WIP]</span></span></a>

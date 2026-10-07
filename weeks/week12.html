@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wdth,wght@1,125,900&family=Geist:wght@100..900&family=Geist+Mono:wght@400..600&family=Inter+Tight:wght@100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
 <script src="../js/site.js" defer></script>
 </head>
 <body class="has-cover">
@@ -17,7 +18,10 @@
     <a href="../index.html"><span class="box"></span>Index</a>
     <a href="../grid.html"><span class="box"></span>Grid</a>
   </nav>
-  <a class="site-about" href="../about.html">About</a>
+  <span class="site-right">
+    <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Dark / light"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" fill="currentColor"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg></button>
+    <a class="site-about" href="../about.html">About</a>
+  </span>
 </header>
 
 <main class="project">
@@ -83,7 +87,7 @@
   window.addEventListener('wheel',unpin,{passive:true});window.addEventListener('touchstart',unpin,{passive:true});
   window.addEventListener('keydown',function(e){if(/Arrow|Page|Home|End|Space/.test(e.key)||e.key===' ')unpin();});
   window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
-  // Cover: scale one title line to the cover width (like the banner), then repeat it to fill the height.
+  // Cover: scale one title line to the cover width (like the banner), shown once.
   var c=document.querySelector('.cover-title');if(!c)return;
   function fill(){
     var hd=document.querySelector('.site-header');
@@ -94,9 +98,9 @@
     var w=one.getBoundingClientRect().width||1;
     var cs=getComputedStyle(c),pad=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight);
     var fit=base*(c.clientWidth-pad-6)/(w+0.04*base);
-    var fs=Math.max(Math.min(fit, 200), Math.min(window.innerWidth*0.045, 72));
+    var fs=Math.max(Math.min(fit*0.6, 120), Math.min(window.innerWidth*0.04, 40));  // about 60% of full width
     c.style.fontSize=fs+'px';one.style.display='block';one.style.whiteSpace='';
-    var lh=one.getBoundingClientRect().height||1,n=Math.max(1,Math.floor(c.clientHeight*0.72/lh));  // leave the lower part of the photo clear
+    var n=1;  // one title line (was repeated to fill the cover)
     var html='';for(var i=0;i<n;i++)html+='<span>'+one.innerHTML+'</span>';c.innerHTML=html;
   }
   fill();window.addEventListener('resize',fill);if(document.fonts)document.fonts.ready.then(fill);

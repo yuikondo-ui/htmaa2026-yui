@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wdth,wght@1,125,900&family=Geist:wght@100..900&family=Geist+Mono:wght@400..600&family=Inter+Tight:wght@100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
+<script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
 <script src="../js/site.js" defer></script>
 </head>
 <body class="has-cover">
@@ -17,12 +18,15 @@
     <a href="../index.html"><span class="box"></span>Index</a>
     <a href="../grid.html"><span class="box"></span>Grid</a>
   </nav>
-  <a class="site-about" href="../about.html">About</a>
+  <span class="site-right">
+    <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Dark / light"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" fill="currentColor"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg></button>
+    <a class="site-about" href="../about.html">About</a>
+  </span>
 </header>
 
 <main class="project">
   <section class="cover">
-    <img class="cover-img" src="../img/week03/hero.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
+    <img class="cover-img" src="../img/week03/body-tree-vs-normal.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
     <div class="cover-title" data-title="3D SCANNING AND PRINTING" aria-hidden="true"><span>3D SCANNING AND PRINTING</span></div>
     <h2 class="cover-label">Week 3<span class="sr">: 3D SCANNING AND PRINTING</span></h2>
     <div class="cover-strip" aria-label="Yui Kondo — MIT Media Lab, 2026">
@@ -33,28 +37,98 @@
   <div class="project-body">
     <aside class="toc">
   <div class="toc-inner">
-    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#process">Process</a></li><li class="lvl3"><a href="#step-one">Step one</a></li><li class="lvl3"><a href="#step-two">Step two</a></li><li class="lvl2"><a href="#what-i-learned">What I learned</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
+    <ul><li class="lvl2"><a href="#prototype-1-a-mannequin-with-scales">Prototype 1: a mannequin with scales</a></li><li class="lvl3"><a href="#printing">Printing</a></li><li class="lvl2"><a href="#prototype-2-a-datafied-body">Prototype 2: a datafied body</a></li><li class="lvl3"><a href="#tree-supports-vs-normal-supports">Tree supports vs normal supports</a></li><li class="lvl3"><a href="#removing-the-supports">Removing the supports</a></li><li class="lvl2"><a href="#prototype-3-panels-that-make-the-body">Prototype 3: panels that make the body</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
   </div>
 </aside>
     <article class="content">
-<h2 id="assignment">Assignment</h2>
-<p>What this week asked for, in a sentence or two.</p>
-<h2 id="what-i-made">What I made</h2>
-<p>Describe the outcome. Put the main photo first:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Main result" src="../img/week03/hero.jpg" /></figure>
-<h2 id="process">Process</h2>
-<h3 id="step-one">Step one</h3>
-<p>Walk through what you did. Inline images are fine anywhere:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Work in progress" src="../img/week03/01.jpg" /></figure>
-<h3 id="step-two">Step two</h3>
-<p>Code blocks render too:</p>
-<pre><code class="language-python">print(&quot;hello, week 04&quot;)
-</code></pre>
-<h2 id="what-i-learned">What I learned</h2>
-<p>Reflections, mistakes, what you'd do differently.</p>
+<h2 id="prototype-1-a-mannequin-with-scales">Prototype 1: a mannequin with scales</h2>
+<p>My first idea was 3D printing modular clothing: a garment made of pieces you can take off and rearrange. I looked at Yuima Nakazato's <a href="https://store.yuimanakazato.com/en/pages/type-1">TYPE-1</a>, <a href="https://programs.sigchi.org/uist/2025/program/content/203866">Refashion: Reconfigurable Garments via Modular Design</a> from UIST '25, and the Kinematics dress. After seeing ANREALAGE's Autumn/Winter 2026–27 collection "GHOST", I thought each scale could be its own panel that comes off.</p>
+<p>I designed the scales, the panels and a small mannequin for them to attach to with Claude Fable 5.1.</p>
+<h3 id="printing">Printing</h3>
+<p>I printed on the Bambu Lab H2S in my lab, in PLA (220°C nozzle, 65°C bed): the mannequin in white and the scales in purple. The mannequin could not be made subtractively. It is a hollow shell with a narrow neck and holes all around.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The white mannequin printing inside the Bambu H2S, with purple scales on the plate beside it" src="../img/week03/vase-printing.jpg" /><figcaption>The scales are on the same plate.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The H2S touchscreen at 76%, printing a plate named overnight_plate_h2s" src="../img/week03/printer-screen.jpg" /><figcaption>76% done, nozzle at 220°C, bed at 65°C.</figcaption></figure>
+</div>
+<p>I got these two errors when starting.</p>
+<ul>
+<li><strong>"Prime Tower is too close to others."</strong> The prime tower is the waste tower the printer uses to purge between colors, and it was sitting next to the scales. Dragging it to an empty corner of the plate fixed it.</li>
+<li><strong>132 filament changes.</strong> I first gave the scales three colors. Every layer of the first few millimeters then switched colors three or four times, and each change takes one to two minutes, so changes alone added about three hours. For a test print, I learned I should use as few colors as I can.</li>
+</ul>
+<p>The printer also turned out to have only a 0.2 mm nozzle, so the whole print took 15 hours.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The white mannequin on a desk with loose purple scales beside it" src="../img/week03/vase-and-scales.jpg" /><figcaption>Off the plate.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Close-up of the support struts inside the mannequin's neck" src="../img/week03/vase-neck-supports.jpg" /><figcaption>Support had grown inside the neck, where it is hard to reach.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Two rows of purple scales clipped onto the mannequin" src="../img/week03/vase-scales-attached.jpg" /><figcaption>Two rows of scales attached.</figcaption></figure>
+</div>
+<p>The scales could not overlap. My friend Matt, who is an architect, suggested printing the panels flat, overlapping the scales while they are still a flat sheet, and only then assembling it into a 3D form.</p>
+<div class="cols natural narrow">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Sketch: the mannequin split into sections, scales with pins going into the holes, and the scales laid flat" src="../img/week03/sketch-flat-scales.jpg" /><figcaption>Matt's idea: lay the scales flat first, then assemble.</figcaption></figure>
+</div>
+<p>I also did not like how the mannequin and the clothes looked together. I wanted to explore joints the way Kinematics does, so I made a generator with GPT Astra to try different joints and sizes: <a href="https://data-barbie-kinematics.yuikondobook.chatgpt.site/">Kinematics joint generator</a>. I didn't end up printing these, but I would love to explore joints again.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Nervous System's Kinematics bracelets, sheets, necklace and dress" src="../img/week03/ref-kinematics.jpg" /><figcaption>Nervous System's Kinematics pieces.</figcaption></figure>
+<h2 id="prototype-2-a-datafied-body">Prototype 2: a datafied body</h2>
+<p>I thought the way to show our digital selves could be not clothes but the body itself. I wondered how people could reconfigure the body with their own hands: first you see a body built by an algorithm, then you take it apart yourself, then you rebuild it. So I started looking at body sculptures and how they could stand for a datafied body.</p>
+<p>On my way to the gym, I see Jaume Plensa's <em>Alchemist</em>, a seated figure made of numbers and mathematical symbols. It felt like a good picture of how algorithms see the human body: as numbers and characters. I was also drawn to Antony Gormley, who translates the body into abstract blocks or wires.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A sculpture of a seated figure made of white numbers and symbols, lit at night" src="../img/week03/ref-alchemist.jpg" /><figcaption>Jaume Plensa, Alchemist, at MIT.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A drawing by Antony Gormley: a dark figure built up from crossing lines" src="../img/week03/ref-gormley-1.jpg" /><figcaption>Antony Gormley: the body as lines,</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A figure by Antony Gormley made of stacked dark blocks, leaning on a wall" src="../img/week03/ref-gormley-2.jpg" /><figcaption>as blocks,</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A crouching figure by Antony Gormley made of welded steel rods" src="../img/week03/ref-gormley-3.jpg" /><figcaption>and as wire.</figcaption></figure>
+</div>
+<p>I was also inspired by ANREALAGE's Spring/Summer 2027 collection "SKIN": how their clothes can change with LED panels, and how numbers were used to stand for the body.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Models in dresses covered in projected green numbers, standing in front of a wall of numbers" src="../img/week03/ref-anrealage.jpg" /><figcaption>ANREALAGE, SS27 "SKIN".</figcaption></figure>
+<p>Building on these, I decided the numbers should be panels you can attach to the body. I generated an image of that body with GPT Astra, but its lines were too thin to print, so I made a thicker kneeling version as the print file.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A black wireframe figure with green numbers inserted into it" src="../img/week03/body-field-preview.jpg" /><figcaption>The first body: too thin to print.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A thicker black lattice figure kneeling on a round base, with three green number panels on its chest" src="../img/week03/kneeling-print-preview.jpg" /><figcaption>The kneeling version I printed.</figcaption></figure>
+</div>
+<h3 id="tree-supports-vs-normal-supports">Tree supports vs normal supports</h3>
+<p>The figure is fragile and needed support. I had one full day on the printer in my lab, so I printed it twice to compare the two support types in Bambu Studio:</p>
+<ul>
+<li><strong>Tree (organic)</strong> grows branch-like arms that wrap around the model and hold overhangs from the side.</li>
+<li><strong>Normal (snug)</strong> prints straight up, as a solid grid directly under each overhang.</li>
+</ul>
+<p>For fine detail, tree is usually the better choice.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Bambu Studio preview of the figure with green tree supports branching around it" src="../img/week03/slicer-tree.jpg" /><figcaption>Tree (organic) in Bambu Studio.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Bambu Studio preview of the figure with green normal supports filling the space under it" src="../img/week03/slicer-normal.jpg" /><figcaption>Normal (snug) in Bambu Studio.</figcaption></figure>
+</div>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The two figures printing in the Bambu H2S, one in tree supports and one in normal supports" src="../img/week03/body-printing.jpg" /><figcaption>Both versions printing side by side.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The two figures on the build plate from above, with the small green number panels at the back" src="../img/week03/body-on-plate.jpg" /><figcaption>From above. The small green pieces at the back are the number panels.</figcaption></figure>
+</div>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The two figures still wrapped in green supports: tree on the left, normal on the right" src="../img/week03/body-tree-vs-normal.jpg" /><figcaption>Tree supports (left) and normal supports (right). The normal supports enclosed almost the whole figure.</figcaption></figure>
+<h3 id="removing-the-supports">Removing the supports</h3>
+<p>I cut the tree supports away with flush cutters from the clamps bin.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A green bin of clamps, pliers and flush cutters" src="../img/week03/clamps-bin.jpg" /><figcaption>The tools.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Cutting a green support branch away from the gray lattice with red flush cutters" src="../img/week03/removing-supports.jpg" /><figcaption>Cutting the branches one by one, without breaking the lattice.</figcaption></figure>
+</div>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The gray lattice figure on a black background with a pile of green supports at its feet" src="../img/week03/body-supports-removed.jpg" /><figcaption>The figure with its supports removed.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Close-up of the lattice figure's chest, with green number panels clipped on" src="../img/week03/body-closeup.jpg" /><figcaption>The number panels attached to the body.</figcaption></figure>
+</div>
+<p>I liked this combination of colors. But the number panels still looked separate from the body. I wanted the panels to be the parts that make up the body, so that rearranging them becomes the body sculpture itself.</p>
+<h2 id="prototype-3-panels-that-make-the-body">Prototype 3: panels that make the body</h2>
+<p>I was inspired by ANREALAGE's 2022 collection, a figure whose whole surface is made of colored triangles, and thought it would be good if each panel could come off and go back on.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A figure in a long robe made of colored triangles, arms out" src="../img/week03/proto3-look.jpg" /><figcaption>The look I started from.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The same figure as a gray 3D mesh in Meshy" src="../img/week03/proto3-meshy.jpg" /><figcaption>Turned into a 3D model with Meshy 7.1 (about 2 million triangles).</figcaption></figure>
+</div>
+<p>This model has no grooves or pins to attach panels to the body, so with GPT Astra I thickened each line and added a hole to each panel so people can attach them.</p>
+<p>When I laid the body down flat on the plate, it needed less support and the print took 4.5 hours.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The figure printed lying down, held up by a row of tree supports" src="../img/week03/proto3-printing.jpg" /><figcaption>Printed lying down, on tree supports.</figcaption></figure>
+<p>But each panel is very small and delicate, so the supports were hard to remove. The joint worked for some of the panels, but I broke some parts, so it was hard to see what the whole thing looks like when it is assembled. The different triangle shapes look nice, but it takes forever to assemble. So the next step is to explore joints and simplify the triangles so it's feasible for people to play with the sculpture. I also want to test the resin printer.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The gray figure with arms out, standing against a dark background with its supports removed" src="../img/week03/proto3-print-a.jpg" /><figcaption>After removing the supports.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The same figure with some green triangle panels attached" src="../img/week03/proto3-print-b.jpg" /><figcaption>With some of the green panels attached.</figcaption></figure>
+</div>
+<h2 id="use-of-ai">Use of AI</h2>
+<p>I used Claude Fable 5.1 to design the scales, the panels and the mannequin, and GPT Astra to build the Kinematics joint generator and to generate the image and 3D print file for prototype 2. I used Meshy to turn the image for prototype 3 into a 3D model.</p>
 <h2 id="files">Files</h2>
 <ul>
-<li><a href="../files/week03/">Design files</a> — CAD, code, exports</li>
+<li><a href="../files/week03/Body_150mm_for_resin_or_PLA.3mf">Body_150mm_for_resin_or_PLA.3mf</a> — final print file for prototype 3: the 150 mm body with a hole in each panel, for resin or PLA (Bambu Studio project)</li>
 </ul>
     </article>
   </div>
@@ -83,7 +157,7 @@
   window.addEventListener('wheel',unpin,{passive:true});window.addEventListener('touchstart',unpin,{passive:true});
   window.addEventListener('keydown',function(e){if(/Arrow|Page|Home|End|Space/.test(e.key)||e.key===' ')unpin();});
   window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
-  // Cover: scale one title line to the cover width (like the banner), then repeat it to fill the height.
+  // Cover: scale one title line to the cover width (like the banner), shown once.
   var c=document.querySelector('.cover-title');if(!c)return;
   function fill(){
     var hd=document.querySelector('.site-header');
@@ -94,9 +168,9 @@
     var w=one.getBoundingClientRect().width||1;
     var cs=getComputedStyle(c),pad=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight);
     var fit=base*(c.clientWidth-pad-6)/(w+0.04*base);
-    var fs=Math.max(Math.min(fit, 200), Math.min(window.innerWidth*0.045, 72));
+    var fs=Math.max(Math.min(fit*0.6, 120), Math.min(window.innerWidth*0.04, 40));  // about 60% of full width
     c.style.fontSize=fs+'px';one.style.display='block';one.style.whiteSpace='';
-    var lh=one.getBoundingClientRect().height||1,n=Math.max(1,Math.floor(c.clientHeight*0.72/lh));  // leave the lower part of the photo clear
+    var n=1;  // one title line (was repeated to fill the cover)
     var html='';for(var i=0;i<n;i++)html+='<span>'+one.innerHTML+'</span>';c.innerHTML=html;
   }
   fill();window.addEventListener('resize',fill);if(document.fonts)document.fonts.ready.then(fill);
