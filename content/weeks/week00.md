@@ -4,7 +4,7 @@ date: 09/09
 topics: [final project proposal & log](http://academy.cba.mit.edu/classes/principles_practices/index.html)
 recitation: [version control and web development](https://pub.cba.mit.edu/863.26/site/recitations/version/index.html)
 status: WIP
-hero: img/week00/sketch.jpg
+hero: img/week00/doll-facets.jpg
 summary: Clothes for digital selves — a tangible digital twin built from a person's own data, and a doll-dressing game about what to show and what to hide.
 ---
 
