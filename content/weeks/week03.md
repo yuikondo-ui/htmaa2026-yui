@@ -163,4 +163,4 @@ I used Claude Fable 5.1 to design the scales, the panels and the mannequin, and 
 
 ## Files
 
-- [Body_150mm_for_resin_or_PLA.3mf](files/week03/Body_150mm_for_resin_or_PLA.3mf) — final print file for prototype 3: the 150 mm body with a hole in each panel, for resin or PLA (Bambu Studio project)
+- Body_150mm_for_resin_or_PLA.3mf — final print file for prototype 3 (Bambu Studio project, 8.6 MB). It is too large for the class repo, so it is not included here.
