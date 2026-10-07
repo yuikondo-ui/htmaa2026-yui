@@ -10,17 +10,17 @@ summary: Clothes for digital selves — a tangible digital twin built from a per
 
 ## Overview
 
-### Data Barbie
+### Clothes for Digital Selves
 
-I want to propose the concept of Data Barbie: a dress-up activity in which the doll is your own data double. It starts from the traces a person leaves on YouTube, TikTok, Claude and elsewhere. A language model reads those traces and turns them into inferences: demographics, behaviour, relationships, goals, interests, and the sensitive ones in between. Each inference becomes one panel of a modular shell around a head shaped like the user's face.
+They are watching us. Big Data analytics and artificial intelligence (AI) draw non-intuitive and unverifiable inferences and predictions about the behaviors, preferences, and private lives of individuals. These inferences draw on highly diverse and feature-rich data of unpredictable value, and create new opportunities for discriminatory, biased, and invasive decision-making. Yet we are behind one-way mirror: these inferences are not accessible or shown to us. What does it mean to make a choice when the options have been so carefully arranged for us in an invisible way? Is personal freedom possible on the Internet?
 
-Undressed, the doll tells everything it knows about you. Put a piece of clothing on it and it speaks only from the facets you chose to show; take the clothing off and the rest comes back. Which panels you cover, and for whom, is the game.
+I propose we need a shield between us and AI. Now our body is exposed. As we wear clothes to intentionally present our facets of ourselves, we also need clothes in the digital world. The sculpture represents your digital body, constructed from the traces a person leaves on platforms like YouTube, TikTok, Claude and elsewhere. A language model reads those traces and turns them into inferences: demographics, behavior, relationships, goals, interests, and the sensitive ones in between. Each inference becomes one panel of a modular shell around a body. 
 
-Children and adolescents rarely get to see their own inferred profile, let alone decide which parts of it face outward. Dressing and undressing a doll made of their own data lets them think about that with their hands: what to show, what to hide, and to whom.
+Undressed, the sculpture tells everything it knows about you. Put a piece of clothing on it and it speaks only from the facets you chose to show; take the clothing off and the rest comes back. Assembling and disassembling a sculpture made of their own data lets them think about that with their hands: what to show, what to hide, and to whom.
 
 ## Prototypes
 
-[Prototype v1 ↗](files/week00/data-barbie.html) (Sep 25 2026): a first version of the doll in the browser. Tap a facet to sew it into underwear, a shirt or a coat, then choose who is in the room. The doll speaks only from what is showing, and old inferences are drawn as old cloth.
+[Prototype v1 ↗](files/week00/data-barbie.html) (Sep 25 2026): a first version of the sculpture in the browser. Tap a facet to sew it into underwear, a shirt or a coat, then choose who is in the room. The doll speaks only from what is showing, and old inferences are drawn as old cloth.
 
 :::embed files/week00/data-barbie.html | Data Barbie, prototype v1
 
