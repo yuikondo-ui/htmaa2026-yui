@@ -37,29 +37,878 @@
   <div class="project-body">
     <aside class="toc">
   <div class="toc-inner">
-    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#process">Process</a></li><li class="lvl3"><a href="#step-one">Step one</a></li><li class="lvl3"><a href="#step-two">Step two</a></li><li class="lvl2"><a href="#what-i-learned">What I learned</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
+    <ul><li class="lvl2"><a href="#idea">Idea</a></li><li class="lvl2"><a href="#learning-the-basics-on-a-breadboard">Learning the basics on a breadboard</a></li><li class="lvl2"><a href="#first-design-raspberry-pi-xiao-rp2040">First design: Raspberry Pi + XIAO RP2040</a></li><li class="lvl3"><a href="#learning-with-claude">Learning with Claude</a></li><li class="lvl3"><a href="#understanding-power-and-signals">Understanding power and signals</a></li><li class="lvl3"><a href="#how-color-gets-from-the-image-to-the-leds">How color gets from the image to the LEDs</a></li><li class="lvl3"><a href="#checking-the-schematic">Checking the schematic</a></li><li class="lvl3"><a href="#first-pcb">First PCB</a></li><li class="lvl2"><a href="#second-design-raspberry-pi-pico-2-w">Second design: Raspberry Pi Pico 2 W</a></li><li class="lvl3"><a href="#office-hours">Office hours</a></li><li class="lvl3"><a href="#clarifying-the-requirements">Clarifying the requirements</a></li><li class="lvl3"><a href="#new-schematic">New schematic</a></li><li class="lvl2"><a href="#pcb-layout">PCB layout</a></li><li class="lvl3"><a href="#untangling-the-crossing-traces">Untangling the crossing traces</a></li><li class="lvl3"><a href="#fitting-traces-between-connector-pins">Fitting traces between connector pins</a></li><li class="lvl3"><a href="#drc-from-40-violations-to-zero">DRC: from 40 violations to zero</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
   </div>
 </aside>
     <article class="content">
-<h2 id="assignment">Assignment</h2>
-<p>What this week asked for, in a sentence or two.</p>
-<h2 id="what-i-made">What I made</h2>
-<p>Describe the outcome. Put the main photo first:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Main result" src="../img/week04/hero.jpg" /></figure>
-<h2 id="process">Process</h2>
-<h3 id="step-one">Step one</h3>
-<p>Walk through what you did. Inline images are fine anywhere:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Work in progress" src="../img/week04/01.jpg" /></figure>
-<h3 id="step-two">Step two</h3>
-<p>Code blocks render too:</p>
-<pre><code class="language-python">print(&quot;hello, week 05&quot;)
-</code></pre>
-<h2 id="what-i-learned">What I learned</h2>
-<p>Reflections, mistakes, what you'd do differently.</p>
+<h2 id="idea">Idea</h2>
+<p>I came across a project that turns a 64×64 LED matrix into a display showing the album art of whatever I'm playing on Spotify (<a href="https://www.youtube.com/watch?v=Imc0zfjhUTw">video</a>, <a href="https://github.com/tnarla/spotify-matrix">code</a>). The original project uses an off-the-shelf Adafruit RGB Matrix Bonnet on a Raspberry Pi. I wanted to design the embedded microcontroller board myself, from scratch.</p>
+<p>As a reference for the enclosure, I like the KM5 CD player: it would be cool to put the board in a transparent box so you can see the board design.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A 64×64 LED matrix showing a grayscale album cover" src="../img/week04/spotify-matrix-reference.png" /><figcaption>The original project: album art on a 64×64 LED matrix.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A CD player in a transparent yellow case, with its circuit board and disc mechanism visible inside" src="../img/week04/km5-cd-player.png" /><figcaption>The KM5 CD player: the board shows through the case.</figcaption></figure>
+</div>
+<h2 id="learning-the-basics-on-a-breadboard">Learning the basics on a breadboard</h2>
+<p>I had no background in electronics, so I started from the fundamentals. I bought a few beginner textbooks in Japanese to get familiar with the vocabulary of circuits, and watched some introductory videos:</p>
+<ul>
+<li><a href="https://youtu.be/SGvOmwZvhVk?si=WzMcevOVxclBdw-Q">Electronics fundamentals</a></li>
+<li><a href="https://youtu.be/pDELW2pIvWw?si=CADkYAXTZFjQhA2f">Digital electronics</a></li>
+</ul>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A page from a Japanese electronics textbook explaining a timer circuit, with a schematic of three LEDs and capacitors and a photo of the built circuit" src="../img/week04/textbook-timer-circuit.jpg" /><figcaption>One of the textbooks: a timer circuit where a capacitor works like a bucket filling with water.</figcaption></figure>
+<p>They didn't make much sense to me at first. So over the weekend I bought a breadboard and a basic electronics kit, and followed <a href="https://www.youtube.com/watch?v=5vRAACeebjI&amp;t=124s">this tutorial on transistors</a> to build an oscillating circuit.</p>
+<video src="../img/week04/breadboard-oscillator.mp4" controls muted loop playsinline style="width:100%;border-radius:6px"></video>
+
+<p><em>My oscillating circuit on the breadboard.</em></p>
+<p>Physically touching each component changed how I related to them. I got emotionally invested. Once I had built something that blinked, I wanted to understand <em>why</em> each part was there.</p>
+<h2 id="first-design-raspberry-pi-xiao-rp2040">First design: Raspberry Pi + XIAO RP2040</h2>
+<h3 id="learning-with-claude">Learning with Claude</h3>
+<p>I asked Claude how to turn the Spotify display idea into a board I designed myself, and what I would need to learn along the way. It made me a step-by-step course (Ohm's law, pull-up resistors, analog input, power protection, logic levels, HUB75, and finally KiCad), which I worked through first.</p>
+<div class="embed"><div class="embed-bar"><span class="embed-title">Bonnet course, made with Claude</span><a class="embed-open" href="../files/week04/bonnet-course.html" target="_blank" rel="noopener">Open in new tab ↗</a></div><iframe src="../files/week04/bonnet-course.html" loading="lazy" title="Bonnet course, made with Claude"></iframe><details class="src"><summary>Source <span class="muted">bonnet-course.html · 719 lines</span></summary><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover&quot;&gt;
+&lt;title&gt;自作Bonnetの回路図を描けるようになる教材&lt;/title&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+:root{
+  --paper:#F5F7F3; --sheet:#FFFFFF; --ink:#1C2433; --muted:#5B6472; --line:#D7DCD3; --grid:#E3E7DF;
+  --wire:#0A7A52; --part:#8E2B2B; --copper:#B26A25; --ok:#0A7A52; --bad:#B23A2E; --okbg:#E4F2EA; --badbg:#F8E7E4;
+  --sans:&quot;Zen Kaku Gothic New&quot;,&quot;Hiragino Kaku Gothic ProN&quot;,&quot;Noto Sans JP&quot;,system-ui,sans-serif;
+  --mono:&quot;IBM Plex Mono&quot;,ui-monospace,Menlo,Consolas,monospace;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme=&quot;light&quot;]){
+    --paper:#11151B; --sheet:#171C23; --ink:#E5E9EF; --muted:#9AA3B0; --line:#2A323D; --grid:#1C222A;
+    --wire:#46C08F; --part:#E08A82; --copper:#E3A35F; --ok:#46C08F; --bad:#F08A7E; --okbg:#173126; --badbg:#3A1E1B;
+  }
+}
+:root[data-theme=&quot;dark&quot;]{
+  --paper:#11151B; --sheet:#171C23; --ink:#E5E9EF; --muted:#9AA3B0; --line:#2A323D; --grid:#1C222A;
+  --wire:#46C08F; --part:#E08A82; --copper:#E3A35F; --ok:#46C08F; --bad:#F08A7E; --okbg:#173126; --badbg:#3A1E1B;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 16px)}
+body{margin:0;background-color:var(--paper);background-image:radial-gradient(var(--grid) 1px,transparent 1px);background-size:18px 18px;color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.85}
+a{color:var(--wire)}
+:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 80px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:36px}
+header.top{grid-column:1/-1}
+h1{font-size:30px;line-height:1.35;margin:0 0 6px;font-weight:700;letter-spacing:.01em}
+.lead{color:var(--muted);margin:0 0 22px;max-width:62ch}
+.mapcard{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px 18px 12px}
+.mapmeta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--muted);margin-bottom:8px}
+.mapmeta strong{color:var(--ink);font-size:18px}
+#board{width:100%;height:auto;display:block}
+#board .blk rect{fill:var(--sheet);stroke:var(--line);stroke-width:1.5;transition:fill .5s,stroke .5s}
+#board .blk text{fill:var(--muted);font-family:var(--sans);font-size:14px;transition:fill .5s}
+#board .blk.done rect{fill:var(--copper);stroke:var(--copper)}
+#board .blk.done text{fill:var(--sheet);font-weight:700}
+#board .outline{fill:none;stroke:var(--wire);stroke-width:2}
+#board .trace{stroke:var(--line);stroke-width:3;fill:none;transition:stroke .5s}
+#board .trace.done{stroke:var(--copper)}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;font-size:14px}
+nav.toc ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+nav.toc li a{display:flex;gap:8px;align-items:baseline;padding:6px 10px;text-decoration:none;color:var(--muted);border-left:2px solid transparent;margin-left:-2px;line-height:1.5}
+nav.toc li a:hover{color:var(--ink)}
+nav.toc li a .n{font-family:var(--mono);font-size:12px;min-width:20px}
+nav.toc li.done a{color:var(--ink)}
+nav.toc li.done a .n{color:var(--copper)}
+nav.toc li.done a::after{content:&quot;済&quot;;margin-left:auto;font-size:11px;color:var(--copper);border:1px solid var(--copper);border-radius:4px;padding:0 4px}
+.resetbtn{margin-top:14px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:6px 10px;font:inherit;font-size:13px;cursor:pointer}
+main{min-width:0}
+section.mod{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:28px}
+section.mod&gt;h2{font-size:22px;line-height:1.4;margin:0 0 4px;font-weight:700;display:flex;gap:12px;align-items:baseline}
+section.mod&gt;h2 .n{font-family:var(--mono);font-size:15px;color:var(--copper);font-weight:500}
+.goal{color:var(--muted);margin:0 0 18px;font-size:15px}
+h3{font-size:17px;margin:26px 0 6px;font-weight:700}
+p,ul{max-width:68ch}
+ul{padding-left:1.2em}
+code,.f{font-family:var(--mono);font-size:.92em}
+.f{display:block;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:10px 0;overflow-x:auto;white-space:pre}
+.tbl{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;font-size:14px;min-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:700;white-space:nowrap}
+td.m{font-family:var(--mono);white-space:nowrap}
+.piece{border:1px dashed var(--wire);border-radius:10px;padding:14px 16px;margin:22px 0 6px}
+.piece h4{margin:0 0 8px;font-size:15px;color:var(--wire)}
+.piece svg{max-width:100%;height:auto;display:block}
+.sch .w{stroke:var(--wire);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sch .p{stroke:var(--part);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sch .pf{fill:var(--part)}
+.sch .dot{fill:var(--wire)}
+.sch text{fill:var(--ink);font-family:var(--mono);font-size:13px}
+.sch text.lb{fill:var(--part);font-family:var(--sans)}
+.note{border-left:3px solid var(--copper);padding:4px 0 4px 14px;margin:14px 0;color:var(--ink)}
+.note b{color:var(--copper)}
+.ex{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0;background:var(--paper)}
+.ex .q{margin:0 0 10px;font-weight:700}
+.ex .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ex input{font:inherit;font-family:var(--mono);width:9em;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--sheet);color:var(--ink)}
+.ex .unit{font-family:var(--mono);color:var(--muted)}
+.btn{font:inherit;font-size:14px;padding:6px 14px;border-radius:8px;border:1px solid var(--wire);background:var(--wire);color:var(--sheet);cursor:pointer}
+.opt{font:inherit;font-size:14px;text-align:left;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);cursor:pointer;line-height:1.5}
+.opt:hover{border-color:var(--wire)}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt.sel-ok{border-color:var(--ok);background:var(--okbg)}
+.opt.sel-bad{border-color:var(--bad);background:var(--badbg)}
+.err{color:var(--bad);font-size:13px;margin-top:6px;min-height:0}
+.fb{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:15px;display:none}
+.fb.ok{display:block;background:var(--okbg);border:1px solid var(--ok)}
+.fb.bad{display:block;background:var(--badbg);border:1px solid var(--bad)}
+.ex.solved{border-color:var(--ok)}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--line);font-size:15px;cursor:pointer}
+.checks input{margin-top:6px;accent-color:var(--copper)}
+.modstatus{margin-top:18px;font-size:14px;color:var(--muted)}
+.modstatus.done{color:var(--copper);font-weight:700}
+@media (max-width:860px){
+  .wrap{grid-template-columns:1fr;gap:18px}
+  nav.toc{position:static}
+  nav.toc ol{display:flex;flex-wrap:wrap;border-left:none;gap:4px}
+  nav.toc li a{border:1px solid var(--line);border-radius:8px;margin:0;padding:4px 8px}
+  nav.toc li.done a::after{display:none}
+  nav.toc li.done a{border-color:var(--copper)}
+  section.mod{padding:20px 18px}
+  h1{font-size:24px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+&lt;header class=&quot;top&quot;&gt;
+  &lt;h1&gt;自作Bonnetの回路図を描けるようになる教材&lt;/h1&gt;
+  &lt;p class=&quot;lead&quot;&gt;Spotifyマトリクス用の基板を、電気の基本から一つずつ組み立てます。各章の問題に正解すると、下の基板のブロックが銅色に埋まっていきます。全部埋まったら、KiCadで回路図を描く準備ができています。&lt;/p&gt;
+  &lt;div class=&quot;mapcard&quot;&gt;
+    &lt;div class=&quot;mapmeta&quot;&gt;&lt;span&gt;基板の完成度&lt;/span&gt;&lt;span&gt;&lt;strong id=&quot;pct&quot;&gt;0&lt;/strong&gt; / 10 章&lt;/span&gt;&lt;/div&gt;
+    &lt;svg id=&quot;board&quot; viewBox=&quot;0 0 640 230&quot; role=&quot;img&quot; aria-label=&quot;基板の進捗マップ&quot;&gt;
+      &lt;rect class=&quot;outline&quot; x=&quot;6&quot; y=&quot;6&quot; width=&quot;628&quot; height=&quot;218&quot; rx=&quot;14&quot;/&gt;
+      &lt;path class=&quot;trace&quot; id=&quot;t-in&quot; d=&quot;M150 80 H245&quot;/&gt;
+      &lt;path class=&quot;trace&quot; id=&quot;t-sig&quot; d=&quot;M395 80 H490&quot;/&gt;
+      &lt;path class=&quot;trace&quot; id=&quot;t-pw&quot; d=&quot;M320 120 V150&quot;/&gt;
+      &lt;g class=&quot;blk&quot; id=&quot;b-in&quot;&gt;&lt;rect x=&quot;24&quot; y=&quot;40&quot; width=&quot;126&quot; height=&quot;80&quot; rx=&quot;8&quot;/&gt;&lt;text x=&quot;87&quot; y=&quot;78&quot; text-anchor=&quot;middle&quot;&gt;入力回路&lt;/text&gt;&lt;text x=&quot;87&quot; y=&quot;98&quot; text-anchor=&quot;middle&quot; style=&quot;font-size:12px&quot;&gt;2・3・4章&lt;/text&gt;&lt;/g&gt;
+      &lt;g class=&quot;blk&quot; id=&quot;b-mcu&quot;&gt;&lt;rect x=&quot;245&quot; y=&quot;40&quot; width=&quot;150&quot; height=&quot;80&quot; rx=&quot;8&quot;/&gt;&lt;text x=&quot;320&quot; y=&quot;78&quot; text-anchor=&quot;middle&quot;&gt;XIAO まわり&lt;/text&gt;&lt;text x=&quot;320&quot; y=&quot;98&quot; text-anchor=&quot;middle&quot; style=&quot;font-size:12px&quot;&gt;5・9章&lt;/text&gt;&lt;/g&gt;
+      &lt;g class=&quot;blk&quot; id=&quot;b-sig&quot;&gt;&lt;rect x=&quot;490&quot; y=&quot;40&quot; width=&quot;126&quot; height=&quot;80&quot; rx=&quot;8&quot;/&gt;&lt;text x=&quot;553&quot; y=&quot;78&quot; text-anchor=&quot;middle&quot;&gt;HUB75 信号&lt;/text&gt;&lt;text x=&quot;553&quot; y=&quot;98&quot; text-anchor=&quot;middle&quot; style=&quot;font-size:12px&quot;&gt;7・8章&lt;/text&gt;&lt;/g&gt;
+      &lt;g class=&quot;blk&quot; id=&quot;b-pw&quot;&gt;&lt;rect x=&quot;200&quot; y=&quot;150&quot; width=&quot;240&quot; height=&quot;56&quot; rx=&quot;8&quot;/&gt;&lt;text x=&quot;320&quot; y=&quot;176&quot; text-anchor=&quot;middle&quot;&gt;電源と保護&lt;/text&gt;&lt;text x=&quot;320&quot; y=&quot;194&quot; text-anchor=&quot;middle&quot; style=&quot;font-size:12px&quot;&gt;6章&lt;/text&gt;&lt;/g&gt;
+      &lt;g class=&quot;blk&quot; id=&quot;b-base&quot;&gt;&lt;rect x=&quot;24&quot; y=&quot;150&quot; width=&quot;150&quot; height=&quot;56&quot; rx=&quot;8&quot;/&gt;&lt;text x=&quot;99&quot; y=&quot;176&quot; text-anchor=&quot;middle&quot;&gt;電気の基本&lt;/text&gt;&lt;text x=&quot;99&quot; y=&quot;194&quot; text-anchor=&quot;middle&quot; style=&quot;font-size:12px&quot;&gt;1章&lt;/text&gt;&lt;/g&gt;
+      &lt;g class=&quot;blk&quot; id=&quot;b-all&quot;&gt;&lt;rect x=&quot;466&quot; y=&quot;150&quot; width=&quot;150&quot; height=&quot;56&quot; rx=&quot;8&quot;/&gt;&lt;text x=&quot;541&quot; y=&quot;176&quot; text-anchor=&quot;middle&quot;&gt;回路図に統合&lt;/text&gt;&lt;text x=&quot;541&quot; y=&quot;194&quot; text-anchor=&quot;middle&quot; style=&quot;font-size:12px&quot;&gt;10章&lt;/text&gt;&lt;/g&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+
+&lt;nav class=&quot;toc&quot; aria-label=&quot;目次&quot;&gt;
+  &lt;ol id=&quot;toc&quot;&gt;&lt;/ol&gt;
+  &lt;button class=&quot;resetbtn&quot; id=&quot;reset&quot; type=&quot;button&quot;&gt;進捗をリセット&lt;/button&gt;
+&lt;/nav&gt;
+
+&lt;main id=&quot;main&quot;&gt;
+&lt;section class=&quot;mod&quot; id=&quot;m1&quot; data-mod=&quot;m1&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;1&lt;/span&gt;電気の基本:電圧・電流・抵抗&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:オームの法則で、回路のどこに何V・何mAがかかるかを計算できる。&lt;/p&gt;
+  &lt;h3&gt;3つの量&lt;/h3&gt;
+  &lt;p&gt;&lt;b&gt;電圧(V、ボルト)&lt;/b&gt;は「押す力」です。いつも2点の差として測ります。「このピンは3.3V」と言うときは、GNDを0Vとしたときの差のことです。&lt;b&gt;電流(A、アンペア)&lt;/b&gt;は実際に流れる量、&lt;b&gt;抵抗(Ω、オーム)&lt;/b&gt;は流れにくさです。&lt;/p&gt;
+  &lt;p&gt;3つは &lt;code&gt;V = I × R&lt;/code&gt; でつながっています。2つわかれば残り1つが出せます。&lt;/p&gt;
+  &lt;span class=&quot;f&quot;&gt;V = I × R      電圧 = 電流 × 抵抗
+I = V ÷ R      電流 = 電圧 ÷ 抵抗
+R = V ÷ I      抵抗 = 電圧 ÷ 電流&lt;/span&gt;
+  &lt;h3&gt;単位の接頭辞がいちばんの落とし穴&lt;/h3&gt;
+  &lt;div class=&quot;tbl&quot;&gt;&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;記号&lt;/th&gt;&lt;th&gt;意味&lt;/th&gt;&lt;th&gt;例&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;k&lt;/td&gt;&lt;td&gt;× 1,000&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;10kΩ = 10,000Ω&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;m&lt;/td&gt;&lt;td&gt;÷ 1,000&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;0.33mA = 0.00033A&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;µ&lt;/td&gt;&lt;td&gt;÷ 1,000,000&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;0.1µF = 0.0000001F&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;&lt;/div&gt;
+  &lt;p&gt;計算する前に、全部をV・A・Ωに直す。これだけで桁ずれはほぼ防げます。&lt;/p&gt;
+  &lt;div class=&quot;note&quot;&gt;&lt;b&gt;近道:&lt;/b&gt;&lt;code&gt;mA × kΩ = V&lt;/code&gt;。mの「÷1000」とkの「×1000」が打ち消し合うので、数字だけ掛ければ電圧が出ます。0.1mA × 10kΩ = 1V。逆に &lt;code&gt;V ÷ kΩ = mA&lt;/code&gt; も使えます。&lt;/div&gt;
+
+  &lt;div class=&quot;ex&quot; data-id=&quot;m1q1&quot; data-type=&quot;num&quot; data-ans=&quot;5&quot; data-tol=&quot;0.05&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;5Vを1kΩの抵抗にかけると、何mA流れますか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;decimal&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;mA&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。5V ÷ 1kΩ = 5mA。V ÷ kΩ = mA の近道がそのまま使えます。&quot; data-hint=&quot;I = V ÷ R。1kΩ = 1,000Ω に直してから割るか、V ÷ kΩ = mA の近道を使ってみてください。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m1q2&quot; data-type=&quot;num&quot; data-ans=&quot;9.4&quot; data-tol=&quot;0.05&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;4.7kΩの抵抗に2mA流れています。抵抗の両端の電圧は何Vですか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;decimal&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;V&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。2mA × 4.7kΩ = 9.4V。&quot; data-hint=&quot;V = I × R。mA × kΩ = V の近道で、2 × 4.7 を計算します。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m1q3&quot; data-type=&quot;num&quot; data-ans=&quot;0.00033&quot; data-tol=&quot;0.000004&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;0.33mAをA(アンペア)で表すと？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;decimal&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;A&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。0.33 ÷ 1000 = 0.00033A。&quot; data-hint=&quot;mは÷1000です。小数点を左に3つ動かします。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;mod&quot; id=&quot;m2&quot; data-mod=&quot;m2&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;2&lt;/span&gt;デジタル入力:ボタンとプルアップ&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:ボタンをマイコンに正しくつなぐ回路を描ける。&lt;/p&gt;
+  &lt;h3&gt;入力ピンは電圧を見ている&lt;/h3&gt;
+  &lt;p&gt;XIAOの入力ピンは、電圧が3.3Vに近ければH(1)、0Vに近ければL(0)と読みます。電流ではなく電圧を見ている、というのが大事な点です。&lt;/p&gt;
+  &lt;h3&gt;フローティング&lt;/h3&gt;
+  &lt;p&gt;ボタンの片側をピン、もう片側をGNDにつなぐだけだと、離したときピンがどこにもつながっていない状態になります。電圧が決まらず、ノイズや指の接近でHとLがランダムに変わります。これを&lt;b&gt;フローティング&lt;/b&gt;と呼びます。&lt;/p&gt;
+  &lt;h3&gt;プルアップ抵抗&lt;/h3&gt;
+  &lt;p&gt;ピンと3.3Vの間に10kΩを入れると、離しているときは抵抗を通して3.3Vに引き上げられ、Hに決まります。押すとGNDに直結されてLになります。押すとLになる形が、一番よく使われます。&lt;/p&gt;
+  &lt;div class=&quot;piece&quot;&gt;
+    &lt;h4&gt;回路図ピース:ボタン&lt;/h4&gt;
+    &lt;svg class=&quot;sch&quot; viewBox=&quot;0 0 340 220&quot; role=&quot;img&quot; aria-label=&quot;プルアップ抵抗付きボタンの回路図&quot;&gt;
+      &lt;text x=&quot;44&quot; y=&quot;18&quot;&gt;3V3&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 24 V40&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M60 40 L60 46 L50 51 L70 58 L50 65 L70 72 L50 79 L70 86 L60 91 V96&quot;/&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;80&quot; y=&quot;72&quot;&gt;R1 10kΩ&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 96 V140&quot;/&gt;
+      &lt;circle class=&quot;dot&quot; cx=&quot;60&quot; cy=&quot;118&quot; r=&quot;3.5&quot;/&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 118 H200&quot;/&gt;
+      &lt;text x=&quot;208&quot; y=&quot;122&quot;&gt;XIAO D8&lt;/text&gt;
+      &lt;circle class=&quot;p&quot; cx=&quot;60&quot; cy=&quot;144&quot; r=&quot;3&quot;/&gt;
+      &lt;circle class=&quot;p&quot; cx=&quot;60&quot; cy=&quot;178&quot; r=&quot;3&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M60 147 L76 174&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M84 150 V172 M84 161 H70&quot;/&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;96&quot; y=&quot;166&quot;&gt;SW1&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 181 V196&quot;/&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M46 196 H74 M51 202 H69 M56 208 H64&quot;/&gt;
+    &lt;/svg&gt;
+    &lt;p style=&quot;margin:6px 0 0;font-size:14px;color:var(--muted)&quot;&gt;ボタンは2個使うので、このピースを D8 と D9 に1つずつ描きます。&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m2q1&quot; data-type=&quot;mc&quot; data-ans=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;上の回路で、ボタンを離しているとき D8 は何と読まれますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;H(1)&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;L(0)&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;決まらない&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。電流がほぼ流れないので抵抗での電圧降下もなく、ピンは約3.3VでHです。&quot; data-hint=&quot;プルアップ抵抗が、離しているときのピンをどこに引き上げているか考えてみてください。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m2q2&quot; data-type=&quot;num&quot; data-ans=&quot;0.33&quot; data-tol=&quot;0.01&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;ボタンを押しているとき、R1に流れる電流は何mAですか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;decimal&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;mA&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。R1の両端は3.3Vと0Vなので、3.3V ÷ 10kΩ = 0.33mA。押しっぱなしでもほとんど電力を使いません。&quot; data-hint=&quot;押しているとき、R1の上端は3.3V、下端はGND(0V)です。V ÷ kΩ = mA。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m2q3&quot; data-type=&quot;mc&quot; data-ans=&quot;1&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;R1をなくして3.3Vを直接ボタンにつなぐと、押した瞬間どうなりますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;何も変わらない&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;3.3VとGNDが導線だけでつながり、ショートする&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;ピンがHのままになる&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。抵抗がほぼ0Ωなので、I = V ÷ R の電流は電源の限界まで大きくなろうとします。レギュレータの過熱や配線の焼損につながります。&quot; data-hint=&quot;I = V ÷ R で、Rがほぼ0Ωのとき電流はどうなるでしょう。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;note&quot;&gt;&lt;b&gt;補足:&lt;/b&gt;RP2040には内蔵プルアップもあります。今回は仕組みを理解するために外付けで描きます。&lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;mod&quot; id=&quot;m3&quot; data-mod=&quot;m3&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;3&lt;/span&gt;アナログ入力:フォトトランジスタで明るさを測る&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:光の強さを電圧に変えてADCで読む回路を描き、抵抗値を選べる。&lt;/p&gt;
+  &lt;h3&gt;電流を電圧に変える&lt;/h3&gt;
+  &lt;p&gt;フォトトランジスタは、光が当たるほど電流をたくさん流す部品です。光で開き具合が変わる蛇口だと考えてください。マイコンが読めるのは電圧なので、下に抵抗を置いて、流れた電流を &lt;code&gt;V = I × R&lt;/code&gt; で電圧に変えます。抵抗の下端はGNDなので、その電圧がそのままADCピンの電圧になります。&lt;/p&gt;
+  &lt;div class=&quot;piece&quot;&gt;
+    &lt;h4&gt;回路図ピース:明るさセンサー&lt;/h4&gt;
+    &lt;svg class=&quot;sch&quot; viewBox=&quot;0 0 340 230&quot; role=&quot;img&quot; aria-label=&quot;フォトトランジスタと抵抗の回路図&quot;&gt;
+      &lt;text x=&quot;44&quot; y=&quot;18&quot;&gt;3V3&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 24 V46&quot;/&gt;
+      &lt;circle class=&quot;p&quot; cx=&quot;60&quot; cy=&quot;68&quot; r=&quot;20&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M52 56 V80 M52 62 L60 50 M52 74 L60 86&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M60 50 V46 M60 86 V90&quot;/&gt;
+      &lt;path class=&quot;pf&quot; d=&quot;M56 84 L62 89 L58 80 Z&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M18 50 L34 58 M30 52 L34 58 L28 60 M16 64 L32 72 M28 66 L32 72 L26 74&quot;/&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;92&quot; y=&quot;64&quot;&gt;Q1 フォトトランジスタ&lt;/text&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;92&quot; y=&quot;82&quot; style=&quot;font-size:12px&quot;&gt;上:コレクタ 下:エミッタ&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 90 V130&quot;/&gt;
+      &lt;circle class=&quot;dot&quot; cx=&quot;60&quot; cy=&quot;112&quot; r=&quot;3.5&quot;/&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 112 H200&quot;/&gt;
+      &lt;text x=&quot;208&quot; y=&quot;116&quot;&gt;XIAO A0&lt;/text&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M60 130 L60 136 L50 141 L70 148 L50 155 L70 162 L50 169 L70 176 L60 181 V186&quot;/&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;80&quot; y=&quot;162&quot;&gt;R2 10kΩ&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 186 V200&quot;/&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M46 200 H74 M51 206 H69 M56 212 H64&quot;/&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m3q1&quot; data-type=&quot;num&quot; data-ans=&quot;1&quot; data-tol=&quot;0.02&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;明るい部屋でQ1に0.1mA流れています。R2は10kΩです。A0の電圧は何Vですか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;decimal&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;V&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。0.1mA × 10kΩ = 1V。&quot; data-hint=&quot;mA × kΩ = V の近道で、0.1 × 10 を計算します。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m3q2&quot; data-type=&quot;mc&quot; data-ans=&quot;1&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;直射日光でQ1が1mA流そうとしました。計算上は1mA × 10kΩ = 10V。実際のA0はどうなりますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;10Vになり、XIAOが壊れる&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;電源の3.3Vを超えられず、3V前後で頭打ちになる&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;0Vになる&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。回路の一番上が3.3Vなので、それより高い電圧は生まれません。Q1が全開(飽和)になり、A0はQ1自身の小さな電圧降下ぶんを引いた3V前後で止まります。これ以上明るくなっても値が変わらないので、明るさを区別できなくなります。&quot; data-hint=&quot;この回路で一番高い電圧はどこでしょう。それより高い電圧が途中に生まれることはありますか？&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;h3&gt;抵抗値の選び方&lt;/h3&gt;
+  &lt;p&gt;抵抗が大きいほど、少しの光でも電圧が大きく変わる(感度が高い)代わりに、明るい所ですぐ頭打ちになります。小さいとその逆です。実際に置く場所で、一番明るいときの電流を測り、そのとき3V弱になる抵抗を選ぶのが基本です。仮の値として10kΩで描いておき、来週の製作時にテスターで測ってから決めても大丈夫です。&lt;/p&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m3q3&quot; data-type=&quot;num&quot; data-ans=&quot;1241&quot; data-tol=&quot;4&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;RP2040のADCは12ビットで、0〜3.3Vを0〜4095の数値にします。A0が1Vのとき、読める値はおよそいくつですか？(整数で)&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;numeric&quot; aria-label=&quot;答え&quot;&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。1 ÷ 3.3 × 4095 ≈ 1241。電圧の割合を、数値の範囲にそのまま当てはめます。&quot; data-hint=&quot;1Vは3.3Vの何割でしょう。その割合を4095に掛けます。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;mod&quot; id=&quot;m4&quot; data-mod=&quot;m4&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;4&lt;/span&gt;出力:状態表示LED&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:LEDの電流制限抵抗を計算して選べる。来週のテストで「動いている」ことを目で確かめる用のLEDです。&lt;/p&gt;
+  &lt;h3&gt;LEDは抵抗なしでつないではいけない&lt;/h3&gt;
+  &lt;p&gt;LEDは、一定の電圧(順方向電圧 &lt;code&gt;Vf&lt;/code&gt;、赤で約2V。必ずデータシートで確認)を超えると急に電流を流し始めます。抵抗なしだと電流が制限されず、LEDかマイコンのピンを傷めます。直列に抵抗を入れて電流を決めます。&lt;/p&gt;
+  &lt;span class=&quot;f&quot;&gt;抵抗にかかる電圧 = ピンの電圧 − Vf
+電流 = (3.3V − Vf) ÷ R&lt;/span&gt;
+  &lt;div class=&quot;piece&quot;&gt;
+    &lt;h4&gt;回路図ピース:状態LED&lt;/h4&gt;
+    &lt;svg class=&quot;sch&quot; viewBox=&quot;0 0 340 220&quot; role=&quot;img&quot; aria-label=&quot;LEDと電流制限抵抗の回路図&quot;&gt;
+      &lt;text x=&quot;34&quot; y=&quot;18&quot;&gt;XIAO D10&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 24 V40&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M60 40 L60 46 L50 51 L70 58 L50 65 L70 72 L50 79 L70 86 L60 91 V96&quot;/&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;80&quot; y=&quot;72&quot;&gt;R3 1kΩ&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 96 V118&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M46 118 H74 L60 140 Z M46 140 H74&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M80 124 L94 114 M88 113 L94 114 L92 120 M84 136 L98 126 M92 125 L98 126 L96 132&quot;/&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;104&quot; y=&quot;134&quot;&gt;D1 赤LED&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M60 140 V176&quot;/&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M46 176 H74 M51 182 H69 M56 188 H64&quot;/&gt;
+    &lt;/svg&gt;
+    &lt;p style=&quot;margin:6px 0 0;font-size:14px;color:var(--muted)&quot;&gt;三角の向きが電流の向きです。三角の底(アノード)が+側、横棒(カソード)がGND側。基板では向きを間違えやすいので、シルクにも印を入れます。&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m4q1&quot; data-type=&quot;num&quot; data-ans=&quot;1.3&quot; data-tol=&quot;0.05&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;Vf = 2.0V、R3 = 1kΩのとき、LEDに流れる電流は何mAですか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;decimal&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;mA&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。(3.3 − 2.0)V ÷ 1kΩ = 1.3mA。表示用には十分見える明るさです。&quot; data-hint=&quot;まず抵抗にかかる電圧を出します。3.3V − Vf。それを kΩ で割ると mA。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m4q2&quot; data-type=&quot;num&quot; data-ans=&quot;13&quot; data-tol=&quot;0.3&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;棚にある100Ωを使うと、何mAになりますか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;decimal&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;mA&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。1.3V ÷ 0.1kΩ = 13mA。RP2040のピンが標準設定で出せる電流より多く、ピンに負担がかかります。&quot; data-hint=&quot;100Ω = 0.1kΩ。1.3V ÷ 0.1kΩ。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m4q3&quot; data-type=&quot;mc&quot; data-ans=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;状態表示LEDの抵抗として一番いいのはどれですか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;1kΩ:十分見えて、ピンへの負担も小さい&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;100Ω:明るいほどいい&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;10MΩ:電流は少ないほどいい&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。10MΩだと電流は約0.00013mAで、ほとんど光りません。100Ωはピンに負担がかかります。&quot; data-hint=&quot;10MΩのときの電流も計算してみてください。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;section class=&quot;mod&quot; id=&quot;m5&quot; data-mod=&quot;m5&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;5&lt;/span&gt;XIAO RP2040 のまわり:電源・GND・パスコン&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:マイコンを動かすための電源まわりの約束を守って描ける。&lt;/p&gt;
+  &lt;h3&gt;XIAOの電源ピン&lt;/h3&gt;
+  &lt;p&gt;XIAOには &lt;code&gt;5V&lt;/code&gt;、&lt;code&gt;3V3&lt;/code&gt;、&lt;code&gt;GND&lt;/code&gt; のピンがあります。5Vを入れると、XIAO内部のレギュレータが3.3Vを作って &lt;code&gt;3V3&lt;/code&gt; ピンに出します。2章・3章のプルアップ抵抗やフォトトランジスタは、この &lt;code&gt;3V3&lt;/code&gt; から取ります。&lt;/p&gt;
+  &lt;h3&gt;GNDは全部つなぐ&lt;/h3&gt;
+  &lt;p&gt;電圧は2点の差でした。XIAO、Pi、74AHCT245、マトリクスがそれぞれ違うGNDを基準にしていたら、「3.3V」の意味がそろいません。基板上のGNDはすべて一つにつなぎます。&lt;/p&gt;
+  &lt;h3&gt;パスコン(バイパスコンデンサ)&lt;/h3&gt;
+  &lt;p&gt;ICは動作の瞬間に電流を急に欲しがります。電源から遠いと配線を通って届くまでに電圧が一瞬下がり、誤動作の原因になります。各ICの電源ピンのすぐ横に0.1µFを置いて、小さな貯金箱の役目をさせます。XIAOはモジュール内にパスコンが載っているので、自分で足すのは74AHCT245の2個ぶんです。&lt;/p&gt;
+  &lt;h3&gt;XIAOの5Vにダイオードを入れる&lt;/h3&gt;
+  &lt;p&gt;XIAOの5VピンはUSBの5Vとつながっています。プログラムを書き込むためにUSBを挿したまま基板にも5Vが来ていると、パソコンのUSBから基板側(Piを含む)へ電流が流れ込むおそれがあります。基板の5VからXIAOの5Vへ向けてショットキーダイオードを1個入れると、逆向きの流れを止められます。XIAOの5Vピンの扱いは、SeeedのXIAO RP2040の資料でも確認してください。&lt;/p&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m5q1&quot; data-type=&quot;mc&quot; data-ans=&quot;2&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;XIAOとPiのGNDをつながないと、何が困りますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;何も困らない。信号線さえつながっていればいい&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;電流が多く流れすぎる&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;電圧の基準がそろわず、HとLを正しく読めない&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。電圧はいつも2点の差です。基準(GND)が共通でないと、信号の電圧に意味がなくなります。&quot; data-hint=&quot;「3.3V」は何と何の差だったか、1章を思い出してみてください。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m5q2&quot; data-type=&quot;mc&quot; data-ans=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;74AHCT245のパスコン0.1µFは、どこに置きますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;各ICの電源ピン(VCC)のすぐ近く。反対側はGNDへ&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;基板の端にまとめて1個&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;電源コネクタの近くだけ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。遠いと配線を通る間に意味がなくなります。回路図でも各ICの横に描き、基板ではVCCピンの隣に配置します。&quot; data-hint=&quot;パスコンは、ICが急に電流を欲しがったときの貯金箱でした。貯金箱はどこにあると役に立ちますか？&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m5q3&quot; data-type=&quot;mc&quot; data-ans=&quot;1&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;Piの3.3V(Piのピン1・17)と、XIAOの3V3ピンはつなぎますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;つなぐ。同じ3.3Vだから&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;つながない。別々のレギュレータが同じ線を引っ張り合うから&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。2つの電源を直結すると、わずかな電圧差で片方からもう片方へ電流が流れ込みます。つなぐのはGNDだけです。&quot; data-hint=&quot;3.3Vを作っている部品は、Piの中とXIAOの中にそれぞれあります。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;mod&quot; id=&quot;m6&quot; data-mod=&quot;m6&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;6&lt;/span&gt;電源入力と逆接保護&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:どこに大きな電流が流れるかを決め、逆接保護回路を描ける。&lt;/p&gt;
+  &lt;h3&gt;4Aを基板に通さない&lt;/h3&gt;
+  &lt;p&gt;64x64のマトリクスは明るい画像で数Aを使います。この大電流は、電源から付属の電源ケーブルでマトリクスへ直接送ります。基板に来る5Vは、Pi・XIAO・74AHCT245のぶんだけです。基板の配線を太くする心配や、保護部品の電流上限の心配がぐっと減ります。&lt;/p&gt;
+  &lt;h3&gt;逆接保護:PチャネルMOSFET&lt;/h3&gt;
+  &lt;p&gt;電源の+と−を逆に挿すと、ICは一瞬で壊れます。一番簡単な対策はダイオードを直列に入れることですが、ダイオードは常に0.3〜0.4Vほど電圧を食います。5Vが4.6Vになると、Piが不安定になることがあります。&lt;/p&gt;
+  &lt;p&gt;そこでPチャネルMOSFETをスイッチとして使います。ゲートをGNDにつないでおくと、正しく挿したときはゲートがソースより約5V低くなり、MOSFETがオンになって電流が通ります。逆に挿すとゲートの方が高くなり、オフのまま電流を止めます。オンのときの抵抗 &lt;code&gt;Rds(on)&lt;/code&gt; はとても小さいので、電圧のロスもわずかです。&lt;/p&gt;
+  &lt;div class=&quot;piece&quot;&gt;
+    &lt;h4&gt;回路図ピース:電源入力&lt;/h4&gt;
+    &lt;svg class=&quot;sch&quot; viewBox=&quot;0 0 560 250&quot; role=&quot;img&quot; aria-label=&quot;逆接保護と電源分配の回路図&quot;&gt;
+      &lt;text x=&quot;10&quot; y=&quot;64&quot;&gt;J1 +5V&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M70 60 H130&quot;/&gt;
+      &lt;rect class=&quot;p&quot; x=&quot;130&quot; y=&quot;36&quot; width=&quot;96&quot; height=&quot;48&quot; rx=&quot;6&quot;/&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;146&quot; y=&quot;58&quot;&gt;Q2 Pch&lt;/text&gt;
+      &lt;text x=&quot;136&quot; y=&quot;78&quot; style=&quot;font-size:11px&quot;&gt;D&lt;/text&gt;&lt;text x=&quot;214&quot; y=&quot;78&quot; style=&quot;font-size:11px&quot;&gt;S&lt;/text&gt;&lt;text x=&quot;174&quot; y=&quot;80&quot; style=&quot;font-size:11px&quot;&gt;G&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M178 84 V120&quot;/&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M164 120 H192 M169 126 H187 M174 132 H182&quot;/&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M226 60 H470&quot;/&gt;
+      &lt;circle class=&quot;dot&quot; cx=&quot;280&quot; cy=&quot;60&quot; r=&quot;3.5&quot;/&gt;
+      &lt;text x=&quot;476&quot; y=&quot;64&quot;&gt;+5V&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M280 60 V96&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M266 96 H294 M266 106 H294&quot;/&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;302&quot; y=&quot;104&quot;&gt;C1 47µF&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M280 106 V128&quot;/&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M266 128 H294 M271 134 H289 M276 140 H284&quot;/&gt;
+      &lt;text x=&quot;10&quot; y=&quot;200&quot;&gt;+5V&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M44 196 H130&quot;/&gt;
+      &lt;path class=&quot;p&quot; d=&quot;M130 184 V208 L154 196 Z M154 184 V208 M154 208 L150 212 M154 184 L158 180&quot;/&gt;
+      &lt;text class=&quot;lb&quot; x=&quot;118&quot; y=&quot;232&quot;&gt;D2 ショットキー&lt;/text&gt;
+      &lt;path class=&quot;w&quot; d=&quot;M154 196 H240&quot;/&gt;
+      &lt;text x=&quot;248&quot; y=&quot;200&quot;&gt;XIAO 5V&lt;/text&gt;
+      &lt;text x=&quot;340&quot; y=&quot;170&quot; style=&quot;font-size:12px&quot;&gt;+5V の行き先&lt;/text&gt;
+      &lt;text x=&quot;340&quot; y=&quot;190&quot; style=&quot;font-size:12px&quot;&gt;・Pi ピン2・4&lt;/text&gt;
+      &lt;text x=&quot;340&quot; y=&quot;208&quot; style=&quot;font-size:12px&quot;&gt;・U1/U2 VCC(20番)&lt;/text&gt;
+      &lt;text x=&quot;340&quot; y=&quot;226&quot; style=&quot;font-size:12px&quot;&gt;・D2 経由で XIAO 5V&lt;/text&gt;
+    &lt;/svg&gt;
+    &lt;p style=&quot;margin:6px 0 0;font-size:14px;color:var(--muted)&quot;&gt;CBAの棚のPチャネルMOSFETのデータシートで、ゲート電圧4.5V前後でのRds(on)、ドレイン電流の上限、ピン配置(G・D・S)を必ず確認してください。部品によってピンの並びが違います。&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m6q1&quot; data-type=&quot;num&quot; data-ans=&quot;50&quot; data-tol=&quot;1&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;Rds(on) = 0.05Ωのとき、1A流れるとQ2での電圧ロスは何mVですか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;decimal&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;mV&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。0.05Ω × 1A = 0.05V = 50mV。ダイオードの約400mVと比べると8分の1です。&quot; data-hint=&quot;V = I × R。出たVを×1000してmVにします。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m6q2&quot; data-type=&quot;num&quot; data-ans=&quot;4.6&quot; data-tol=&quot;0.02&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;代わりに電圧降下0.4Vのダイオードを使うと、基板の5Vは何Vになりますか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;decimal&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;V&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。5 − 0.4 = 4.6V。Piの電源としては低めです。だからMOSFETを使います。一方D2はXIAOだけに行く小さな電流なので、ダイオードで問題ありません。XIAOは内部で3.3Vに下げるので、4.6Vでも動きます。&quot; data-hint=&quot;直列の部品で電圧が食われると、その分だけ後ろの電圧が下がります。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m6q3&quot; data-type=&quot;mc&quot; data-ans=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;マトリクスが使う数Aの電流は、どこを通しますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;電源からマトリクスへ直接。基板は通さない&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;基板のQ2を通して保護する&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;XIAOの5Vピンを通す&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。基板の細い配線や小さなMOSFETに数Aを流す必要がなくなります。マトリクスと基板のGNDは、HUB75ケーブルのGND線でもつながります。&quot; data-hint=&quot;小さなMOSFETや、ミリングで削った細い配線に数Aを流すとどうなるでしょう。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;note&quot;&gt;&lt;b&gt;注意:&lt;/b&gt;Piを基板から5Vピン経由で給電するときは、PiのUSB電源は挿さないでください。2つの電源がぶつかります。&lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;section class=&quot;mod&quot; id=&quot;m7&quot; data-mod=&quot;m7&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;7&lt;/span&gt;ロジックレベル:3.3Vの信号を5Vにする&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:なぜレベルシフタが要るか説明でき、74AHCT245の固定ピンを正しく描ける。&lt;/p&gt;
+  &lt;h3&gt;Hと読まれる電圧には下限がある&lt;/h3&gt;
+  &lt;p&gt;入力がHと読まれるには、電圧が &lt;code&gt;VIH&lt;/code&gt;(High入力の最低電圧)以上である必要があります。Piの出力は3.3V。マトリクスの中のICは5Vで動いていて、3.3Vが確実にHと読まれる保証がありません。そこで間に74AHCT245を入れ、3.3Vの信号を5Vで出し直します。&lt;/p&gt;
+  &lt;div class=&quot;tbl&quot;&gt;&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;IC(5Vで動作)&lt;/th&gt;&lt;th&gt;VIH の目安&lt;/th&gt;&lt;th&gt;3.3V入力&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;74HC245&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;約3.5V&lt;/td&gt;&lt;td&gt;Hと保証されない&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;74HCT245 / 74AHCT245&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;2.0V&lt;/td&gt;&lt;td&gt;確実にH&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;&lt;/div&gt;
+  &lt;p&gt;名前の「T」は、入力の閾値が低い(TTL互換)という意味です。部品を選ぶとき、ここが一文字違うだけで動かなくなります。正確な値はデータシートの &lt;code&gt;VIH&lt;/code&gt; の行で確認します。&lt;/p&gt;
+  &lt;h3&gt;74AHCT245のピン&lt;/h3&gt;
+  &lt;div class=&quot;tbl&quot;&gt;&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;ピン&lt;/th&gt;&lt;th&gt;名前&lt;/th&gt;&lt;th&gt;つなぎ方&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;1&lt;/td&gt;&lt;td&gt;DIR&lt;/td&gt;&lt;td&gt;+5V。A側からB側への向きに固定&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;2〜9&lt;/td&gt;&lt;td&gt;A1〜A8&lt;/td&gt;&lt;td&gt;入力。Piから来る3.3V信号&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;10&lt;/td&gt;&lt;td&gt;GND&lt;/td&gt;&lt;td&gt;GND&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;11〜18&lt;/td&gt;&lt;td&gt;B8〜B1&lt;/td&gt;&lt;td&gt;出力。5V信号がHUB75へ(18番がB1、11番がB8と逆順)&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;19&lt;/td&gt;&lt;td&gt;OE#&lt;/td&gt;&lt;td&gt;GND。#は「Lで有効」の意味&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;20&lt;/td&gt;&lt;td&gt;VCC&lt;/td&gt;&lt;td&gt;+5V と 0.1µF パスコン&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;&lt;/div&gt;
+  &lt;p&gt;実際の部品のピン配置は、使うICのデータシートで必ず確認してください。&lt;/p&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m7q1&quot; data-type=&quot;mc&quot; data-ans=&quot;1&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;5Vで動く74HC245(Tなし)に、Piの3.3V信号を入れるとどうなりますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;必ずHと読まれる&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;VIH(約3.5V)に届かず、Hと保証されない&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;すぐに壊れる&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。動く個体もありますが、温度や個体差で不安定になります。保証されない設計は避けます。&quot; data-hint=&quot;表のVIHの値と3.3Vを比べてみてください。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m7q2&quot; data-type=&quot;mc&quot; data-ans=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;DIRとOE#はどうつなぎますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;DIR → +5V、OE# → GND&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;DIR → GND、OE# → +5V&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;どちらもつながずに空けておく&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。DIRをHにしてA→Bの向き、OE#をLにして出力を有効にします。&quot; data-hint=&quot;#の付いたピンは、Lのときに働きます。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m7q3&quot; data-type=&quot;mc&quot; data-ans=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;2個目の245で使わない入力(A7、A8)はどうしますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;GNDにつなぐ&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;何もつながずに空けておく&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;隣の入力とつなぐ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。2章のフローティングと同じ話です。浮いた入力はHとLの間をふらつき、余計な電流や誤動作の原因になります。対応する出力B7、B8は空けたままで構いません。&quot; data-hint=&quot;2章で、どこにもつながっていない入力ピンは何と呼ばれたでしょう。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;mod&quot; id=&quot;m8&quot; data-mod=&quot;m8&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;8&lt;/span&gt;HUB75:マトリクスの仕組みと配線表&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:HUB75の各信号の役割がわかり、Pi → 245 → HUB75 の配線表を完成できる。&lt;/p&gt;
+  &lt;h3&gt;4096個を同時には光らせていない&lt;/h3&gt;
+  &lt;p&gt;64x64のマトリクスは、上半分と下半分から1行ずつ、合計2行だけを同時に光らせています。その2行を高速に切り替えて、目の残像で全体を見せています。&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;b&gt;R1 G1 B1&lt;/b&gt;:上半分の行の色データ。&lt;b&gt;R2 G2 B2&lt;/b&gt;:下半分の行の色データ。&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;CLK&lt;/b&gt;:1回パルスを送るごとに、色データが1ピクセル分シフトレジスタへ送り込まれます。&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;LAT&lt;/b&gt;:1行ぶん送り終わったら、その内容を表示用に確定(ラッチ)させます。&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;OE&lt;/b&gt;:表示のオンオフ。行を切り替える間だけ消して、残像のにじみを防ぎます。&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;A B C D E&lt;/b&gt;:今どの行を光らせるかの番号(行アドレス)。&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m8q1&quot; data-type=&quot;num&quot; data-ans=&quot;32&quot; data-tol=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;上下の半分から1行ずつ同時に光らせます。64行全部を表示するには、何回切り替えが必要ですか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;numeric&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;回&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。64 ÷ 2 = 32。これを「1/32スキャン」と呼びます。&quot; data-hint=&quot;一度に2行ずつ光ります。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m8q2&quot; data-type=&quot;num&quot; data-ans=&quot;5&quot; data-tol=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;32通りの行を、H/Lの組み合わせで指定します。アドレス線は何本必要ですか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;numeric&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;本&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。2⁵ = 32 なので5本(A〜E)。32x32のパネルは16通りで済むので4本(A〜D)です。だから64x64ではE線が追加で必要になります。&quot; data-hint=&quot;1本で2通り、2本で4通り、3本で8通り…と倍になっていきます。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m8q3&quot; data-type=&quot;num&quot; data-ans=&quot;14&quot; data-tol=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;色6本、アドレス5本、CLK・LAT・OE。HUB75の信号線は全部で何本ですか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;numeric&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;本&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。6 + 5 + 3 = 14本。&quot; data-hint=&quot;3つのグループを足します。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m8q4&quot; data-type=&quot;num&quot; data-ans=&quot;2&quot; data-tol=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;74AHCT245は1個で8本を変換できます。何個必要ですか？&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;input inputmode=&quot;numeric&quot; aria-label=&quot;答え&quot;&gt;&lt;span class=&quot;unit&quot;&gt;個&lt;/span&gt;&lt;button class=&quot;btn chk&quot; type=&quot;button&quot;&gt;答え合わせ&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;err&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。14本 ÷ 8 = 1.75 なので2個。余る2チャンネルの入力は7章の通りGNDへ。&quot; data-hint=&quot;1個で足りなければ切り上げます。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;h3&gt;配線表&lt;/h3&gt;
+  &lt;p&gt;Piのピンは、参考プロジェクトで使う &lt;code&gt;adafruit-hat&lt;/code&gt; マッピング(hzeller/rpi-rgb-led-matrix のソースで確認済み)に合わせています。こうしておけば、ソフトを書き換えずにそのまま動きます。&lt;/p&gt;
+  &lt;div class=&quot;tbl&quot;&gt;&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;信号&lt;/th&gt;&lt;th&gt;Pi GPIO&lt;/th&gt;&lt;th&gt;Pi ピン&lt;/th&gt;&lt;th&gt;245&lt;/th&gt;&lt;th&gt;HUB75 ピン&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;R1&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO5&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;29&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U1 A1→B1&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;1&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;G1&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO13&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;33&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U1 A2→B2&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;2&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;B1&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO6&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;31&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U1 A3→B3&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;3&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;R2&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO12&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;32&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U1 A4→B4&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;5&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;G2&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO16&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;36&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U1 A5→B5&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;6&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;B2&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO23&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;16&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U1 A6→B6&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;7&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;A&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO22&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;15&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U1 A7→B7&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;9&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;B&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO26&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;37&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U1 A8→B8&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;10&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;C&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO27&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;13&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U2 A1→B1&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;11&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;D&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO20&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;38&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U2 A2→B2&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;12&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;E&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO24&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;18&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U2 A3→B3&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;8&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;CLK&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO17&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;11&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U2 A4→B4&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;13&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;LAT&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO21&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;40&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U2 A5→B5&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;OE&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO4&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;7&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;U2 A6→B6&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;15&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;GND&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;—&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;6, 9 ほか&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;—&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;4, 16&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;&lt;/div&gt;
+  &lt;div class=&quot;note&quot;&gt;&lt;b&gt;配線のコツ:&lt;/b&gt;245の8チャンネルはどれも同じ働きです。片面基板で配線が交差したら、どの信号をどのチャンネルに通すかを入れ替えて構いません。A1に入れたものがB1から出る、という対応さえ守れば大丈夫です。HUB75のピン番号は、パネル裏のシルク印刷とも照合してください。&lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;section class=&quot;mod&quot; id=&quot;m9&quot; data-mod=&quot;m9&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;9&lt;/span&gt;XIAO と Pi の通信:UART&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:空いているピンを選び、UARTを正しく交差させて描ける。&lt;/p&gt;
+  &lt;h3&gt;空きピンを探す&lt;/h3&gt;
+  &lt;p&gt;8章の表で、Piの14本のGPIOがマトリクスに使われています。UART用の GPIO14(ピン8、TXD)と GPIO15(ピン10、RXD)は表に入っていないので、そのまま使えます。&lt;/p&gt;
+  &lt;h3&gt;TXとRXは交差させる&lt;/h3&gt;
+  &lt;p&gt;TXは送信、RXは受信です。片方の「送信」は、もう片方の「受信」につながないと届きません。そしてGNDを共通にします(5章)。XIAOもPiも3.3Vで動いているので、7章のようなレベル変換は要りません。&lt;/p&gt;
+  &lt;div class=&quot;tbl&quot;&gt;&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;XIAO&lt;/th&gt;&lt;th&gt;&lt;/th&gt;&lt;th&gt;Pi&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;D6(TX)&lt;/td&gt;&lt;td&gt;→&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO15 RXD(ピン10)&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;D7(RX)&lt;/td&gt;&lt;td&gt;←&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GPIO14 TXD(ピン8)&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;GND&lt;/td&gt;&lt;td&gt;—&lt;/td&gt;&lt;td class=&quot;m&quot;&gt;GND(ピン6など)&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;&lt;/div&gt;
+  &lt;h3&gt;XIAOのピン割り当てまとめ&lt;/h3&gt;
+  &lt;div class=&quot;tbl&quot;&gt;&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;XIAO ピン&lt;/th&gt;&lt;th&gt;つなぐもの&lt;/th&gt;&lt;th&gt;章&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;A0(D0)&lt;/td&gt;&lt;td&gt;フォトトランジスタと R2&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;D8&lt;/td&gt;&lt;td&gt;SW1(曲送り)と R1 プルアップ&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;D9&lt;/td&gt;&lt;td&gt;SW2(一時停止)と R4 プルアップ&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;D10&lt;/td&gt;&lt;td&gt;R3 と状態LED&lt;/td&gt;&lt;td&gt;4&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;D6 / D7&lt;/td&gt;&lt;td&gt;UART TX / RX&lt;/td&gt;&lt;td&gt;9&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;5V&lt;/td&gt;&lt;td&gt;D2 経由で +5V&lt;/td&gt;&lt;td&gt;5・6&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;3V3&lt;/td&gt;&lt;td&gt;R1・R4 プルアップ、Q1 コレクタ&lt;/td&gt;&lt;td&gt;2・3&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;GND&lt;/td&gt;&lt;td&gt;共通 GND&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;&lt;/div&gt;
+  &lt;p&gt;ピン名はSeeed公式のXIAO RP2040ピン配置図と照合してから回路図に描いてください。&lt;/p&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m9q1&quot; data-type=&quot;mc&quot; data-ans=&quot;0&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;XIAOのD6(TX)は、Piのどこにつなぎますか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;GPIO15 RXD(ピン10)&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;GPIO14 TXD(ピン8)&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;5V(ピン2)&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。XIAOが送ったものを、Piが受け取ります。&quot; data-hint=&quot;送信した信号は、相手の受信側に届く必要があります。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ex&quot; data-id=&quot;m9q2&quot; data-type=&quot;mc&quot; data-ans=&quot;1&quot;&gt;
+    &lt;p class=&quot;q&quot;&gt;XIAOとPiのUARTに、レベルシフタは必要ですか？&lt;/p&gt;
+    &lt;div class=&quot;opts&quot;&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;必要。マトリクスと同じように5Vにする&lt;/button&gt;&lt;button class=&quot;opt&quot; type=&quot;button&quot;&gt;不要。両方3.3Vで動いているから&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;fb&quot; data-ok=&quot;正解。送る側も受ける側も3.3Vなので、そのまま直結できます。&quot; data-hint=&quot;7章でレベルシフタが必要だった理由は、送る側と受ける側の電圧が違うからでした。&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;note&quot;&gt;&lt;b&gt;ソフト側のメモ:&lt;/b&gt;Piはこのピンを標準でシリアルコンソールに使っています。使う前に設定で、コンソールを無効にしてシリアルポートを有効にします。&lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;section class=&quot;mod&quot; id=&quot;m10&quot; data-mod=&quot;m10&quot;&gt;
+  &lt;h2&gt;&lt;span class=&quot;n&quot;&gt;10&lt;/span&gt;回路図に統合する(KiCad)&lt;/h2&gt;
+  &lt;p class=&quot;goal&quot;&gt;この章のゴール:ここまでのピースを1枚の回路図にまとめ、ERCとDRCを通す。&lt;/p&gt;
+  &lt;h3&gt;部品リスト&lt;/h3&gt;
+  &lt;div class=&quot;tbl&quot;&gt;&lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;記号&lt;/th&gt;&lt;th&gt;部品&lt;/th&gt;&lt;th&gt;章&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;J1&lt;/td&gt;&lt;td&gt;5V入力(DCジャックかネジ端子)&lt;/td&gt;&lt;td&gt;6&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;Q2&lt;/td&gt;&lt;td&gt;PチャネルMOSFET(逆接保護)&lt;/td&gt;&lt;td&gt;6&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;C1&lt;/td&gt;&lt;td&gt;電解コンデンサ 47µF前後&lt;/td&gt;&lt;td&gt;6&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;D2&lt;/td&gt;&lt;td&gt;ショットキーダイオード(XIAO 5V用)&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;M1&lt;/td&gt;&lt;td&gt;XIAO RP2040&lt;/td&gt;&lt;td&gt;5・9&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;U1, U2&lt;/td&gt;&lt;td&gt;74AHCT245&lt;/td&gt;&lt;td&gt;7・8&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;C2, C3&lt;/td&gt;&lt;td&gt;0.1µF(U1・U2のパスコン)&lt;/td&gt;&lt;td&gt;5&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;J2&lt;/td&gt;&lt;td&gt;2x20 ソケット(Pi)&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;J3&lt;/td&gt;&lt;td&gt;2x8 ヘッダ(HUB75)&lt;/td&gt;&lt;td&gt;8&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;SW1, SW2 / R1, R4&lt;/td&gt;&lt;td&gt;ボタンと10kΩプルアップ&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;Q1 / R2&lt;/td&gt;&lt;td&gt;フォトトランジスタと10kΩ&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;m&quot;&gt;D1 / R3&lt;/td&gt;&lt;td&gt;赤LEDと1kΩ&lt;/td&gt;&lt;td&gt;4&lt;/td&gt;&lt;/tr&gt;
+  &lt;/table&gt;&lt;/div&gt;
+  &lt;p&gt;授業のKiCadライブラリ(Fab用の部品ライブラリ)に、XIAOやインベントリ部品のシンボルとフットプリントが入っているか、最初に確認してください。インベントリにない部品は、TAに代わりを聞いてから描きます。&lt;/p&gt;
+  &lt;h3&gt;KiCadで描くときのコツ&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;長い配線を引き回す代わりに、ネットラベル(例:&lt;code&gt;R1_PI&lt;/code&gt;、&lt;code&gt;CLK_5V&lt;/code&gt;)を使うと読みやすくなります。Pi側は3.3V、245の後は5Vなので、名前で区別しておくと間違いにくいです。&lt;/li&gt;
+    &lt;li&gt;電源は &lt;code&gt;+5V&lt;/code&gt;、&lt;code&gt;GND&lt;/code&gt;、&lt;code&gt;+3V3&lt;/code&gt; の電源シンボルで描きます。ERCで「電源が駆動されていない」と出たら、電源入力のネットに PWR_FLAG を付けます。&lt;/li&gt;
+    &lt;li&gt;各ブロック(入力・XIAO・電源・245・コネクタ)を、紙面上でまとまった場所に置きます。この教材の基板マップと同じ配置にすると、自分でも追いやすくなります。&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;h3&gt;完成チェックリスト&lt;/h3&gt;
+  &lt;p&gt;回路図で確認できたものにチェックを入れてください。全部埋まったら、基板マップの最後のブロックに銅が入ります。&lt;/p&gt;
+  &lt;div class=&quot;checks&quot; id=&quot;checks&quot;&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c1&quot;&gt;J1+ → Q2 ドレイン、Q2 ソース → +5V、Q2 ゲート → GND&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c2&quot;&gt;C1 を +5V と GND の間に&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c3&quot;&gt;+5V → J2 ピン2・4(Pi の 5V)&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c4&quot;&gt;J2 の GND ピン(6・9・14・20・25・30・34・39)をすべて GND に&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c5&quot;&gt;+5V → D2 アノード、D2 カソード → XIAO 5V&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c6&quot;&gt;U1・U2:20番 → +5V、10番 → GND、1番(DIR)→ +5V、19番(OE#)→ GND&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c7&quot;&gt;U1・U2 それぞれの VCC の横に 0.1µF&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c8&quot;&gt;Pi の 14本の GPIO → U1・U2 の A 入力(8章の表どおり)&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c9&quot;&gt;U1・U2 の B 出力 → J3(HUB75)、J3 ピン4・16 → GND&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c10&quot;&gt;U2 の使わない入力 A7・A8 → GND&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c11&quot;&gt;ボタン2個(D8・D9)とプルアップを XIAO の 3V3 へ&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c12&quot;&gt;フォトトランジスタ(3V3 → Q1 → A0 → R2 → GND)&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c13&quot;&gt;D10 → R3 → LED → GND&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c14&quot;&gt;XIAO D6 → Pi ピン10、XIAO D7 ← Pi ピン8、GND 共通&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c15&quot;&gt;Pi の 3V3 と XIAO の 3V3 はつないでいない&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c16&quot;&gt;ERC がエラーなしで通った&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;checkbox&quot; data-c=&quot;c17&quot;&gt;基板レイアウトで、ラボのデザインルールを設定して DRC が通った&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;p class=&quot;modstatus&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;/main&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+(function(){
+  var KEY=&#x27;bonnet-course-v1&#x27;;
+  var state={solved:{},checked:{}};
+  try{var raw=localStorage.getItem(KEY); if(raw){var s=JSON.parse(raw); if(s&amp;&amp;s.solved) state.solved=s.solved; if(s&amp;&amp;s.checked) state.checked=s.checked;}}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  var mods=[].slice.call(document.querySelectorAll(&#x27;section.mod&#x27;));
+  var BLOCKS={&#x27;b-base&#x27;:[&#x27;m1&#x27;],&#x27;b-in&#x27;:[&#x27;m2&#x27;,&#x27;m3&#x27;,&#x27;m4&#x27;],&#x27;b-mcu&#x27;:[&#x27;m5&#x27;,&#x27;m9&#x27;],&#x27;b-pw&#x27;:[&#x27;m6&#x27;],&#x27;b-sig&#x27;:[&#x27;m7&#x27;,&#x27;m8&#x27;],&#x27;b-all&#x27;:[&#x27;m10&#x27;]};
+  var NAMES={&#x27;b-base&#x27;:&#x27;電気の基本&#x27;,&#x27;b-in&#x27;:&#x27;入力回路&#x27;,&#x27;b-mcu&#x27;:&#x27;XIAO まわり&#x27;,&#x27;b-pw&#x27;:&#x27;電源と保護&#x27;,&#x27;b-sig&#x27;:&#x27;HUB75 信号&#x27;,&#x27;b-all&#x27;:&#x27;回路図に統合&#x27;};
+
+  var toc=document.getElementById(&#x27;toc&#x27;);
+  mods.forEach(function(sec){
+    var h=sec.querySelector(&#x27;h2&#x27;); var n=h.querySelector(&#x27;.n&#x27;).textContent;
+    var title=h.textContent.replace(n,&#x27;&#x27;).trim();
+    var li=document.createElement(&#x27;li&#x27;); li.dataset.mod=sec.id;
+    var a=document.createElement(&#x27;a&#x27;); a.href=&#x27;#&#x27;+sec.id;
+    var sn=document.createElement(&#x27;span&#x27;); sn.className=&#x27;n&#x27;; sn.textContent=n;
+    var st=document.createElement(&#x27;span&#x27;); st.textContent=title;
+    a.appendChild(sn); a.appendChild(st); li.appendChild(a); toc.appendChild(li);
+  });
+
+  function norm(v){return v.replace(/[０-９．－]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-0xFEE0);}).replace(/,/g,&#x27;&#x27;).trim();}
+
+  function setFb(ex,ok){
+    var fb=ex.querySelector(&#x27;.fb&#x27;);
+    fb.className=&#x27;fb &#x27;+(ok?&#x27;ok&#x27;:&#x27;bad&#x27;);
+    fb.textContent=ok?fb.dataset.ok:(&#x27;まだです。&#x27;+fb.dataset.hint);
+    if(ok) ex.classList.add(&#x27;solved&#x27;);
+  }
+
+  document.querySelectorAll(&#x27;.ex&#x27;).forEach(function(ex){
+    var id=ex.dataset.id, type=ex.dataset.type;
+    if(type===&#x27;num&#x27;){
+      var input=ex.querySelector(&#x27;input&#x27;), err=ex.querySelector(&#x27;.err&#x27;), btn=ex.querySelector(&#x27;.chk&#x27;);
+      function check(){
+        var v=norm(input.value);
+        if(v===&#x27;&#x27;){err.textContent=&#x27;数値を入力してください&#x27;;return;}
+        var x=Number(v);
+        if(!isFinite(x)){err.textContent=&#x27;数字だけで入力してください(単位は不要です)&#x27;;return;}
+        err.textContent=&#x27;&#x27;;
+        var ok=Math.abs(x-Number(ex.dataset.ans))&lt;=Number(ex.dataset.tol)+1e-12;
+        setFb(ex,ok);
+        if(ok){state.solved[id]=true;save();update();}
+      }
+      btn.addEventListener(&#x27;click&#x27;,check);
+      input.addEventListener(&#x27;keydown&#x27;,function(e){if(e.key===&#x27;Enter&#x27;)check();});
+      input.addEventListener(&#x27;input&#x27;,function(){err.textContent=&#x27;&#x27;;});
+      if(state.solved[id]){input.value=ex.dataset.ans;setFb(ex,true);}
+    }else{
+      var opts=[].slice.call(ex.querySelectorAll(&#x27;.opt&#x27;)), ans=Number(ex.dataset.ans);
+      opts.forEach(function(o,i){
+        o.addEventListener(&#x27;click&#x27;,function(){
+          opts.forEach(function(p){p.classList.remove(&#x27;sel-ok&#x27;,&#x27;sel-bad&#x27;);});
+          var ok=i===ans; o.classList.add(ok?&#x27;sel-ok&#x27;:&#x27;sel-bad&#x27;);
+          setFb(ex,ok);
+          if(ok){state.solved[id]=true;save();update();}
+        });
+      });
+      if(state.solved[id]){opts[ans].classList.add(&#x27;sel-ok&#x27;);setFb(ex,true);}
+    }
+  });
+
+  document.querySelectorAll(&#x27;#checks input&#x27;).forEach(function(cb){
+    if(state.checked[cb.dataset.c]) cb.checked=true;
+    cb.addEventListener(&#x27;change&#x27;,function(){state.checked[cb.dataset.c]=cb.checked;save();update();});
+  });
+
+  function modDone(sec){
+    var exs=[].slice.call(sec.querySelectorAll(&#x27;.ex&#x27;));
+    var left=exs.filter(function(e){return !state.solved[e.dataset.id];}).length;
+    var cbs=[].slice.call(sec.querySelectorAll(&#x27;.checks input&#x27;));
+    left+=cbs.filter(function(c){return !c.checked;}).length;
+    return left;
+  }
+  function blockOf(mid){for(var b in BLOCKS){if(BLOCKS[b].indexOf(mid)&gt;=0)return b;}}
+
+  function update(){
+    var doneMods={}, count=0;
+    mods.forEach(function(sec){
+      var left=modDone(sec), st=sec.querySelector(&#x27;.modstatus&#x27;);
+      var li=toc.querySelector(&#x27;li[data-mod=&quot;&#x27;+sec.id+&#x27;&quot;]&#x27;);
+      if(left===0){
+        doneMods[sec.id]=true; count++; li.classList.add(&#x27;done&#x27;);
+        st.className=&#x27;modstatus done&#x27;;
+        st.textContent=&#x27;この章は完了です。基板マップの「&#x27;+NAMES[blockOf(sec.id)]+&#x27;」に進捗が入りました。&#x27;;
+      }else{
+        li.classList.remove(&#x27;done&#x27;); st.className=&#x27;modstatus&#x27;;
+        st.textContent=&#x27;この章の残り:&#x27;+left+(sec.id===&#x27;m10&#x27;?&#x27; 項目&#x27;:&#x27; 問&#x27;);
+      }
+    });
+    var bd={};
+    for(var b in BLOCKS){
+      bd[b]=BLOCKS[b].every(function(m){return doneMods[m];});
+      document.getElementById(b).classList.toggle(&#x27;done&#x27;,bd[b]);
+    }
+    document.getElementById(&#x27;t-in&#x27;).classList.toggle(&#x27;done&#x27;,bd[&#x27;b-in&#x27;]&amp;&amp;bd[&#x27;b-mcu&#x27;]);
+    document.getElementById(&#x27;t-sig&#x27;).classList.toggle(&#x27;done&#x27;,bd[&#x27;b-sig&#x27;]&amp;&amp;bd[&#x27;b-mcu&#x27;]);
+    document.getElementById(&#x27;t-pw&#x27;).classList.toggle(&#x27;done&#x27;,bd[&#x27;b-pw&#x27;]&amp;&amp;bd[&#x27;b-mcu&#x27;]);
+    document.getElementById(&#x27;pct&#x27;).textContent=count;
+  }
+  update();
+
+  var rb=document.getElementById(&#x27;reset&#x27;), armed=false, timer;
+  rb.addEventListener(&#x27;click&#x27;,function(){
+    if(!armed){armed=true;rb.textContent=&#x27;もう一度押すとリセット&#x27;;timer=setTimeout(function(){armed=false;rb.textContent=&#x27;進捗をリセット&#x27;;},3000);return;}
+    clearTimeout(timer);
+    state={solved:{},checked:{}};save();
+    try{localStorage.removeItem(KEY);}catch(e){}
+    location.reload();
+  });
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></details></div>
+
+<p>The first plan was a custom "bonnet": a Raspberry Pi Zero 2 W for Wi-Fi and Spotify, a XIAO RP2040 for buttons and sensors, and two 74AHCT245 chips to boost the Pi's 3.3V signals to the 5V the matrix expects.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Hand-drawn power diagram: a 5V 4A AC adapter split to the LED matrix and to a screw terminal, then reverse protection, 5V power, and on to the Pi, the level shifters and the XIAO" src="../img/week04/sketch-power-flow-v1.jpg" /><figcaption>How power flows through the first design.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Hand-drawn information flow: Spotify over Wi-Fi into the Pi, through the J4 header and the level shifters U1 and U2, out the HUB75 connector to the LED matrix, with the XIAO and two buttons talking to the Pi over UART" src="../img/week04/sketch-information-flow-v1.jpg" /><figcaption>How information flows.</figcaption></figure>
+</div>
+<p>I didn't understand much of the diagram at first, but I built each block in KiCad one at a time. <strong>Drawing the schematic myself was the most helpful part.</strong> It made me picture how electricity actually flows through the board.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad schematic of a XIAO RP2040 with a tactile switch and a 10k pull-up resistor on pin D8" src="../img/week04/firstattempt_kicad.png" /><figcaption>My first block in KiCad: one button with a pull-up resistor.</figcaption></figure>
+<h3 id="understanding-power-and-signals">Understanding power and signals</h3>
+<p>While drawing, I sketched my own diagrams to understand what each component was for, and how signals travel from the Pi to the matrix.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A hand-drawn simplified schematic with notes on why each part is there: reverse polarity protection, the capacitor that fills dips when the Pi draws more current, pull-up resistors, and bypass capacitors next to each 245" src="../img/week04/sketch-annotated-components-v1.jpg" /><figcaption>Notes on what each component is for.</figcaption></figure>
+<h3 id="how-color-gets-from-the-image-to-the-leds">How color gets from the image to the LEDs</h3>
+<p>I also wanted to understand how the color information actually reaches a 64×64 matrix. The panel only lights two rows at a time (one in the top half, one in the bottom half), and switches between them faster than the eye can see:</p>
+<ol>
+<li><strong>Choose a row pair.</strong> Five address lines (A–E) select one of 32 row pairs (2⁵ = 32).</li>
+<li><strong>Shift in the colors.</strong> On every CLK pulse, six data lines (R1 G1 B1 for the top pixel, R2 G2 B2 for the bottom pixel) send one bit of color for one column. 64 pulses fill both rows.</li>
+<li><strong>Latch and light.</strong> LAT locks the row data in, and OE turns the LEDs on.</li>
+<li><strong>Repeat for each bit.</strong> Each LED can only be on or off, so color is made by repeating this for each bit of the 8-bit color value. Higher bits stay lit longer (weights 128, 64, … 1), and the eye adds up the light into 256 brightness levels per color.</li>
+<li><strong>Move to the next row pair</strong>, and redraw the whole frame 100+ times per second.</li>
+</ol>
+<p>One full-color frame takes 32 × 64 × 8 = 16,384 clock pulses, and the panel has no memory of its own, so the controller has to keep sending them nonstop.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Notebook page tracing the R1 signal from the Pi through J4, the level shifter and HUB75 to the matrix, next to the five steps of drawing a frame" src="../img/week04/sketch-hub75-color-signal.jpg" /><figcaption>Working out the signal path and the frame steps.</figcaption></figure>
+<h3 id="checking-the-schematic">Checking the schematic</h3>
+<p>After finishing the schematic, I ran three checks:</p>
+<ul>
+<li><strong>Annotate</strong> (Tools → Annotate Schematic) to give every part a unique reference (R1, R2, C1…)</li>
+<li><strong>ERC</strong> (Inspect → Electrical Rules Checker) to catch unconnected pins and missing power sources</li>
+<li><strong>Footprints</strong> (Tools → Assign Footprints) to make sure every symbol has the right physical shape</li>
+</ul>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The full first schematic in KiCad: XIAO RP2040, a 2×20 header for the Pi, two 74HCT245 level shifters, a HUB75 2×8 connector, power input with reverse protection, buttons and an LED" src="../img/week04/schematic-v1-xiao-pi.png" /><figcaption>The finished first schematic.</figcaption></figure>
+<h3 id="first-pcb">First PCB</h3>
+<p>When I sent the schematic to the PCB editor, the ratsnest (the thin lines showing what still needs to be connected) was a mess. The Pi's GPIO pins and the HUB75 connector's pins are in almost opposite orders, so on a single-sided board many traces would have had to cross.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad PCB editor with the Pi header, XIAO, level shifters and HUB75 connector placed, and blue ratsnest lines crossing all over the board" src="../img/week04/pcb-v1-ratsnest.png" /><figcaption>The first ratsnest.</figcaption></figure>
+<h2 id="second-design-raspberry-pi-pico-2-w">Second design: Raspberry Pi Pico 2 W</h2>
+<h3 id="office-hours">Office hours</h3>
+<p>During office hours, Dimitar suggested simplifying the design: drop the Raspberry Pi and use a single microcontroller with Wi-Fi instead. We also agreed to remove parts I didn't really need: the reverse-polarity protection, the Schottky diode, and the spare sensor sockets.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The first overview diagram with the Pi, J4, Q1, D2 and sensor sockets crossed out, and notes about using a single board instead" src="../img/week04/sketch-office-hours-simplify.jpg" /><figcaption>Crossing out parts during office hours.</figcaption></figure>
+<p>We also checked whether the RGB panel could take 3.3V signals directly. Looking at the <a href="https://cdn-learn.adafruit.com/downloads/pdf/adafruit-matrixportal-s3.pdf">Adafruit documentation</a>, we confirmed that the panel runs on 5V, so I kept the level shifters to make sure the matrix reads the signals reliably.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Schematic of the Adafruit MatrixPortal S3, with its level shifter section" src="../img/week04/adafruit-matrixportal-s3-schematic.png" /><figcaption>Adafruit's MatrixPortal S3 also uses level shifters between the ESP32-S3 and the HUB75 output.</figcaption></figure>
+<h3 id="clarifying-the-requirements">Clarifying the requirements</h3>
+<p>After office hours, I wrote down exactly what the microcontroller needed:</p>
+<ol>
+<li><strong>At least 14 GPIO pins</strong>, since HUB75 uses 14 signal lines (ideally ~17, to also fit two buttons and a status LED)</li>
+<li><strong>Wi-Fi</strong>, to fetch the album art from Spotify</li>
+</ol>
+<p>The XIAO boards in our inventory only have 11 GPIO pins, and the XIAO ESP32S3 Plus (20 pins) was out of stock everywhere. Dimitar suggested the <strong>Raspberry Pi Pico 2 W</strong>, which has Wi-Fi and 26 GPIO pins, and was available in the shop. A single Pico 2 W replaces both the Raspberry Pi and the XIAO from my first design. I then ordered the LED matrix and the other parts we didn't have.</p>
+<h3 id="new-schematic">New schematic</h3>
+<p>I drew a simplified diagram of the new circuit and its signal flow:</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Hand-drawn simplified v2: AC adapter to the screw terminal, Pico, level shifters and HUB75, with the buttons, LED, and a list of changes from v1" src="../img/week04/sketch-simplified-v2.jpg" /><figcaption>Simplified v2, with the list of changes from the first design.</figcaption></figure>
+<p>Building on the first version, I ended up with this schematic. The HUB75 signals use consecutive pins (GP0–GP13), which makes it easier to drive the matrix with the RP2350's PIO later.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad schematic of the Pico 2 W with HUB75 signals on GP0–GP13, two 74HCT245 level shifters, a 2×8 HUB75 connector, a screw terminal with a 47µF capacitor, two buttons and an LED" src="../img/week04/schematic-v2-pico.png" /><figcaption>The second schematic.</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pico 2 W</td>
+<td>Wi-Fi, Spotify, and all control</td>
+</tr>
+<tr>
+<td>74HCT245 × 2</td>
+<td>Boost the Pico's 3.3V signals to 5V for the matrix</td>
+</tr>
+<tr>
+<td>HUB75 connector (2×8)</td>
+<td>Cable to the LED matrix</td>
+</tr>
+<tr>
+<td>Screw terminal + 47µF capacitor</td>
+<td>5V power input, smoothed</td>
+</tr>
+<tr>
+<td>0.1µF capacitors × 2</td>
+<td>Bypass capacitors for each 245</td>
+</tr>
+<tr>
+<td>2 buttons + 10kΩ pull-ups</td>
+<td>Next track / pause</td>
+</tr>
+<tr>
+<td>LED + 1kΩ resistor</td>
+<td>Status light for testing</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pcb-layout">PCB layout</h2>
+<h3 id="untangling-the-crossing-traces">Untangling the crossing traces</h3>
+<p>My first placement still had traces crossing everywhere. When two chips face each other, their pin orders run in opposite directions, so the Pico's GP0 at the top ended up connected to the 245's channel at the bottom.</p>
+<p>All eight channels of a 245 do the same job, so I went back to the schematic and reversed which 245 channel each signal uses. After updating the PCB, the traces lined up in parallel.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="PCB editor with the level shifters and HUB75 connector on the left and the Pico on the right, ratsnest lines crossing in an X" src="../img/week04/pcb-v2-crossing.png" /><figcaption>Before: the lines cross.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="PCB editor with the level shifters placed above and below the HUB75 connector, ratsnest lines running in parallel" src="../img/week04/pcb-v2-parallel.png" /><figcaption>After reversing the channels: the lines run in parallel.</figcaption></figure>
+</div>
+<h3 id="fitting-traces-between-connector-pins">Fitting traces between connector pins</h3>
+<p>The HUB75 connector has two rows of pins, and on a single-sided board the inner row can only be reached by passing a trace <em>between</em> the outer pins. With the default pads, the gap was too narrow for a trace plus clearance. I shrank the copper pads to 1.27 mm (keeping the drill holes the same size), which opened up a 1.27 mm gap. It was enough for a 0.4 mm trace with 0.4 mm clearance on each side.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad footprint editor showing the 2×8 pin header with smaller square pads" src="../img/week04/hub75-footprint-pads.png" /><figcaption>Editing the HUB75 footprint's pads.</figcaption></figure>
+<h3 id="drc-from-40-violations-to-zero">DRC: from 40 violations to zero</h3>
+<p>When I first ran the Design Rules Checker, I had 40 violations.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Routed traces next to the Design Rules Checker listing clearance violations of 0.2668 mm against a 0.4064 mm minimum" src="../img/week04/drc-40-violations.png" /><figcaption>40 violations on the first run.</figcaption></figure>
+<p>I went through them one by one:</p>
+<ul>
+<li><strong>Misaligned components:</strong> some parts had shifted slightly, so traces no longer met their pads cleanly.</li>
+<li><strong>Design rule violations:</strong> traces too close to pads.</li>
+<li><strong>Isolated ground islands:</strong> traces I had drawn early on cut the ground fill into separate pieces, so some GND pins weren't connected. I rerouted those traces to let the ground fill reach them.</li>
+<li><strong>Overlapping text:</strong> some silkscreen labels overlapped, so I moved the components or their labels.</li>
+</ul>
+<p>I kept fixing and re-running the check until there were no errors.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The Design Rules Checker showing 0 violations and 0 unconnected items, next to the routed board with a ground fill" src="../img/week04/drc-zero.png" /><figcaption>Zero violations, zero unconnected items.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="3D view of the finished board: the Pico footprint, two level shifters, the HUB75 header, buttons, resistors and the screw terminal" src="../img/week04/pcb-v2-3d.png" /><figcaption>The board in KiCad's 3D viewer.</figcaption></figure>
+</div>
+<h2 id="use-of-ai">Use of AI</h2>
+<p>I used Claude to make a step-by-step course on the electronics I needed for this board (the bonnet course above). It also helped me come up with the system diagram for the first design, then guided me through drawing the schematic in KiCad and fixing the errors along the way. I also used it to help me write up this page.</p>
 <h2 id="files">Files</h2>
 <ul>
-<li><a href="../files/week04/">Design files</a> — CAD, code, exports</li>
+<li><a href="../files/week04/kicad-week03/kicad-week03.kicad_sch">kicad-week03.kicad_sch</a>: final schematic (Pico 2 W)</li>
+<li><a href="../files/week04/kicad-week03/kicad-week03.kicad_pcb">kicad-week03.kicad_pcb</a>: final PCB layout</li>
+<li><a href="../files/week04/kicad-week03/kicad-week03.kicad_pro">kicad-week03.kicad_pro</a>: KiCad project</li>
+<li><a href="../files/week04/kicad-week03/kicad-week03.pdf">kicad-week03.pdf</a>: schematic as PDF</li>
+<li><a href="../files/week04/kicad-week03/kicad-week03-oct12.kicad_sch">kicad-week03-oct12.kicad_sch</a>: first schematic (Raspberry Pi + XIAO RP2040)</li>
+<li><a href="../files/week04/bonnet-course.html">bonnet-course.html</a>: the course I worked through</li>
 </ul>
+<p>Open the KiCad files in KiCad 10.</p>
     </article>
   </div>
   <nav class="pager"><a href="week03.html">← Week 3</a><a href="week05.html">Week 5 →</a></nav>
