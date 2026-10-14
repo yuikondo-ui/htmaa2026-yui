@@ -117,7 +117,7 @@ Then I explored how the body sculpture itself could be taken apart and put back 
 ![The two printed figures still in green supports](img/week03/body-tree-vs-normal.jpg)
 *Printing the body with two kinds of supports.*
 
-:::cols
+:::cols natural
 ![The gray lattice figure with its supports removed](img/week03/body-supports-removed.jpg)
 *After removing the supports.*
 ![A figure with green triangle panels attached](img/week03/proto3-print-b.jpg)
