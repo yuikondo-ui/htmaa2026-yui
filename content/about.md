@@ -17,5 +17,5 @@ More of my projects are on [my website](https://yuikondo.cargo.site/).
 <div class="about-card">
 <img src="img/about/yui.jpg" alt="Yui Kondo">
 <ul class="about-cities"><li>Tokyo</li><li>Hong Kong</li><li>Oxford</li><li>Boston</li></ul>
-<p class="about-poem" lang="ja">由良の門を<br>渡る船人かぢを絶え<br>行方も知らぬ<br>恋の道かな</p>
+<p class="about-poem" lang="ja">人もをし<br>人も恨めしあぢきなく<br>世を思ふゆゑに<br>もの思ふ身は</p>
 </div>
