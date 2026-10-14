@@ -6,9 +6,10 @@
   var SEL = '.content a, .about a';
   var pv = document.createElement('img');
   pv.alt = ''; pv.setAttribute('aria-hidden', 'true');
-  /* On About, the empty right column is the preview area; elsewhere a small thumbnail
-     floats above the link. */
-  var slot = document.querySelector('.about-side');
+  /* On About, the empty space between the text and the photo column is the preview area;
+     elsewhere a small thumbnail floats above the link. */
+  var slot = document.querySelector('.about-main');
+  var side = document.querySelector('.about-side');
   pv.className = slot ? 'slot-preview' : 'link-preview';
   (slot || document.body).appendChild(pv);
 
@@ -22,6 +23,11 @@
   function placePreview(a) {
     if (slot) {   // level with the hovered line, but never below the column's bottom
       var la = a.getBoundingClientRect(), ls = slot.getBoundingClientRect();
+      var gap = 24, right = side ? side.getBoundingClientRect().left : window.innerWidth;
+      var w = Math.min(400, right - ls.right - 2 * gap);
+      pv.style.display = w < 120 ? 'none' : 'block';
+      pv.style.left = Math.round(ls.width + gap) + 'px';
+      pv.style.width = Math.round(w) + 'px';
       pv.style.top = Math.round(Math.max(0, la.top - ls.top - 3)) + 'px';
       return;
     }

@@ -403,7 +403,7 @@ html[data-theme="dark"] .cover-strip{background:#131313;color:#58cd86}
 
 /* About: side card (photo, cities, poem) */
 .about .two-col{grid-template-columns:3fr 1fr;gap:0}
-.about .about-main{max-width:34em}
+.about .about-main{max-width:34em;position:relative}
 .about-card{padding-left:0}
 .about-card img{display:block;width:100%;height:auto;margin-bottom:1em}
 .about-card .about-cities,.about-card .about-poem{border-top:var(--rule);padding:.8em 0 1em;margin:0;font-size:1.05em;line-height:1.25}
