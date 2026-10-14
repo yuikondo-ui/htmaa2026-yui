@@ -169,7 +169,7 @@ figcaption{font-size:.72em;color:var(--muted);margin-top:.35em}
 
 /* ---------- Footer ---------- */
 .site-footer{
-  display:grid;grid-template-columns:3fr 1fr;
+  display:grid;grid-template-columns:4fr 1fr;
   margin:0 var(--pad) var(--pad);border-top:var(--rule);
 }
 .site-footer .col{padding:var(--pad) var(--pad) 1.5em 0;border-right:1px dotted #999}
@@ -402,7 +402,7 @@ html[data-theme="dark"] .row.todo .c1,html[data-theme="dark"] .row.todo .c2,html
 html[data-theme="dark"] .cover-strip{background:#131313;color:#58cd86}
 
 /* About: side card (photo, cities, poem) */
-.about .two-col{grid-template-columns:3fr 1fr;gap:0}
+.about .two-col{grid-template-columns:4fr 1fr;gap:0}
 .about .about-main{max-width:34em;position:relative}
 .about-card{padding-left:0}
 .about-card img{display:block;width:100%;height:auto;margin-bottom:1em}
