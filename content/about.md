@@ -10,8 +10,6 @@ Before MIT I completed an MSc Social Science of the Internet at the Oxford Inter
 Outside research, my high school won a national championship in  
 [karuta](https://www.youtube.com/watch?v=Sx2UqSxAPfk){data-preview="img/about/karuta.jpg"}, a Japanese competitive poetry card game.
 
-More of my projects are on [my website](https://yuikondo.cargo.site/).
-
 ---
 
 <div class="about-card">
