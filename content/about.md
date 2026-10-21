@@ -12,4 +12,4 @@ Outside research, my high school won a national championship in [karuta](https:/
 
 <figure class="about-photo"><img src="https://freight.cargo.site/w/800/i/T2109501747627784668650929873500/IMG_1416-3.jpg" alt="" onerror="this.closest('figure').style.display='none'"></figure>
 <ul class="about-cities"><li>Tokyo</li><li>Hong Kong</li><li>Oxford</li><li>Boston</li></ul>
-<p class="about-poem" lang="ja">人もをし<br>人も恨めしあぢきなく<br>世を思ふゆゑに<br>もの思ふ身は</p>
+<p class="about-poem" lang="ja">由良の門を<br>渡る船人梶を絶え<br>行方も知らぬ<br>恋の道かな</p>
