@@ -403,15 +403,18 @@ html{scroll-behavior:smooth}
 .theme-toggle .i-sun{display:none}
 html[data-theme="dark"] .theme-toggle .i-sun{display:block}
 html[data-theme="dark"] .theme-toggle .i-moon{display:none}
-html[data-theme="dark"]{--fg:#d9d9d9;--bg:#131313;--red:#58cd86;--muted:#6f6f6f;--rule:1px solid #2a2a2a;color-scheme:dark}
+/* dark: Cargo-demo style, yellow on deep blue; accent = white so links and hovers still stand out */
+html[data-theme="dark"]{--fg:#eaea76;--bg:#0000a6;--red:#ffffff;--muted:#a3a37e;--rule:1px solid rgba(234,234,118,.4);color-scheme:dark}
 html[data-theme="dark"] body{background:var(--bg);color:var(--fg)}
-html[data-theme="dark"] .banner{color:#131313}
-html[data-theme="dark"] .toc a.active,html[data-theme="dark"] .toc a.active:hover,html[data-theme="dark"] .toc li.lvl3 a.active{color:#131313}
-html[data-theme="dark"] .card img,html[data-theme="dark"] .hero img,html[data-theme="dark"] .gallery img,html[data-theme="dark"] .content img{background:#1c1c1c}
-html[data-theme="dark"] .content pre,html[data-theme="dark"] .content .embed-bar,html[data-theme="dark"] .content details.src summary{background:#1c1c1c}
-html[data-theme="dark"] .content pre,html[data-theme="dark"] .content .embed,html[data-theme="dark"] .content .embed-bar,html[data-theme="dark"] .content details.src pre,html[data-theme="dark"] .content details.src.standalone{border-color:#2a2a2a}
-html[data-theme="dark"] .row.todo .c1,html[data-theme="dark"] .row.todo .c2,html[data-theme="dark"] .row.todo .c3{color:#4a4a4a}
-html[data-theme="dark"] .cover-strip{background:#131313;color:#58cd86}
+html[data-theme="dark"] .banner{background:#eaea76;color:#0000a6}
+html[data-theme="dark"] .toc a.active,html[data-theme="dark"] .toc a.active:hover,html[data-theme="dark"] .toc li.lvl3 a.active{color:#0000a6}
+html[data-theme="dark"] .card img,html[data-theme="dark"] .hero img,html[data-theme="dark"] .gallery img,html[data-theme="dark"] .content img{background:#14149a}
+html[data-theme="dark"] .content pre,html[data-theme="dark"] .content .embed-bar,html[data-theme="dark"] .content details.src summary{background:#14149a}
+html[data-theme="dark"] .content pre,html[data-theme="dark"] .content .embed,html[data-theme="dark"] .content .embed-bar,html[data-theme="dark"] .content details.src pre,html[data-theme="dark"] .content details.src.standalone{border-color:#3a3ab8}
+html[data-theme="dark"] .row.todo .c1,html[data-theme="dark"] .row.todo .c2,html[data-theme="dark"] .row.todo .c3{color:#6f6fa8}
+html[data-theme="dark"] .cover-strip{background:#0000a6;color:#eaea76}
+html[data-theme="dark"] .sea::after,html[data-theme="dark"] .about-photo::after{background:#0006a3}
+html[data-theme="dark"] .about-photo img{background:#14149a}
 
 /* About: side card (photo, cities, poem) */
 .about .two-col{grid-template-columns:4fr 1fr;gap:0}
