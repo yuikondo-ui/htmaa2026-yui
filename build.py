@@ -209,6 +209,7 @@ def header(depth=0, active=""):
   <nav class="site-nav">
     <a href="{r}index.html"{a('index')}><span class="box"></span>Index</a>
     <a href="{r}grid.html"{a('grid')}><span class="box"></span>Grid</a>
+    <a href="{r}projects.html"{a('projects')}><span class="box"></span>Projects</a>
   </nav>
   <span class="site-right">
     <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Dark / light"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" fill="currentColor"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg></button>
@@ -277,13 +278,14 @@ def load_single(name, defaults):
     return meta
 
 # ---------------------------------------------------------------- pages
-def project_page(meta, depth, label, prev_link, next_link):
+def project_page(meta, depth, label, prev_link, next_link, active="", intro=""):
     body_html, toc = md_to_html(meta["body"])
     body_html = placeholder_imgs(fix_paths(body_html, depth), depth)
     # Cover: full-width image, dark overlay, the title repeated in big white type, label bottom-left.
     cover_title = (meta.get("title") or meta.get("topics_text") or label)
     cover_title = re.sub(r"\s*,\s*", "\u2003", cover_title).upper()   # no commas, all caps, em-space between topics
-    hero_src = ("../" * depth + meta["hero"]) if meta.get("hero") else ""
+    hero_src = ((meta["hero"] if re.match(r"https?://", meta["hero"]) else "../" * depth + meta["hero"])
+                if meta.get("hero") else "")
     hero_img = (f'<img class="cover-img" src="{esc(hero_src)}" alt="" '
                 f'onerror="this.closest(\'.cover\').classList.add(\'no-img\');this.remove()">') if hero_src else ""
     r = "../" * depth
@@ -312,13 +314,13 @@ def project_page(meta, depth, label, prev_link, next_link):
     topics = (f'<span class="topics">{inline(meta["topics"])}</span>' if meta.get("topics")
               else f'<span>Ref. {esc(meta["ref"])}</span>')
     summary = f'<p class="lede">{esc(meta["summary"])}</p>' if meta.get("summary") else ""
-    return (head(f"{label} — {meta['title'] or meta.get('topics_text','')}", depth, cover_page=True) + header(depth) + f"""
+    return (head(f"{label} — {meta['title'] or meta.get('topics_text','')}", depth, cover_page=True) + header(depth, active) + f"""
 <main class="project">
   {cover}
   <div class="project-body">
     {side}
     <article class="content">
-{body_html}
+{intro}{body_html}
     </article>
   </div>
   <nav class="pager">{prev_link}{next_link}</nav>
@@ -422,6 +424,44 @@ def build_about(about):
     write("about.html", head("About") + header(0, "about") +
           f'\n<main class="about">\n  <div class="two-col">{cols}</div>\n</main>\n' + footer())
 
+# ---------------------------------------------------------------- research projects
+def load_projects():
+    """content/projects/NN-slug.md — research projects (ported from yuikondo.cargo.site)."""
+    out = []
+    for p in sorted(glob.glob(os.path.join(CONTENT, "projects", "*.md"))):
+        meta, body = parse_front(read(p))
+        meta.setdefault("slug", re.sub(r"^\d+-", "", os.path.basename(p)[:-3]))
+        meta.setdefault("title", meta["slug"]); meta.setdefault("ref", "PROJECT"); meta["body"] = body
+        out.append(meta)
+    return out
+
+def project_intro(m):
+    tags = "".join(f'<span class="tag">{esc(t.strip())}</span>' for t in m.get("tags", "").split(",") if t.strip())
+    sub = f'<p class="proj-sub">{esc(m["subtitle"])}</p>' if m.get("subtitle") else ""
+    venue = f'<p class="proj-venue">{esc(m.get("venue",""))}{" · " + esc(m["year"]) if m.get("year") else ""}</p>'
+    return (f'<header class="proj-intro"><h1 class="proj-title">{esc(m["title"])}</h1>{sub}{venue}'
+            f'<div class="tags">{tags}</div></header>\n')
+
+def build_projects(projects):
+    n = len(projects)
+    for i, m in enumerate(projects):
+        prev_ = (f'<a href="{projects[i-1]["slug"]}.html">← {esc(projects[i-1]["title"])}</a>' if i > 0
+                 else '<a href="../projects.html">← Projects</a>')
+        next_ = (f'<a href="{projects[i+1]["slug"]}.html">{esc(projects[i+1]["title"])} →</a>' if i < n - 1
+                 else '<a href="../projects.html">Projects →</a>')
+        label = m.get("year") or "Project"
+        write(f"projects/{m['slug']}.html",
+              project_page(m, 1, label, prev_, next_, active="projects", intro=project_intro(m)))
+    rows = "".join(
+        f'  <a class="row proj-row" href="projects/{esc(m["slug"])}.html"><span class="c1"><span class="wk">{esc(m["title"])}</span></span>'
+        f'<span class="c2">{esc(m.get("summary",""))}</span><span class="c3">{esc(m.get("year",""))}</span></a>\n' for m in projects)
+    cards = "".join(
+        f'  <a class="card" href="projects/{esc(m["slug"])}.html"><img src="{esc(m.get("hero",""))}" alt="" loading="lazy" '
+        f'onerror="this.onerror=null;this.src=\'img/placeholder.svg\'"><p class="caption"><span class="wk">{esc(m["title"])}</span>'
+        f'<span class="card-venue">{esc(m.get("venue",""))}{" · " + esc(m["year"]) if m.get("year") else ""}</span></p><p class="card-desc">{esc(m.get("summary",""))}</p></a>\n' for m in projects)
+    write("projects.html", head("Projects") + header(0, "projects") +
+          f'<main class="grid-page">\n  <div class="grid">\n{cards}  </div>\n</main>\n' + footer())
+
 # ---------------------------------------------------------------- main
 def main():
     weeks = load_weeks()
@@ -429,7 +469,8 @@ def main():
     about = load_single("about.md", {"title": "About"})
     build_weeks(weeks); build_final(final, weeks)
     build_index(weeks, final); build_grid(weeks, final); build_about(about)
-    print(f"built {len(weeks)} weeks" + (", final" if final else "") + (", about" if about else ""))
+    projects = load_projects(); build_projects(projects)
+    print(f"built {len(weeks)} weeks" + (", final" if final else "") + (", about" if about else "") + f", {len(projects)} projects")
 
 if __name__ == "__main__":
     main()
