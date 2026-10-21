@@ -40,8 +40,6 @@ However, historical sensory studies suggest that emotions and their expressions 
 
 ## Objectives
 
-![](https://freight.cargo.site/w/1200/i/B2112817020785520438416546423388/allison-saeng-Kalmua0KAcI-unsplash.jpg)
-
 I aim to showcase the differences between **human and machine ways of seeing or sensing love** with colours.
 
 I extend cultural analytics by utilizing **"local colour" analysis** — a concept borrowed from traditional colour theory — to identify the inherent colours of a culture within a specific geographical area. This approach allows us to map the colours associated with various expressions of love and identify dominant tones.
@@ -91,4 +89,3 @@ Text-to-image (T2I) models don't simply create art in a vacuum — they operate 
 
 My investigations into the "**red-washing" of emotional representation** exemplify a concern: as AI systems increasingly mediate our creative and imaginative capabilities, **they risk homogenizing cultural expression and amplifying hegemonic cultural standards.**
 
-![](https://freight.cargo.site/w/1200/i/U2112890603298103963626340311644/patrick-fore-bC6_OQCob9E-unsplash.jpg)
