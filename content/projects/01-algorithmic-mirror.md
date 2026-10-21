@@ -47,8 +47,6 @@ Help your child understand the digital world they navigate every day.
 
 ## Why does this matter?
 
-![](https://freight.cargo.site/w/1400/i/D2111692789299057247095369720412/algorithmised-self.png)
-
 Every video watched, every like, and every interaction creates data that platforms use to build sophisticated profiles of your child. These algorithmic profiles determine:
 
 - **Content Curation:** What content appears in their feeds
@@ -86,75 +84,3 @@ Our participants from the last study realised that the categories and generative
 Another participant critically questioned:
 
 > "When YouTube tries to understand what I like, my question is how would it [recommender system] try to track my interest over time and project new interests, or would it just like take me as I currently am and give me exactly what I like? [...] **I can imagine it can try to predict how my personality would evolve in the next five years or so** [...] it's a little scary."
-
-## Participant Info
-
-![](https://freight.cargo.site/w/1000/i/U2111670317143385260792819180124/mirror_2.png)
-*'If you overeat, it shows on your face, and you can look in the mirror. But with YouTube viewing, it's like constantly eating junk food without a mirror to show you've become unhealthy. I probably wasn't aware of it, but now that I can see the mirror, I might decide to cut down on the junk.'*
-
-### Who can participate?
-
-We're seeking:
-
-- Young people aged 11–17 years
-- Who actively use at least one social media platform (YouTube, Netflix, or TikTok)
-- Willing to participate either in person in Oxford or online
-
-### What's involved?
-
-**Session 1: Data Download (30 minutes)**
-
-- Virtual guidance session to download platform data
-- Conducted from home or school
-- Complete privacy — no data shared with researchers
-
-**Session 2: Interactive Workshop (60–90 minutes)**
-
-- Secure data upload to Algorithmic Mirror
-- Explore personalised algorithm visualisations
-- Group discussions with peers about findings
-- Parents welcome to observe
-
-**Optional: Follow-up Interview (30 minutes)**
-
-- Share experiences and insights
-- Help improve the tool for future users
-
-### Your child's safety is paramount
-
-- Full ethics approval from University of Oxford (Reference: [1990161])
-- Password-protected visualisations only accessible to your child
-- Experienced researchers with safeguarding training
-- All personal information removed before analysis
-- Automatic data deletion after 6 months
-
-### Benefits for participants
-
-We hope this study will help participants learn more about algorithms on social media and help your child become a more informed and empowered digital citizen, with potential benefits for other children in the future.
-
-You will receive **£20** total as our thanks for participating: **£10** when you upload your data to the Algorithmic Mirror, and another **£10** upon completing the workshop.
-
-## Take Part in this Research!
-
-Help your child understand the digital world they navigate every day.
-
-**Email:** [algorithmicmirror@oii.ox.ac.uk](mailto:algorithmicmirror@oii.ox.ac.uk)<br>
-**Lead Researcher:** Yui Kondo<br>
-**Principal Investigator:** Dr. Luc Rocher<br>
-**Form:** [Link](https://docs.google.com/forms/d/e/1FAIpQLSetiCiYIt8K82CDLgQDZM4VhNMHI0YxL_z1N9sIN-Kkk5WkpA/viewform)
-
-[Click here to join this research! ↗](https://docs.google.com/forms/d/e/1FAIpQLSetiCiYIt8K82CDLgQDZM4VhNMHI0YxL_z1N9sIN-Kkk5WkpA/viewform){.button}
-
-### Frequently Asked Questions
-
-**Q: Will my child's personal data be visible to researchers?**<br>
-No. All identifying information is removed before upload, and visualisations remain password-protected.
-
-**Q: What if we change our minds?**<br>
-You can withdraw at any time before 31 September 2025, and all data will be deleted.
-
-**Q: Is this study approved?**<br>
-Yes, by the University of Oxford Central University Research Ethics Committee.
-
-**Q: What platforms are studied?**<br>
-YouTube, TikTok, and Netflix viewing histories.

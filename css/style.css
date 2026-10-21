@@ -36,7 +36,10 @@ body{
   font-weight:545;
   font-variation-settings:"wght" 545;
   -webkit-font-smoothing:antialiased;
+  min-height:100vh;min-height:100svh;display:flex;flex-direction:column;
 }
+/* footer always at the bottom of the window, even on short pages */
+.site-footer{margin-top:auto !important}
 a{color:inherit;text-decoration:none}
 p{margin:0 0 1em}
 h2,h3{font-weight:545;font-size:inherit;margin:0}
@@ -196,7 +199,7 @@ figcaption{font-size:.72em;color:var(--muted);margin-top:.35em}
 /* ---------- Project page: sidebar + content ---------- */
 .project-head h2 .wk{white-space:nowrap;font-family:var(--body);font-variation-settings:"wght" 545;letter-spacing:-0.02em}
 /* About: reading column on the left (capped measure) */
-.about .two-col{grid-template-columns:minmax(0,34em) 1fr;gap:3em;min-height:70vh}
+.about .two-col{grid-template-columns:minmax(0,34em) 1fr;gap:3em}
 .about-main p:last-child{margin-bottom:0}
 .about-side{position:relative}
 .about-side p{font-size:.85em;margin:0 0 .3em;align-self:stretch}
@@ -408,7 +411,7 @@ html[data-theme="dark"] .cover-strip{background:#131313;color:#58cd86}
 .about-card img{display:block;width:100%;height:auto;margin-bottom:1em}
 .about-card .about-cities,.about-card .about-poem{border-top:var(--rule);padding:.8em 0 1em;margin:0;font-size:1.05em;line-height:1.25}
 .about-card .about-cities{list-style:none}
-.about-card .about-poem{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-size:.95em;line-height:1.5;white-space:nowrap;border-bottom:var(--rule)}
+.about-card .about-poem{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-size:.95em;line-height:1.5;white-space:nowrap;border-top:0}
 @media (max-width:820px){.about .two-col{grid-template-columns:1fr}.about-card{padding-left:0;max-width:320px;margin-top:2em}}
 
 /* ---------- Research projects (ported from yuikondo.cargo.site) ---------- */
