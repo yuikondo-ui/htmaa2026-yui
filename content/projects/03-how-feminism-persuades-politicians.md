@@ -19,8 +19,6 @@ I examined the existence of an **algorithmic glass ceiling** that **impeded wome
 
 ## Background
 
-![](https://freight.cargo.site/w/1200/i/N2113058106153760184005937554012/flying-object-2V-h3Srx8q4-unsplash.jpg)
-
 Historically, marginalised groups have fewer chances to interact with the dominant public, limiting their ability to advocate for their interests and share their experiences. While social media platforms have provided new channels for expression, their recommendation systems often **reinforce existing social divisions through filter bubbles** — algorithmic echo chambers that limit exposure to diverse perspectives.
 
 This raises a critical question: **Can marginalized groups affect political discourse when their discourse remains largely confined to isolated community clusters?**
