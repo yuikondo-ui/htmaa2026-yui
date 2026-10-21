@@ -256,6 +256,10 @@ What I found out so far:
 
 As a next step, I will work on stabilizing it. The soldering needs to be reworked, and the wiring needs to be tidier before it can run reliably.
 
+## Use of AI
+
+I used Claude Opus 5.5 to debug throughout the process and to polish this documentation. In the first weeks it was hard to understand what the AI had made, but it helped me imagine what I wanted to build, which made me feel invested in the assignment. Its plans, however, tended to be too complicated. To turn ideas into something real, it helped a lot to talk with the TAs and my peers and to cut the plan down to what I could actually do. Once the plan was simple and I understood what I was doing, the AI was very good at debugging.
+
 ## Files
 
 - [spotifyledmatrix.kicad_sch](files/week05/spotifyledmatrix.kicad_sch): schematic
