@@ -403,8 +403,8 @@ html{scroll-behavior:smooth}
 .theme-toggle .i-sun{display:none}
 html[data-theme="dark"] .theme-toggle .i-sun{display:block}
 html[data-theme="dark"] .theme-toggle .i-moon{display:none}
-/* dark: Cargo-demo style, yellow on deep blue; accent = white so links and hovers still stand out */
-html[data-theme="dark"]{--fg:#eaea76;--bg:#0000a6;--red:#ffffff;--muted:#a3a37e;--rule:1px solid rgba(234,234,118,.4);color-scheme:dark}
+/* dark: Cargo-demo style, yellow on deep blue; accent = pale yellow-white so links and hovers still stand out */
+html[data-theme="dark"]{--fg:#eaea76;--bg:#0000a6;--red:#fffcc4;--muted:#a3a37e;--rule:1px solid rgba(234,234,118,.4);color-scheme:dark}
 html[data-theme="dark"] body{background:var(--bg);color:var(--fg)}
 html[data-theme="dark"] .banner{background:#eaea76;color:#0000a6}
 html[data-theme="dark"] .toc a.active,html[data-theme="dark"] .toc a.active:hover,html[data-theme="dark"] .toc li.lvl3 a.active{color:#0000a6}
