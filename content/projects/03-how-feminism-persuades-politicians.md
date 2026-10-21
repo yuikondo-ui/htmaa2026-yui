@@ -27,8 +27,6 @@ This raises a critical question: **Can marginalized groups affect political disc
 
 ## Objectives
 
-![](https://freight.cargo.site/w/1200/i/K2113088537083375795999694611036/jene-stephaniuk-XyvAQGLIms4-unsplash.jpg)
-
 I explore these research questions:
 
 - **RQ1:** To what extent do discussions about gender inequality in Japan occur across gender boundaries versus within same-gender groups?
@@ -37,8 +35,6 @@ I explore these research questions:
 To address RQ2, I expanded upon Tilly's (1994) **WUNC** framework (Worthiness, Unity, Numbers, and Commitment) — a model for evaluating social movement success that was later quantified by Freelon et al. (2018). I enhanced this framework by incorporating a new metric of participant **'diversity'**, as it fosters a wider range of information, enhances problem-solving and tactical innovation, and increases the democratic legitimacy of social movements.
 
 ## Methodology
-
-![](https://freight.cargo.site/w/1200/i/A2113175538108086674937815458396/marten-bjork-FVtG38Cjc_k-unsplash.jpg)
 
 ### RQ1: Gender Homophily in Gender Equality Discussions on Twitter
 
@@ -87,4 +83,3 @@ This research highlights challenges that marginalised groups face in engaging wi
 
 The findings identify a concerning feedback loop: **gender homophily** (as demonstrated in RQ1) limits marginalized groups' visibility and influence, while personalization algorithms may reinforce these divisions by creating additional barriers to cross-group connection. This algorithmic amplification of existing social divisions appears to particularly impact women and other marginalized groups, potentially making it more difficult for them to build the broad coalitions necessary for effective advocacy.
 
-![](https://freight.cargo.site/w/1200/i/Z2113193866424063431274110083676/flying-object-qrPaii9-iQY-unsplash.jpg)
