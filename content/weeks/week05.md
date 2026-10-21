@@ -32,7 +32,9 @@ What still needs work:
 *First working result. It was supposed to show album art, but the colors are not all there yet.*
 :::
 
-## First design
+## Process
+
+### First design
 
 First I had this design. The board connects a Pico W to a HUB75 LED matrix through two 74HCT245 level shifters. The Pico's pins output 3.3 V, while HUB75 panels are designed for 5 V logic, so the 245s re-drive each signal at 5 V.
 
@@ -58,7 +60,7 @@ Pin assignment (GPIO → signal):
 - GP11 → CLK, GP12 → LAT, GP13 → OE
 - GP16, GP17 → SW1, SW2
 
-## Carvera training
+### Carvera training
 
 We had a group training on the Carvera. When I prepared my file, I realized some traces were too close together for the end mill, so I reorganized the layout with help from Daniel. I milled the board four times in the end.
 
@@ -70,7 +72,7 @@ Design rules I used:
 - GND as a copper pour (zone)
 - Clearance wide enough for a 1/64" (about 0.4 mm) end mill
 
-## 1st print
+### 1st print
 
 I first tried milling with Daniel and Xiangtao, following [Quentin's Carvera PCB tutorial](https://pub.cba.mit.edu/quentin.bolsee/carvera-pcb-tutorial/).
 
@@ -90,7 +92,7 @@ The G-code itself was fine. The machine cut exactly what the file said. The prob
 
 **Fix:** I raised the zone clearance to 0.5 mm. Checking the toolpaths, the number of places where a cut stopped short went from 146 to 4, then to 0 after I also fixed two tight spots (a GND strip between J2 pins 3 and 4, and a GND trace bending close to U2 pin 9).
 
-## 2nd and 3rd print
+### 2nd and 3rd print
 
 With those issues fixed, I milled the board a second time and tried soldering (and wasted two Picos along the way, sorry!). The tip at the soldering station wasn't working well, I had a hard time soldering, and I realized the traces were still close together. This board was more for practicing soldering and understanding how it works, so that was okay. The green marks are where I tried a flux pen.
 
@@ -107,7 +109,7 @@ While soldering it, I realized the resistors and the LED weren't necessary: the 
 
 During a group meeting, Ivan and Siddharth looked closely at my board and found a place where two traces were connected. I cut them apart with a craft knife.
 
-## Adding drill holes
+### Adding drill holes
 
 When I started assembling the parts I had ordered, I realized I needed holes to attach them. In KiCad I exported the drill file (File → Fabrication Outputs → Drill Files) and the Gerbers, and loaded the edge cut and drill files together into [gerber2img](https://quentinbolsee.pages.cba.mit.edu/gerber2img/), which renders an image for the drill job. Generating them together keeps the traces, holes and outline aligned.
 
@@ -122,7 +124,7 @@ Things I checked before milling the holes:
 - Every hole is larger than the 1/32" (0.79 mm) end mill, or mods skips it. Pico and J2 holes are 1.0 mm (header pins are 0.64 mm square, about 0.9 mm across the diagonal), U1/U2 are 0.9 mm, J1 is 1.4 mm (Quentin clarified this).
 - The G-code cut the outline first and the holes after. I reordered it so the holes are cut before the outline, so the board can't shift before drilling.
 
-## Office hours with Ben
+### Office hours with Ben
 
 Then I went to CBA office hours, and Ben suggested changing the through-hole parts to surface-mount versions. On a single-sided milled board, SMD parts need no drilling and no careful alignment of holes, and sockets let me remove the Pico and the 245s without desoldering. He also suggested parts so the power wires connect smoothly.
 
@@ -134,7 +136,7 @@ Then I went to CBA office hours, and Ben suggested changing the through-hole par
 | J1 (power) | [Amphenol Anytek TZ022101B000G](https://www.digikey.com/en/products/detail/amphenol-anytek/TZ022101B000G/5203614) | 2-position SMD screw terminal, 3.5 mm, 10 A |
 | Power jack | [Tensility 10-03609](https://www.digikey.com/en/products/detail/tensility-international-corp/10-03609/12090912) | Panel-mount 2.1 mm DC jack with leads, for an enclosure |
 
-## Redesigning the board for holes
+### Redesigning the board for holes
 
 The order would take at least a week, and I didn't want to give up on testing with what I already had. I asked Quentin, and he told me it could work with drilled holes, but I would need to flip the Pico, J2, U1 and U2 to the back of the board and reroute. For the Pico, he suggested female sockets on the board and male pins on the Pico, because if the Pico W's Wi-Fi module sits directly on the copper, it could damage the Pico. My board only has copper on the top, so through-hole parts go on the back and are soldered on the top.
 
@@ -149,7 +151,7 @@ After flipping, the pin order changed, so I had to reroute most of the traces. W
 
 Rerouting was hard at first, but Michal taught me how to use a 0 Ω resistor as a jumper. A 0 Ω resistor is just a bridge: its body hops over a trace that runs between its two pads, so one signal can cross another on a single-layer board. I used one to get the E line from U2 to J2.
 
-## 4th print and soldering
+### 4th print and soldering
 
 I milled this version with all isolation cuts closed and the holes in the same setup, and started soldering. My 0 Ω resistor ended up bridging two lines, but Michal kindly showed me how to desolder it, and to look at the joint from an angle to see exactly where the solder connects. He also helped me change the soldering tip, and showed me how to clean it: put fresh solder on the tip and wipe it on the brass wool, so solder sticks to the tip again. That soldering tutoring was much needed, and he's a great teacher.
 
@@ -175,7 +177,7 @@ Throughout soldering, I used a multimeter to check for bridges and unexpected co
 <figure><img src="img/week05/img_7804.jpg" alt="The Pico plugged into its sockets on the fourth board"></figure>
 </div>
 
-## Powering the board
+### Powering the board
 
 I connected J1 to the DC jack's screw terminal with red (+) and black (−) wires.
 
@@ -197,7 +199,7 @@ Before powering the matrix, I checked the HUB75 ribbon orientation with the mult
 <figure><video src="img/week05/img_7828.mp4" controls muted loop playsinline preload="metadata" style="width:100%;aspect-ratio:3/4;object-fit:cover;background:#000"></video></figure>
 </div>
 
-## Connecting the Pico
+### Connecting the Pico
 
 Then I tried connecting the Pico over USB. At first my MacBook didn't recognize the Pico at all. Michal helped me find a micro USB cable that actually carries data. It also turned out that only the second of the MacBook's two USB-C ports worked.
 
@@ -205,7 +207,7 @@ Then I tried connecting the Pico over USB. At first my MacBook didn't recognize 
 
 I installed the Raspberry Pi Pico W version of CircuitPython (hold BOOTSEL, plug in, drag the UF2 onto the RPI-RP2 drive). The program is saved as `code.py` on the CIRCUITPY drive and runs automatically on every power-up, with or without USB.
 
-## Lighting up the LED matrix
+### Lighting up the LED matrix
 
 The first time I wrote the color test program to the Pico, nothing showed up on the matrix. The test code (generated with Claude Opus 5.5) cycles through patterns that each check one group of signals: full red, green, blue and white for the color lines, four quadrants for the top half (R1 G1 B1) and bottom half (R2 G2 B2), a line moving down for the address lines A–E, and a line moving across for CLK and LAT.
 
@@ -230,7 +232,7 @@ So I resoldered U1's joints with flux. After that it had the expected values: U1
 <figure><video src="img/week05/img_7834.mp4" controls muted loop playsinline preload="metadata" style="width:100%;aspect-ratio:9/16;object-fit:cover;background:#000"></video></figure>
 </div>
 
-## Stabilizing it and next steps
+### Stabilizing it and next steps
 
 Then the LED on the Pico sometimes wasn't working well, so I tried to stabilize the wires in the screw terminal by soldering them.
 

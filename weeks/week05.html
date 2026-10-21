@@ -38,7 +38,7 @@
   <div class="project-body">
     <aside class="toc">
   <div class="toc-inner">
-    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#first-design">First design</a></li><li class="lvl2"><a href="#carvera-training">Carvera training</a></li><li class="lvl2"><a href="#1st-print">1st print</a></li><li class="lvl2"><a href="#2nd-and-3rd-print">2nd and 3rd print</a></li><li class="lvl2"><a href="#adding-drill-holes">Adding drill holes</a></li><li class="lvl2"><a href="#office-hours-with-ben">Office hours with Ben</a></li><li class="lvl2"><a href="#redesigning-the-board-for-holes">Redesigning the board for holes</a></li><li class="lvl2"><a href="#4th-print-and-soldering">4th print and soldering</a></li><li class="lvl2"><a href="#powering-the-board">Powering the board</a></li><li class="lvl2"><a href="#connecting-the-pico">Connecting the Pico</a></li><li class="lvl2"><a href="#lighting-up-the-led-matrix">Lighting up the LED matrix</a></li><li class="lvl2"><a href="#stabilizing-it-and-next-steps">Stabilizing it and next steps</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
+    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#process">Process</a></li><li class="lvl3"><a href="#first-design">First design</a></li><li class="lvl3"><a href="#carvera-training">Carvera training</a></li><li class="lvl3"><a href="#1st-print">1st print</a></li><li class="lvl3"><a href="#2nd-and-3rd-print">2nd and 3rd print</a></li><li class="lvl3"><a href="#adding-drill-holes">Adding drill holes</a></li><li class="lvl3"><a href="#office-hours-with-ben">Office hours with Ben</a></li><li class="lvl3"><a href="#redesigning-the-board-for-holes">Redesigning the board for holes</a></li><li class="lvl3"><a href="#4th-print-and-soldering">4th print and soldering</a></li><li class="lvl3"><a href="#powering-the-board">Powering the board</a></li><li class="lvl3"><a href="#connecting-the-pico">Connecting the Pico</a></li><li class="lvl3"><a href="#lighting-up-the-led-matrix">Lighting up the LED matrix</a></li><li class="lvl3"><a href="#stabilizing-it-and-next-steps">Stabilizing it and next steps</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
   </div>
 </aside>
     <article class="content">
@@ -60,7 +60,8 @@
 <div class="cols natural narrow">
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The LED matrix showing red and green on the top half and blue columns below" src="../img/week05/img_7830_2.jpg" /><figcaption>First working result. It was supposed to show album art, but the colors are not all there yet.</figcaption></figure>
 </div>
-<h2 id="first-design">First design</h2>
+<h2 id="process">Process</h2>
+<h3 id="first-design">First design</h3>
 <p>First I had this design. The board connects a Pico W to a HUB75 LED matrix through two 74HCT245 level shifters. The Pico's pins output 3.3 V, while HUB75 panels are designed for 5 V logic, so the 245s re-drive each signal at 5 V.</p>
 <div class="cols natural">
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad PCB layout of the first design" src="../img/week05/ss_10-21_12-48-08am.jpg" /></figure>
@@ -119,7 +120,7 @@
 <li>GP11 → CLK, GP12 → LAT, GP13 → OE</li>
 <li>GP16, GP17 → SW1, SW2</li>
 </ul>
-<h2 id="carvera-training">Carvera training</h2>
+<h3 id="carvera-training">Carvera training</h3>
 <p>We had a group training on the Carvera. When I prepared my file, I realized some traces were too close together for the end mill, so I reorganized the layout with help from Daniel. I milled the board four times in the end.</p>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The board layout in KiCad, rearranged for the end mill" src="../img/week05/ss_10-15_7-50-55pm.jpg" /></figure>
 <p>Design rules I used:</p>
@@ -128,7 +129,7 @@
 <li>GND as a copper pour (zone)</li>
 <li>Clearance wide enough for a 1/64" (about 0.4 mm) end mill</li>
 </ul>
-<h2 id="1st-print">1st print</h2>
+<h3 id="1st-print">1st print</h3>
 <p>I first tried milling with Daniel and Xiangtao, following <a href="https://pub.cba.mit.edu/quentin.bolsee/carvera-pcb-tutorial/">Quentin's Carvera PCB tutorial</a>.</p>
 <div class="cols">
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The Carvera milling the board, seen through the window" src="../img/week05/img_7727.jpg" /></figure>
@@ -140,7 +141,7 @@
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad board setup with the zone clearance" src="../img/week05/ss_10-19_1-35-44pm.jpg" /></figure>
 <p><strong>Why it happened:</strong> my GND zone clearance was 0.4 mm, about the same as the 1/64" end mill. mods only cuts a gap where the whole tool fits, so it skipped those gaps, especially between the Pico pads and the GND pour. That would have shorted almost every Pico pin to GND.</p>
 <p><strong>Fix:</strong> I raised the zone clearance to 0.5 mm. Checking the toolpaths, the number of places where a cut stopped short went from 146 to 4, then to 0 after I also fixed two tight spots (a GND strip between J2 pins 3 and 4, and a GND trace bending close to U2 pin 9).</p>
-<h2 id="2nd-and-3rd-print">2nd and 3rd print</h2>
+<h3 id="2nd-and-3rd-print">2nd and 3rd print</h3>
 <p>With those issues fixed, I milled the board a second time and tried soldering (and wasted two Picos along the way, sorry!). The tip at the soldering station wasn't working well, I had a hard time soldering, and I realized the traces were still close together. This board was more for practicing soldering and understanding how it works, so that was okay. The green marks are where I tried a flux pen.</p>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The second board with the Pico soldered on, with green flux-pen marks" src="../img/week05/img_7841.jpg" /></figure>
 <p>It was very messy, so I milled the same design again and soldered it again.</p>
@@ -150,7 +151,7 @@
 </div>
 <p>While soldering it, I realized the resistors and the LED weren't necessary: the Pico has internal pull-up resistors for the buttons and its own on-board LED. So I removed R1–R3 and D1 from the design.</p>
 <p>During a group meeting, Ivan and Siddharth looked closely at my board and found a place where two traces were connected. I cut them apart with a craft knife.</p>
-<h2 id="adding-drill-holes">Adding drill holes</h2>
+<h3 id="adding-drill-holes">Adding drill holes</h3>
 <p>When I started assembling the parts I had ordered, I realized I needed holes to attach them. In KiCad I exported the drill file (File → Fabrication Outputs → Drill Files) and the Gerbers, and loaded the edge cut and drill files together into <a href="https://quentinbolsee.pages.cba.mit.edu/gerber2img/">gerber2img</a>, which renders an image for the drill job. Generating them together keeps the traces, holes and outline aligned.</p>
 <div class="cols natural">
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad's Generate Drill Files dialog" src="../img/week05/ss_10-21_12-59-02am.jpg" /></figure>
@@ -162,7 +163,7 @@
 <li>Every hole is larger than the 1/32" (0.79 mm) end mill, or mods skips it. Pico and J2 holes are 1.0 mm (header pins are 0.64 mm square, about 0.9 mm across the diagonal), U1/U2 are 0.9 mm, J1 is 1.4 mm (Quentin clarified this).</li>
 <li>The G-code cut the outline first and the holes after. I reordered it so the holes are cut before the outline, so the board can't shift before drilling.</li>
 </ul>
-<h2 id="office-hours-with-ben">Office hours with Ben</h2>
+<h3 id="office-hours-with-ben">Office hours with Ben</h3>
 <p>Then I went to CBA office hours, and Ben suggested changing the through-hole parts to surface-mount versions. On a single-sided milled board, SMD parts need no drilling and no careful alignment of holes, and sockets let me remove the Pico and the 245s without desoldering. He also suggested parts so the power wires connect smoothly.</p>
 <table>
 <thead>
@@ -200,7 +201,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="redesigning-the-board-for-holes">Redesigning the board for holes</h2>
+<h3 id="redesigning-the-board-for-holes">Redesigning the board for holes</h3>
 <p>The order would take at least a week, and I didn't want to give up on testing with what I already had. I asked Quentin, and he told me it could work with drilled holes, but I would need to flip the Pico, J2, U1 and U2 to the back of the board and reroute. For the Pico, he suggested female sockets on the board and male pins on the Pico, because if the Pico W's Wi-Fi module sits directly on the copper, it could damage the Pico. My board only has copper on the top, so through-hole parts go on the back and are soldered on the top.</p>
 <p>Flipping the footprint to the back (select it and press <strong>F</strong>) makes KiCad mirror the pad layout so it matches.</p>
 <ul>
@@ -210,7 +211,7 @@
 <p>After flipping, the pin order changed, so I had to reroute most of the traces. With only one copper layer, traces can't cross, and one line (E) was trapped behind other traces.</p>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Rerouting the board in KiCad after flipping the parts" src="../img/week05/ss_10-19_6-49-08pm.jpg" /></figure>
 <p>Rerouting was hard at first, but Michal taught me how to use a 0 Ω resistor as a jumper. A 0 Ω resistor is just a bridge: its body hops over a trace that runs between its two pads, so one signal can cross another on a single-layer board. I used one to get the E line from U2 to J2.</p>
-<h2 id="4th-print-and-soldering">4th print and soldering</h2>
+<h3 id="4th-print-and-soldering">4th print and soldering</h3>
 <p>I milled this version with all isolation cuts closed and the holes in the same setup, and started soldering. My 0 Ω resistor ended up bridging two lines, but Michal kindly showed me how to desolder it, and to look at the joint from an angle to see exactly where the solder connects. He also helped me change the soldering tip, and showed me how to clean it: put fresh solder on the tip and wipe it on the brass wool, so solder sticks to the tip again. That soldering tutoring was much needed, and he's a great teacher.</p>
 <div class="cols">
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Soldering under the magnifier screen" src="../img/week05/img_7790.jpg" /></figure>
@@ -232,7 +233,7 @@
 </figure>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" src="../img/week05/img_7804.jpg" alt="The Pico plugged into its sockets on the fourth board"></figure>
 </div>
-<h2 id="powering-the-board">Powering the board</h2>
+<h3 id="powering-the-board">Powering the board</h3>
 <p>I connected J1 to the DC jack's screw terminal with red (+) and black (−) wires.</p>
 <div class="cols tall">
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" src="../img/week05/img_7809_2.jpg" alt="The board wired to the DC jack's screw terminal"></figure>
@@ -252,11 +253,11 @@
 <video controls="controls" loop="loop" muted="muted" playsinline="playsinline" preload="metadata" src="../img/week05/img_7828.mp4" style="width:100%;aspect-ratio:3/4;object-fit:cover;background:#000"></video>
 </figure>
 </div>
-<h2 id="connecting-the-pico">Connecting the Pico</h2>
+<h3 id="connecting-the-pico">Connecting the Pico</h3>
 <p>Then I tried connecting the Pico over USB. At first my MacBook didn't recognize the Pico at all. Michal helped me find a micro USB cable that actually carries data. It also turned out that only the second of the MacBook's two USB-C ports worked.</p>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The Pico W connected over USB, with code.py open on the laptop" src="../img/week05/img_7829.jpg" /></figure>
 <p>I installed the Raspberry Pi Pico W version of CircuitPython (hold BOOTSEL, plug in, drag the UF2 onto the RPI-RP2 drive). The program is saved as <code>code.py</code> on the CIRCUITPY drive and runs automatically on every power-up, with or without USB.</p>
-<h2 id="lighting-up-the-led-matrix">Lighting up the LED matrix</h2>
+<h3 id="lighting-up-the-led-matrix">Lighting up the LED matrix</h3>
 <p>The first time I wrote the color test program to the Pico, nothing showed up on the matrix. The test code (generated with Claude Opus 5.5) cycles through patterns that each check one group of signals: full red, green, blue and white for the color lines, four quadrants for the top half (R1 G1 B1) and bottom half (R2 G2 B2), a line moving down for the address lines A–E, and a line moving across for CLK and LAT.</p>
 <p>So I traced the signal with a multimeter, measuring DC voltage at each stage while the program ran. Fast signals show up on a multimeter as their average, so a toggling 3.3 V line reads about 1.6 V, and a toggling 5 V line about 2.5 V.</p>
 <ol>
@@ -302,7 +303,7 @@
 <video controls="controls" loop="loop" muted="muted" playsinline="playsinline" preload="metadata" src="../img/week05/img_7834.mp4" style="width:100%;aspect-ratio:9/16;object-fit:cover;background:#000"></video>
 </figure>
 </div>
-<h2 id="stabilizing-it-and-next-steps">Stabilizing it and next steps</h2>
+<h3 id="stabilizing-it-and-next-steps">Stabilizing it and next steps</h3>
 <p>Then the LED on the Pico sometimes wasn't working well, so I tried to stabilize the wires in the screw terminal by soldering them.</p>
 <div class="cols tall">
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Soldering the wires for the screw terminal" src="../img/week05/img_7833.jpg" /></figure>
