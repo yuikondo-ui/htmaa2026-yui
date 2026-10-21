@@ -323,7 +323,6 @@ def project_page(meta, depth, label, prev_link, next_link, active="", intro=""):
 {intro}{body_html}
     </article>
   </div>
-  <nav class="pager">{prev_link}{next_link}</nav>
 </main>
 <script>
 // Highlight the sidebar entry for the section in view. The reference line sits a third of
@@ -423,7 +422,7 @@ def build_about(about):
     parts = [p for p in re.split(r"\n---\s*\n", body, maxsplit=1) if p.strip()]
     text = fix_paths(md_to_html(parts[0])[0], 0)
     side = fix_paths(md_to_html(parts[1])[0], 0) if len(parts) > 1 else ""
-    sea = esc(about.get("sea", "https://freight.cargo.site/w/1600/i/S2109509132541966905311695168092/graham-pengelly-xyh54DGiOwY-unsplash.jpg"))
+    sea = esc(about.get("sea", "https://freight.cargo.site/w/1024/t/webgl/i/S2109509132541966905311695168092/graham-pengelly-xyh54DGiOwY-unsplash.jpg"))
     page = f"""
 <main class="about about-sea">
   <div class="sea" aria-hidden="true"><canvas id="sea" data-src="{sea}"></canvas></div>
@@ -435,28 +434,58 @@ def build_about(about):
   </section>
 </main>
 <script>
-// The sea: a kaleidoscope of the ocean photo, drifting slowly outward (like the old Cargo backdrop).
+// The sea: a port of Cargo's "kaleidoscope" backdrop (WebGL), with the settings the old site used
+// (Cargo defaults: 18 slices, zoom 217, rotations 61° / -148°, speed -8, centre 21/66, mirrored, mouse drift).
 (function(){{
-  var cv=document.getElementById('sea');if(!cv)return;var cx=cv.getContext('2d');
-  var img=new Image();img.src=cv.getAttribute('data-src');
-  var N=12,still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,pat=null,t0=performance.now();
-  function size(){{var r=cv.parentNode.getBoundingClientRect(),d=window.devicePixelRatio||1;cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);}}
+  var cv=document.getElementById('sea');if(!cv)return;
+  var gl=cv.getContext('webgl')||cv.getContext('experimental-webgl');
+  var src=cv.getAttribute('data-src');
+  if(!gl){{cv.parentNode.style.background='url('+src+') center/cover';return;}}
+  var S={{slices:18,zoom:2.17,base1:61*Math.PI/180,speed1:-8/10000*50,base2:-148*Math.PI/180,speed2:-8/10000*50,cx:.21,cy:.66}};
+  var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var VS='attribute vec2 p;void main(){{gl_Position=vec4(p,0.,1.);}}';
+  var FS=['precision highp float;uniform sampler2D tex;uniform float time,sliceAngle,base1,speed1,base2,speed2;',
+    'uniform vec2 zoom,resolution,aspect,center,mouse;',
+    'void main(){{vec2 pos0=-aspect+2.*gl_FragCoord.xy/resolution*aspect;float r=length(pos0);',
+    'float ang=atan(pos0.y,pos0.x)+base1;float s=mod(ang+time*speed1,sliceAngle*2.);if(s>sliceAngle)s=2.*sliceAngle-s;',
+    'float r2=base2+time*speed2;vec2 rot=vec2(sin(r2),cos(r2));vec2 pos=vec2(cos(s),sin(s))*r+center;',
+    'gl_FragColor=texture2D(tex,vec2(pos.x*rot.y+pos.y*rot.x,pos.y*rot.y-pos.x*rot.x)*zoom+mouse,-1.);}}'].join('');
+  function sh(t,c){{var o=gl.createShader(t);gl.shaderSource(o,c);gl.compileShader(o);return o;}}
+  var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,-1,1,1,-1,1]),gl.STATIC_DRAW);
+  var lp=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,2,gl.FLOAT,false,0,0);
+  var U={{}};['time','sliceAngle','base1','speed1','base2','speed2','zoom','resolution','aspect','center','mouse'].forEach(function(n){{U[n]=gl.getUniformLocation(pr,n);}});
+  var ratio=1,ready=false,t0=performance.now(),mx=0,my=0,px=-1,py=-1;
+  var img=new Image();img.crossOrigin='';
+  img.onload=function(){{
+    function p2(x){{var n=1;while(n<x)n*=2;return n;}}
+    var c=document.createElement('canvas');c.width=p2(img.width);c.height=p2(img.height);   // WebGL1 wants power-of-two for mirrored repeat
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);ratio=img.height/img.width;
+    var tx=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tx);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.MIRRORED_REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.MIRRORED_REPEAT);
+    gl.generateMipmap(gl.TEXTURE_2D);ready=true;requestAnimationFrame(draw);
+  }};
+  img.onerror=function(){{cv.parentNode.style.background='url('+src+') center/cover';}};
+  img.src=src;
+  var k=Math.pow((S.zoom/5)*.35+(1-S.zoom/5),2);   // Cargo's mouse scaling
+  window.addEventListener('mousemove',function(e){{mx=k*e.clientX;my=k*e.clientY;}},{{passive:true}});
   function draw(now){{
-    if(!pat){{try{{pat=cx.createPattern(img,'repeat');}}catch(e){{return;}}}}
-    var w=cv.width,h=cv.height,R=Math.hypot(w,h)/2+2,a=2*Math.PI/N,t=(now-t0)/1000;
-    var k=Math.max(w,h)*1.4/img.width;     // image scale
-    cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,w,h);
-    for(var i=0;i<N;i++){{
-      cx.save();cx.translate(w/2,h/2);cx.rotate((i%2?(i+1)*a:i*a)+t*0.012);if(i%2)cx.scale(1,-1);
-      cx.beginPath();cx.moveTo(0,0);cx.arc(0,0,R,-0.002,a+0.002);cx.closePath();cx.clip();
-      // drift: the pattern slides outward along the wedge, so the water seems to keep spreading
-      var m=new DOMMatrix().translate(-t*14,-img.height*k*0.42).scale(k);pat.setTransform(m);
-      cx.fillStyle=pat;cx.fillRect(0,-R,R,2*R);cx.restore();
-    }}
+    if(!ready)return;
+    var d=window.devicePixelRatio||1,r=cv.parentNode.getBoundingClientRect(),w=Math.round(r.width*d),h=Math.round(r.height*d);
+    if(cv.width!==w||cv.height!==h){{cv.width=w;cv.height=h;gl.viewport(0,0,w,h);}}
+    if(px<0){{px=mx;py=my;}}else{{px=mx*.2+px*.8;py=my*.2+py*.8;}}
+    gl.uniform1f(U.time,still?0:(now-t0)/1000);gl.uniform1f(U.sliceAngle,Math.PI*2/S.slices);
+    gl.uniform1f(U.base1,S.base1);gl.uniform1f(U.speed1,S.speed1);gl.uniform1f(U.base2,S.base2);gl.uniform1f(U.speed2,S.speed2);
+    gl.uniform2f(U.zoom,1.5/S.zoom*ratio,1.5/S.zoom);gl.uniform2f(U.center,S.cx,S.cy);gl.uniform2f(U.mouse,px*.005,py*.005);
+    gl.uniform2f(U.resolution,w,h);gl.uniform2f(U.aspect,w/h,1);
+    gl.drawArrays(gl.TRIANGLES,0,6);
     if(!still)requestAnimationFrame(draw);
   }}
-  img.onload=function(){{size();requestAnimationFrame(draw);}};
-  window.addEventListener('resize',function(){{size();if(still)requestAnimationFrame(draw);}});
+  window.addEventListener('resize',function(){{if(still)requestAnimationFrame(draw);}});
 }})();
 </script>
 """ + footer()
