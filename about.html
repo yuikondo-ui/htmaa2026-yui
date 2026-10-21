@@ -25,21 +25,51 @@
   </span>
 </header>
 
-<main class="about">
-  <div class="two-col"><div class="about-main"><p>I'm Yui Kondo, a first-year master student at Viral Communications at the MIT Media Lab. 
+<main class="about about-sea">
+  <div class="sea" aria-hidden="true"><canvas id="sea" data-src="https://freight.cargo.site/w/1600/i/S2109509132541966905311695168092/graham-pengelly-xyh54DGiOwY-unsplash.jpg"></canvas></div>
+  <section class="about-panel">
+    <div class="about-cols">
+      <aside class="about-aside"><figure class="about-photo"><img src="https://freight.cargo.site/w/800/i/T2109501747627784668650929873500/IMG_1416-3.jpg" alt="" onerror="this.closest('figure').style.display='none'"></figure>
+<ul class="about-cities"><li>Tokyo</li><li>Hong Kong</li><li>Oxford</li><li>Boston</li></ul>
+<p class="about-poem" lang="ja">人もをし<br>人も恨めしあぢきなく<br>世を思ふゆゑに<br>もの思ふ身は</p></aside>
+      <div class="about-text"><p>I'm Yui Kondo, a first-year master student at Viral Communications at the MIT Media Lab. 
 My research focuses on investigating the impact of algorithm-driven decision makings upon our everyday lives, with a particular emphasis on children and adolescents. My project<br />
 <a data-preview="img/about/algorithmic-mirror.jpg" href="projects/algorithmic-mirror.html">Algorithmic Mirror</a> invites reflection on how children’s online footprints may be silently transformed into profiles, and how inhabiting such mirrors might alter one’s sense of self.</p>
 <p>Before MIT I completed an MSc Social Science of the Internet at the Oxford Internet Institute (UK) and BA Political Science at Waseda Univeristy (Japan). </p>
 <p>Outside research, my high school won a national championship in<br />
-<a data-preview="img/about/karuta.jpg" href="https://www.youtube.com/watch?v=Sx2UqSxAPfk">karuta</a>, a Japanese competitive poetry card game.</p></div><div class="about-side"><div class="about-card">
-<img src="img/about/yui.jpg" alt="Yui Kondo">
-<ul class="about-cities"><li>Tokyo</li><li>Hong Kong</li><li>Oxford</li><li>Boston</li></ul>
-<p class="about-poem" lang="ja">人もをし<br>人も恨めしあぢきなく<br>世を思ふゆゑに<br>もの思ふ身は</p>
-</div></div></div>
+<a data-preview="img/about/karuta.jpg" href="https://www.youtube.com/watch?v=Sx2UqSxAPfk">karuta</a>, a Japanese competitive poetry card game.</p></div>
+    </div>
+  </section>
 </main>
+<script>
+// The sea: a kaleidoscope of the ocean photo, drifting slowly outward (like the old Cargo backdrop).
+(function(){
+  var cv=document.getElementById('sea');if(!cv)return;var cx=cv.getContext('2d');
+  var img=new Image();img.src=cv.getAttribute('data-src');
+  var N=12,still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,pat=null,t0=performance.now();
+  function size(){var r=cv.parentNode.getBoundingClientRect(),d=window.devicePixelRatio||1;cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);}
+  function draw(now){
+    if(!pat){try{pat=cx.createPattern(img,'repeat');}catch(e){return;}}
+    var w=cv.width,h=cv.height,R=Math.hypot(w,h)/2+2,a=2*Math.PI/N,t=(now-t0)/1000;
+    var k=Math.max(w,h)*1.4/img.width;     // image scale
+    cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,w,h);
+    for(var i=0;i<N;i++){
+      cx.save();cx.translate(w/2,h/2);cx.rotate((i%2?(i+1)*a:i*a)+t*0.012);if(i%2)cx.scale(1,-1);
+      cx.beginPath();cx.moveTo(0,0);cx.arc(0,0,R,-0.002,a+0.002);cx.closePath();cx.clip();
+      // drift: the pattern slides outward along the wedge, so the water seems to keep spreading
+      var m=new DOMMatrix().translate(-t*14,-img.height*k*0.42).scale(k);pat.setTransform(m);
+      cx.fillStyle=pat;cx.fillRect(0,-R,R,2*R);cx.restore();
+    }
+    if(!still)requestAnimationFrame(draw);
+  }
+  img.onload=function(){size();requestAnimationFrame(draw);};
+  window.addEventListener('resize',function(){size();if(still)requestAnimationFrame(draw);});
+})();
+</script>
 <footer class="site-footer">
-  <div class="col col-wide">Yui Kondo, 2026</div>
-  <div class="col"><p>Contact:</p><p><a href="mailto:yui@mit.edu">yui@mit.edu</a><br><a href="https://www.linkedin.com/in/yui-kondo-3ab584186">LinkedIn</a></p></div>
+  <div class="col col-wide"><a href="mailto:yui@mit.edu">yui@mit.edu</a></div>
+  <div class="col"><a href="https://www.linkedin.com/in/yui-kondo-3ab584186" target="_blank" rel="noopener">LinkedIn</a></div>
+  <div class="col col-top"><a href="#" class="to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">&#x2191;</a></div>
 </footer>
 </body>
 </html>

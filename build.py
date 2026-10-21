@@ -219,13 +219,13 @@ def header(depth=0, active=""):
 """
 
 def footer(depth=0):
-    links = []
-    if SITE["email"]:    links.append(f'<a href="mailto:{esc(SITE["email"])}">{esc(SITE["email"])}</a>')
-    if SITE["linkedin"]: links.append(f'<a href="{esc(SITE["linkedin"])}">LinkedIn</a>')
-    if SITE["repo"]:     links.append(f'<a href="{esc(SITE["repo"])}">GitHub</a>')
+    """Three columns on the same grid as the index rows: email | LinkedIn | back to top. No rules."""
+    mail = f'<a href="mailto:{esc(SITE["email"])}">{esc(SITE["email"])}</a>' if SITE["email"] else ""
+    li = f'<a href="{esc(SITE["linkedin"])}" target="_blank" rel="noopener">LinkedIn</a>' if SITE["linkedin"] else ""
     return f"""<footer class="site-footer">
-  <div class="col col-wide">{esc(SITE['name'])}, {esc(SITE['year'])}</div>
-  <div class="col"><p>Contact:</p><p>{'<br>'.join(links)}</p></div>
+  <div class="col col-wide">{mail}</div>
+  <div class="col">{li}</div>
+  <div class="col col-top"><a href="#" class="to-top" aria-label="Back to top" onclick="window.scrollTo({{top:0,behavior:'smooth'}});return false;">&#x2191;</a></div>
 </footer>
 </body>
 </html>
@@ -415,14 +415,52 @@ def build_grid(weeks, final):
           f'\n<main class="grid-page">\n  <div class="grid">\n{cards}  </div>\n</main>\n' + footer())
 
 def build_about(about):
+    """About: the sea (a slowly turning kaleidoscope of the ocean photo) fills the left half;
+    the name, contact links and a narrow photo/places/poem column sit beside the text on the right.
+    content/about.md = text, then a line with only `---`, then the side column (HTML). No footer."""
     if not about: return
-    body = re.sub(r"\n---\s*$", "", about["body"].rstrip())        # ignore a trailing separator
+    body = re.sub(r"\n---\s*$", "", about["body"].rstrip())
     parts = [p for p in re.split(r"\n---\s*\n", body, maxsplit=1) if p.strip()]
-    cls = ["about-main", "about-side"]
-    cols = "".join(f'<div class="{cls[i]}">{fix_paths(md_to_html(p)[0], 0)}</div>' for i, p in enumerate(parts))
-    cols = cols if len(parts) > 1 else cols + '<div class="about-side"></div>'
-    write("about.html", head("About") + header(0, "about") +
-          f'\n<main class="about">\n  <div class="two-col">{cols}</div>\n</main>\n' + footer())
+    text = fix_paths(md_to_html(parts[0])[0], 0)
+    side = fix_paths(md_to_html(parts[1])[0], 0) if len(parts) > 1 else ""
+    sea = esc(about.get("sea", "https://freight.cargo.site/w/1600/i/S2109509132541966905311695168092/graham-pengelly-xyh54DGiOwY-unsplash.jpg"))
+    page = f"""
+<main class="about about-sea">
+  <div class="sea" aria-hidden="true"><canvas id="sea" data-src="{sea}"></canvas></div>
+  <section class="about-panel">
+    <div class="about-cols">
+      <aside class="about-aside">{side}</aside>
+      <div class="about-text">{text}</div>
+    </div>
+  </section>
+</main>
+<script>
+// The sea: a kaleidoscope of the ocean photo, drifting slowly outward (like the old Cargo backdrop).
+(function(){{
+  var cv=document.getElementById('sea');if(!cv)return;var cx=cv.getContext('2d');
+  var img=new Image();img.src=cv.getAttribute('data-src');
+  var N=12,still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,pat=null,t0=performance.now();
+  function size(){{var r=cv.parentNode.getBoundingClientRect(),d=window.devicePixelRatio||1;cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);}}
+  function draw(now){{
+    if(!pat){{try{{pat=cx.createPattern(img,'repeat');}}catch(e){{return;}}}}
+    var w=cv.width,h=cv.height,R=Math.hypot(w,h)/2+2,a=2*Math.PI/N,t=(now-t0)/1000;
+    var k=Math.max(w,h)*1.4/img.width;     // image scale
+    cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,w,h);
+    for(var i=0;i<N;i++){{
+      cx.save();cx.translate(w/2,h/2);cx.rotate((i%2?(i+1)*a:i*a)+t*0.012);if(i%2)cx.scale(1,-1);
+      cx.beginPath();cx.moveTo(0,0);cx.arc(0,0,R,-0.002,a+0.002);cx.closePath();cx.clip();
+      // drift: the pattern slides outward along the wedge, so the water seems to keep spreading
+      var m=new DOMMatrix().translate(-t*14,-img.height*k*0.42).scale(k);pat.setTransform(m);
+      cx.fillStyle=pat;cx.fillRect(0,-R,R,2*R);cx.restore();
+    }}
+    if(!still)requestAnimationFrame(draw);
+  }}
+  img.onload=function(){{size();requestAnimationFrame(draw);}};
+  window.addEventListener('resize',function(){{size();if(still)requestAnimationFrame(draw);}});
+}})();
+</script>
+""" + footer()
+    write("about.html", head("About") + header(0, "about") + page)
 
 # ---------------------------------------------------------------- research projects
 def load_projects():

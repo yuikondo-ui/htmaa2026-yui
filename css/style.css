@@ -16,7 +16,7 @@
 :root{
   --fg:#000;
   --bg:#fff;
-  --red:#0006a3;   /* accent (deep blue) */
+  --red:#3592b8;   /* accent: airy sea blue (the light tones of the Cargo kaleidoscope, a little more saturated) */
   --rule:1px solid var(--fg);
   --muted:#777;
   --pad:12px;
@@ -49,7 +49,8 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em}
 
 /* ---------- Header ---------- */
 .site-header{
-  display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;
+  /* same 4-column grid as the footer: the nav starts at 50% + pad, the line where the About sea ends */
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:calc(var(--pad) * 2);align-items:baseline;
   padding:var(--pad) var(--pad) 6px;border-bottom:var(--rule);
   position:sticky;top:0;background:var(--bg);z-index:10;
 }
@@ -58,7 +59,11 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em}
 .wk{font-family:var(--name);font-weight:400;font-variation-settings:normal;letter-spacing:.01em}
 .row .wk{font-size:1.1em}
 .card .wk{font-size:1.05em;margin-right:.5em}
-.site-nav{display:flex;gap:1.25em;justify-content:center}
+.site-name{grid-column:1 / 3}
+/* nav starts on the 50% line and may run into column 4; the right-hand items share that cell, pinned right */
+.site-nav{display:flex;gap:1.25em;justify-content:flex-start;grid-column:3 / 5;grid-row:1}
+.site-nav a{white-space:nowrap}
+.site-header .site-right{grid-column:4;grid-row:1;justify-self:end}
 .site-about{text-align:right}
 .box{display:inline-block;width:.75em;height:.75em;border:1.5px solid currentColor;margin-right:.35em;vertical-align:-0.05em}
 .site-nav a.active .box{background:currentColor}
@@ -134,9 +139,12 @@ html.lights-out::-webkit-scrollbar{display:none}
 .year{padding:.45em var(--pad) .45em 160px;border-bottom:var(--rule);font-size:1.2em}
 .grid-page .year{border-top:0}
 .row{
-  display:grid;grid-template-columns:1fr 1fr auto;gap:1em;align-items:baseline;
-  padding:.35em 0;border-bottom:var(--rule);
+  /* two halves with a 2×pad gap: column 2 starts at 50% + pad, under the nav (same grid as header/footer) */
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:calc(var(--pad) * 2);align-items:baseline;
+  padding:.35em 0;border-bottom:var(--rule);position:relative;
 }
+.row .c2{grid-column:2;grid-row:1;padding-right:4.5em}
+.row .c3{grid-column:2;grid-row:1;justify-self:end}   /* shares the cell with c2, so baselines line up */
 .row:hover{color:var(--red)}
 .c3{text-align:right;justify-self:end}
 .table .row{padding:.35em 0}
@@ -171,28 +179,30 @@ figcaption{font-size:.72em;color:var(--muted);margin-top:.35em}
 .pager a:hover{color:var(--red)}
 
 /* ---------- Footer ---------- */
+/* 4 equal columns; the column gap is 2×pad so column 3 starts exactly at 50% + pad —
+   the same line as the right half of the About page (sea | text) and the third card column. */
 .site-footer{
-  display:grid;grid-template-columns:4fr 1fr;
-  margin:0 var(--pad) var(--pad);border-top:var(--rule);
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:calc(var(--pad) * 2);align-items:baseline;
+  margin:0 var(--pad);padding:var(--pad) 0 calc(var(--pad) * 1.5);
 }
-.site-footer .col{padding:var(--pad) var(--pad) 1.5em 0;border-right:1px dotted #999}
-.site-footer .col+.col{padding-left:var(--pad)}
-.site-footer .col:last-child{border-right:0}
-.site-footer p{margin:0 0 1em}
+.site-footer .col-wide{grid-column:1 / 3}
+.site-footer .col-top{text-align:right}
+@media (max-width:600px){.site-footer{grid-template-columns:1fr 1fr auto}.site-footer .col-wide{grid-column:auto}}
+.to-top{display:inline-block;padding:0 .1em}
 .site-footer a:hover{color:var(--red)}
 
 /* ---------- Mobile ---------- */
 @media (max-width:820px){
   .site-header{grid-template-columns:1fr auto}
-  .site-right{grid-column:2;grid-row:1}
-  .site-nav{grid-column:1/-1;justify-content:flex-start;padding-top:.3em}
+  .site-name{grid-column:1}
+  .site-header .site-right{grid-column:2;grid-row:1}
+  .site-nav{grid-column:1/-1;grid-row:2;justify-content:flex-start;padding-top:.3em}
   .year{padding-left:var(--pad)}
   .row{grid-template-columns:1fr auto}
+  .row .c3{grid-column:2}
   .row .c2{display:none}
   .grid{grid-template-columns:repeat(2,1fr)}
   .two-col,.gallery{grid-template-columns:1fr}
-  .site-footer{grid-template-columns:1fr}
-  .site-footer .col{border-right:0;border-bottom:1px dotted #999;padding-left:0}
   .banner{white-space:normal;line-height:.95}
 }
 
@@ -400,7 +410,6 @@ html[data-theme="dark"] .toc a.active,html[data-theme="dark"] .toc a.active:hove
 html[data-theme="dark"] .card img,html[data-theme="dark"] .hero img,html[data-theme="dark"] .gallery img,html[data-theme="dark"] .content img{background:#1c1c1c}
 html[data-theme="dark"] .content pre,html[data-theme="dark"] .content .embed-bar,html[data-theme="dark"] .content details.src summary{background:#1c1c1c}
 html[data-theme="dark"] .content pre,html[data-theme="dark"] .content .embed,html[data-theme="dark"] .content .embed-bar,html[data-theme="dark"] .content details.src pre,html[data-theme="dark"] .content details.src.standalone{border-color:#2a2a2a}
-html[data-theme="dark"] .site-footer .col{border-color:#3a3a3a}
 html[data-theme="dark"] .row.todo .c1,html[data-theme="dark"] .row.todo .c2,html[data-theme="dark"] .row.todo .c3{color:#4a4a4a}
 html[data-theme="dark"] .cover-strip{background:#131313;color:#58cd86}
 
@@ -434,3 +443,26 @@ html[data-theme="dark"] .cover-strip{background:#131313;color:#58cd86}
 .card-venue{display:block;color:var(--muted);margin-top:.2em;line-height:1.3}
 .card-desc{font-size:.66em;line-height:1.4;margin:.45em 0 1.8em;color:var(--muted)}
 .card:hover .card-venue,.card:hover .card-desc{color:inherit}
+
+/* ---------- About: the sea (left half) + text panel (right half) ---------- */
+.about.about-sea{margin:0;display:grid;grid-template-columns:1fr 1fr;flex:1;align-items:start}
+.sea{position:sticky;top:calc(var(--fs) * 2.4);height:calc(100vh - var(--fs) * 2.4);background:#1b5f78;overflow:hidden}
+.sea canvas{display:block;width:100%;height:100%}
+.about-panel{padding:calc(var(--pad) * 1.5) var(--pad) 4rem;min-width:0}
+.grid{column-gap:calc(var(--pad) * 2)}
+.about-name{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",Times,"Times New Roman",serif;font-weight:700;
+  font-size:clamp(56px,7.4vw,140px);line-height:.92;letter-spacing:.02em;margin:0 0 .3em;font-variation-settings:normal}
+.about-links{text-align:right;margin:0;padding-bottom:var(--pad);border-bottom:var(--rule);line-height:1.25}
+.about-links a{color:var(--red);text-decoration:none}
+.about-cols{display:grid;grid-template-columns:minmax(6.5em,22%) 1fr;gap:1.6em;padding-top:var(--pad)}
+.about-aside > *{margin:0;padding:.7em 0;border-bottom:var(--rule);font-size:.88em;line-height:1.25}
+.about-aside > :first-child{padding-top:0}
+.about-photo img{display:block;width:100%;height:auto}
+.about-aside .about-cities{list-style:none}
+.about-aside .about-poem{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;line-height:1.5;white-space:normal}
+.about-text p{margin:0 0 1em}
+@media (max-width:820px){
+  .about.about-sea{grid-template-columns:1fr}
+  .sea{position:relative;top:0;height:42vh}
+}
+@media (max-width:480px){.about-cols{grid-template-columns:1fr}.about-aside{max-width:14em}}

@@ -12,8 +12,6 @@ Outside research, my high school won a national championship in
 
 ---
 
-<div class="about-card">
-<img src="img/about/yui.jpg" alt="Yui Kondo">
+<figure class="about-photo"><img src="https://freight.cargo.site/w/800/i/T2109501747627784668650929873500/IMG_1416-3.jpg" alt="" onerror="this.closest('figure').style.display='none'"></figure>
 <ul class="about-cities"><li>Tokyo</li><li>Hong Kong</li><li>Oxford</li><li>Boston</li></ul>
 <p class="about-poem" lang="ja">人もをし<br>人も恨めしあぢきなく<br>世を思ふゆゑに<br>もの思ふ身は</p>
-</div>
