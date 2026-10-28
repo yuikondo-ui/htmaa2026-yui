@@ -1,7 +1,7 @@
 ---
 week: 06
 date: 10/21
-title: Body sculpture
+title: Computer-controlled machining
 topics: [computer-controlled machining](http://academy.cba.mit.edu/classes/computer_machining/index.html)
 recitation: CAM (Computer-Aided Manufacturing)
 status: WIP
