@@ -17,9 +17,11 @@ Design, mill and assemble something big (about meter scale) on the ShopBot.
 
 A 170 cm tall sculpture of my body. It started from a 3D scan of me and became 27 flat wooden parts, including the base and an internal support, all cut from one sheet. The parts join with tabs and slots, so the figure slides together like a puzzle without separate connectors or ties.
 
-:::cols natural narrow
+:::cols natural
 ![The assembled 170 cm wooden figure standing against a wall](img/week06/img_7989.jpg)
 *Assembled.*
+![The sculpture standing in a freight elevator](img/week06/img_7996_2.jpg)
+*In the elevator.*
 :::
 
 ## Process
@@ -173,8 +175,9 @@ I cut the holding tabs and cleaned up the edges of the wood, and got these parts
 
 Then I assembled them!
 
-:::cols natural narrow
+:::cols natural
 ![The assembled figure against the wall](img/week06/img_7989.jpg)
+![The sculpture standing in a freight elevator](img/week06/img_7996_2.jpg)
 :::
 
 ## What I learned
