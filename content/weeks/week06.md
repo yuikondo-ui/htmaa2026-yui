@@ -5,7 +5,7 @@ title: Computer-controlled machining
 topics: [computer-controlled machining](http://academy.cba.mit.edu/classes/computer_machining/index.html)
 recitation: CAM (Computer-Aided Manufacturing)
 status: WIP
-hero: img/week06/img_7989.jpg
+hero: img/week06/img_7996.jpg
 summary: A life-size figure based on my 3D body scan, cut on the ShopBot as 27 flat parts that slot together without glue or screws.
 ---
 
