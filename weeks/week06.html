@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Week 6 — computer-controlled machining — Yui Kondo</title>
+<title>Week 6 — Body sculpture — Yui Kondo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wdth,wght@1,125,900&family=Geist:wght@100..900&family=Geist+Mono:wght@400..600&family=Inter+Tight:wght@100..900&display=swap" rel="stylesheet">
@@ -27,9 +27,9 @@
 
 <main class="project">
   <section class="cover">
-    <img class="cover-img" src="../img/week06/hero.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
-    <div class="cover-title" data-title="COMPUTER-CONTROLLED MACHINING" aria-hidden="true"><span>COMPUTER-CONTROLLED MACHINING</span></div>
-    <h2 class="cover-label">Week 6<span class="sr">: COMPUTER-CONTROLLED MACHINING</span></h2>
+    <img class="cover-img" src="../img/week06/img_7989.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
+    <div class="cover-title" data-title="BODY SCULPTURE" aria-hidden="true"><span>BODY SCULPTURE</span></div>
+    <h2 class="cover-label">Week 6<span class="sr">: BODY SCULPTURE</span></h2>
     <div class="cover-strip" aria-label="Yui Kondo — MIT Media Lab, 2026">
       <div class="strip-track"><div class="strip-group"><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span></div><div class="strip-group"><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span></div></div>
     </div>
@@ -38,28 +38,147 @@
   <div class="project-body">
     <aside class="toc">
   <div class="toc-inner">
-    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#process">Process</a></li><li class="lvl3"><a href="#step-one">Step one</a></li><li class="lvl3"><a href="#step-two">Step two</a></li><li class="lvl2"><a href="#what-i-learned">What I learned</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
+    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#process">Process</a></li><li class="lvl3"><a href="#inspiration">Inspiration</a></li><li class="lvl3"><a href="#3d-scanning">3D scanning</a></li><li class="lvl3"><a href="#blocks-in-blender">Blocks in Blender</a></li><li class="lvl3"><a href="#from-blocks-to-panels">From blocks to panels</a></li><li class="lvl3"><a href="#27-part-puzzle-design">27-part puzzle design</a></li><li class="lvl3"><a href="#cam-setup-in-fusion">CAM setup in Fusion</a></li><li class="lvl3"><a href="#cutting">Cutting</a></li><li class="lvl3"><a href="#cleaning-and-assembly">Cleaning and assembly</a></li><li class="lvl2"><a href="#what-i-learned">What I learned</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
   </div>
 </aside>
     <article class="content">
 <h2 id="assignment">Assignment</h2>
-<p>What this week asked for, in a sentence or two.</p>
+<p>Design, mill and assemble something big (about meter scale) on the ShopBot.</p>
 <h2 id="what-i-made">What I made</h2>
-<p>Describe the outcome. Put the main photo first:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Main result" src="../img/week06/hero.jpg" /></figure>
+<p>A 170 cm tall sculpture of my body. It started from a 3D scan of me and became 27 flat wooden parts, including the base and an internal support, all cut from one sheet. The parts join with tabs and slots, so the figure slides together like a puzzle without separate connectors or ties.</p>
+<div class="cols natural narrow">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The assembled 170 cm wooden figure standing against a wall" src="../img/week06/img_7989.jpg" /><figcaption>Assembled.</figcaption></figure>
+</div>
 <h2 id="process">Process</h2>
-<h3 id="step-one">Step one</h3>
-<p>Walk through what you did. Inline images are fine anywhere:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Work in progress" src="../img/week06/01.jpg" /></figure>
-<h3 id="step-two">Step two</h3>
-<p>Code blocks render too:</p>
-<pre><code class="language-python">print(&quot;hello, week 07&quot;)
-</code></pre>
+<h3 id="inspiration">Inspiration</h3>
+<p>I was inspired by Antony Gormley's <a href="https://www.antonygormley.com/works/sculpture/series/small-blockworks"><em>Small Blockworks</em></a>. He tries to convey the feeling of a body with as few cast iron blocks as possible, stacked on top of or beside each other. The standing figures use cantilevers instead of the stability of a column, so the unstable build reflects a mental state and turns bodily sensation into structure.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Three works by Antony Gormley: a drawing of a body in a grid, a standing figure of stacked blocks, and a crouching figure made of a metal mesh" src="../img/week06/gormley_refs.jpg" /><figcaption>Works by Antony Gormley.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A human figure made of stacked dark blocks" src="../img/week06/inspiration_blocks.jpg" /><figcaption>A Blockworks figure, the reference that started the idea.</figcaption></figure>
+</div>
+<h3 id="3d-scanning">3D scanning</h3>
+<p>Joseph helped me scan my whole body. Then I imported the scan into Blender and also tried reducing the mesh to a few large triangles.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The 3D body scan in the scanning software" src="../img/week06/scan_v.jpg" /><figcaption>The scan.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The body scan imported into Blender" src="../img/week06/blender_import_v.jpg" /><figcaption>In Blender.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The scan reduced to a low-poly mesh of large triangles in Blender" src="../img/week06/triangles_c.jpg" /><figcaption>Reduced to triangles.</figcaption></figure>
+</div>
+<h3 id="blocks-in-blender">Blocks in Blender</h3>
+<p>I used Geometry Nodes to turn the body into abstract blocks:</p>
+<p>Group Input → Mesh to Volume → Distribute Points in Volume → Instance on Points (Cube) → Group Output</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The Geometry Nodes graph: Mesh to Volume, Distribute Points in Volume, Cube, Instance on Points" src="../img/week06/nodes_uniform.jpg" /></figure>
+<p>Next I added a Random Value node to the scale of the cubes, so each block gets a different size.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The Geometry Nodes graph with a Random Value node feeding the instance scale" src="../img/week06/nodes_random.jpg" /></figure>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The body made of same-size cubes" src="../img/week06/blocks_uniform.jpg" /><figcaption>Same-size cubes.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The body made of cubes with random sizes" src="../img/week06/blocks_random.jpg" /><figcaption>Random sizes.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The randomized block figure from another angle" src="../img/week06/blocks_result.jpg" /><figcaption>Another angle.</figcaption></figure>
+</div>
+<p>The result did not follow the body accurately, so I went back to the original scan to clean it first. I tried using OpenAI to clean the scanned file. Then I realized that blocks are not what a CNC machine is good at. It cuts flat sheets, so the sculpture should be made of panels.</p>
+<h3 id="from-blocks-to-panels">From blocks to panels</h3>
+<p>I looked at different types of sculpture again, especially faceted ones like <a href="https://www.enzyme-design.com/en/realisations/view/19/sculptures-facette">Enzyme Design's <em>Sculptures Facette</em></a>.</p>
+<p>To explore how to turn my body scan into a sculpture made from flat, CNC-cut panels, I gave my scan to GPT Astra as a reference, and it generated an illustration of a faceted body.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Front, side and three-quarter views of a faceted standing figure" src="../img/week06/faceted_concept.jpg" /><figcaption>First concept: a faceted figure with 49 parts.</figcaption></figure>
+<p>I brought this concept to a TA session with Quentin. He suggested two ways to connect and stabilize the panels: 3D-printed joints, or threading string through the structure and tensioning it.</p>
+<p>At that stage the design had 49 parts. I was worried that assembling so many angled panels would be difficult. I wanted the construction to feel more like assembling a puzzle, with the connections built into the wooden parts themselves.</p>
+<p>I looked for other references and found this arrangement of solid blocks and open spaces.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Five figures made of flat solid blocks with open gaps between them" src="../img/week06/inspiration_solid_open.jpg" /><figcaption>Solid blocks and open spaces.</figcaption></figure>
+<h3 id="27-part-puzzle-design">27-part puzzle design</h3>
+<p>Working with GPT Astra, I used my body scan as a reference for a new design with 27 wooden parts, including the base and internal support. We built an interactive tool (running locally) to preview the sculpture and arrange the parts on a single sheet, then I imported the geometry into Fusion for CAM setup.</p>
+<p>The final design is about 170 cm tall. The joints use integral tabs and slots, so the parts slide together without separate connectors or ties.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The interactive tool: sculpture preview on the left, sheet layout on the right" src="../img/week06/puzzle_tool_c.jpg" /><figcaption>The preview and layout tool.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="All 27 parts nested on one sheet in Fusion" src="../img/week06/design_27parts_c.jpg" /><figcaption>The parts nested on one sheet in Fusion.</figcaption></figure>
+</div>
+<h3 id="cam-setup-in-fusion">CAM setup in Fusion</h3>
+<p>Following the <a href="https://docs.google.com/document/u/0/d/1-rF9PmoOsOtS0qZ2KEEdkcyEs0x8U_7F7Ub0gUat6TE/mobilebasic">CBA ShopBot guide</a>, I set up the stock and work coordinate system in Fusion. I matched the axis directions to the ShopBot (the X+ and Z+ arrows on the machine), selected a stock corner as the XY reference, and set Z zero at the top surface of the material.</p>
+<div class="cols natural narrow">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The X+ and Z+ axis arrows marked on the ShopBot frame" src="../img/week06/img_7972.jpg" /><figcaption>Axis directions on the ShopBot.</figcaption></figure>
+</div>
+<p>My first plan was to use both a downcut and an upcut end mill. I made <strong>four CAM operations</strong> in two ShopBot files:</p>
+<table>
+<thead>
+<tr>
+<th>Planned tool</th>
+<th>Operation</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Downcut</td>
+<td>01 — Internal contours</td>
+<td>Cut the internal openings to 0.2 in (5.08 mm) deep.</td>
+</tr>
+<tr>
+<td>Downcut</td>
+<td>02 — Outside contours</td>
+<td>Cut the outer profiles of the parts to the same depth.</td>
+</tr>
+<tr>
+<td>Upcut</td>
+<td>03 — Internal contours</td>
+<td>Continue the internal cuts to the bottom of the sheet.</td>
+</tr>
+<tr>
+<td>Upcut</td>
+<td>04 — Outside contours</td>
+<td>Finish the outer cuts, leaving holding tabs.</td>
+</tr>
+</tbody>
+</table>
+<p>The idea was to get a clean top edge from the downcut bit, then finish the cuts with the upcut bit for better chip evacuation. I added holding tabs to keep the parts and larger cutouts attached to the sheet during through-cutting, used the recommended multiple depths (0.18 in per pass), and simulated each file in Fusion.</p>
+<p>In the end I decided to use the <strong>downcut bit for all four operations</strong> and exported them together as one ShopBot file.</p>
+<p>When I simulated the whole job, it was going to take 52 minutes. It was already 8:30 pm, so I removed the multiple depths, which brought it down to 32 minutes.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The contour toolpaths of all four operations on the sheet in Fusion" src="../img/week06/cam_downcut_c.jpg" /><figcaption>All four operations with the downcut bit.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Fusion simulation of the full toolpath on the green stock" src="../img/week06/cam_sim_c.jpg" /><figcaption>Simulation after removing multiple depths: 32 minutes.</figcaption></figure>
+</div>
+<h3 id="cutting">Cutting</h3>
+<p>I ran the job, but it did not cut all the way through.</p>
+<div class="cols">
+<figure>
+<video controls="controls" loop="loop" muted="muted" playsinline="playsinline" preload="metadata" src="../img/week06/img_7976.mp4" style="width:100%;aspect-ratio:3/4;object-fit:cover;background:#000"></video>
+<figcaption>The ShopBot cutting.</figcaption>
+</figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" src="../img/week06/img_7979.jpg" alt="The cut sheet with the parts' outlines visible but still attached" style="aspect-ratio:3/4;object-fit:cover"><figcaption>Not through.</figcaption></figure>
+</div>
+<p>Setting the final depth exactly at the stock bottom did not cut through everywhere. Michal helped me change the bottom offset: I set <strong>Bottom Height to Stock bottom −0.04 in</strong>, so the tool goes about 1.02 mm below the modeled sheet bottom, into the sacrificial board, and ran the cut again. Is it working…?!</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Fusion's Heights settings with Bottom Height offset −0.04 in" src="../img/week06/cam_offset_panel.jpg" /><figcaption>Bottom Height: Stock bottom, −0.04 in.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Watching the ShopBot run the second pass" src="../img/week06/img_7983.jpg" /><figcaption>Second pass.</figcaption></figure>
+</div>
+<p>Yes, it went through!</p>
+<div class="cols natural narrow">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The sheet with clean through-cuts" src="../img/week06/img_7984.jpg" /><figcaption>Through.</figcaption></figure>
+</div>
+<h3 id="cleaning-and-assembly">Cleaning and assembly</h3>
+<p>I cut the holding tabs and cleaned up the edges of the wood, and got these parts.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Sanding a part with an oscillating tool" src="../img/week06/img_7985.jpg" /><figcaption>Cleaning the edges.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The first parts stacked on a table" src="../img/week06/img_7986.jpg" /><figcaption>Test-fitting the first parts.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="All the parts laid out on a table" src="../img/week06/img_7988.jpg" /><figcaption>All the parts.</figcaption></figure>
+</div>
+<p>Then I assembled them!</p>
+<div class="cols natural narrow">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The assembled figure against the wall" src="../img/week06/img_7989.jpg" /></figure>
+</div>
 <h2 id="what-i-learned">What I learned</h2>
-<p>Reflections, mistakes, what you'd do differently.</p>
+<ul>
+<li>A CNC router cuts flat sheets, so the design has to start from panels, not from 3D blocks.</li>
+<li>Fewer parts and joints built into the wood made the assembly much easier than separate connectors would have.</li>
+<li>Setting the bottom height exactly at the stock bottom is not enough to cut through. A small negative offset (−0.04 in) into the sacrificial board fixed it.</li>
+<li>Removing multiple depths saved 20 minutes, but it puts more load on the tool in one pass.</li>
+</ul>
+<h2 id="use-of-ai">Use of AI</h2>
+<p>I used GPT Astra to generate the faceted body illustration from my scan, and to design the 27-part version with me. Together we built the interactive tool to preview the sculpture and lay out the parts on one sheet. I also tried using OpenAI to clean the scanned file. The scanning, the Blender block studies, the CAM setup in Fusion, the cutting and the assembly are my own. I used Claude Opus 5.5 to turn my notes into this page and to lay out the photos, and I edited it.</p>
 <h2 id="files">Files</h2>
 <ul>
-<li><a href="../files/week06/">Design files</a> — CAD, code, exports</li>
+<li>Body scan (STL, 96 MB) — too large for the class repo, so it is not included here.</li>
+<li><a href="../files/week06/abstractblocks.blend">Blender block study</a></li>
+<li><a href="../files/week06/triangles.stl">Low-poly triangle body</a></li>
+<li><a href="../files/week06/sculpture_total_0835.sbp">Final ShopBot file, all downcut</a></li>
+<li><a href="../files/week06/updated_yui.sbp">ShopBot file with the −0.04 in bottom offset</a></li>
 </ul>
     </article>
   </div>

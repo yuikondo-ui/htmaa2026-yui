@@ -262,6 +262,7 @@ html{scroll-behavior:smooth}
 .content .cols.natural figure img{aspect-ratio:auto}
 .content .cols.four{grid-template-columns:repeat(4,1fr)}
 .content .cols.narrow{max-width:28em}
+.content .cols.medium{max-width:44em}
 /* natural rows: every image the same height, nothing cropped (JS sets each figure's flex-grow to its aspect ratio) */
 .content .cols.natural{display:flex;align-items:flex-start;gap:1.5em}
 .content .cols.natural figure{flex:1 1 0;min-width:0}
