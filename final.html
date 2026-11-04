@@ -38,7 +38,7 @@
   <div class="project-body">
     <aside class="toc">
   <div class="toc-inner">
-    <ul><li class="lvl2"><a href="#overview">Overview</a></li><li class="lvl2"><a href="#prototypes">Prototypes</a></li><li class="lvl2"><a href="#open-questions">Open questions</a></li><li class="lvl2"><a href="#week-0-concept">Week 0: Concept</a></li><li class="lvl3"><a href="#algorithmic-mirror">Algorithmic Mirror</a></li><li class="lvl3"><a href="#from-mirror-to-clothes">From mirror to clothes</a></li><li class="lvl3"><a href="#sketch-and-inspiration">Sketch and inspiration</a></li><li class="lvl2"><a href="#week-1-modular-clothes-laser-cutting">Week 1: Modular clothes (laser cutting)</a></li><li class="lvl2"><a href="#week-2-a-map-of-poetry-words-embedded-programming">Week 2: A map of poetry words (embedded programming)</a></li><li class="lvl2"><a href="#week-3-body-sculpture-3d-printing">Week 3: Body sculpture (3D printing)</a></li><li class="lvl3"><a href="#exploring-shapes">Exploring shapes</a></li><li class="lvl3"><a href="#projection-mapping">Projection mapping?</a></li><li class="lvl3"><a href="#making-it-personal-data-processing">Making it personal (data processing)</a></li><li class="lvl3"><a href="#whom-do-we-present-our-digital-selves-to">Whom do we present our digital selves to?</a></li><li class="lvl2"><a href="#week-4-5-led-lights-electronics-design-production">Week 4 &amp;amp; 5: LED lights (electronics design / production)</a></li><li class="lvl2"><a href="#week-6-exploring-the-shape-of-the-sculpture">Week 6: Exploring the shape of the sculpture</a></li><li class="lvl2"><a href="#week-7-input-devices">Week 7: Input devices</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li></ul>
+    <ul><li class="lvl2"><a href="#overview">Overview</a></li><li class="lvl2"><a href="#prototypes">Prototypes</a></li><li class="lvl3"><a href="#prototype-v3-data-blocks">Prototype v3: Data Blocks</a></li><li class="lvl3"><a href="#prototype-v2-digital-mirror">Prototype v2: Digital Mirror</a></li><li class="lvl3"><a href="#prototype-v1-data-barbie">Prototype v1: Data Barbie</a></li><li class="lvl2"><a href="#open-questions">Open questions</a></li><li class="lvl2"><a href="#weekly-log">Weekly log</a></li><li class="lvl3"><a href="#week-0-concept">Week 0: Concept</a></li><li class="lvl3"><a href="#week-1-modular-clothes-laser-cutting">Week 1: Modular clothes (laser cutting)</a></li><li class="lvl3"><a href="#week-2-a-map-of-poetry-words-embedded-programming">Week 2: A map of poetry words (embedded programming)</a></li><li class="lvl3"><a href="#week-3-body-sculpture-3d-printing">Week 3: Body sculpture (3D printing)</a></li><li class="lvl3"><a href="#week-4-5-led-lights-electronics-design-production">Week 4 &amp; 5: LED lights (electronics design / production)</a></li><li class="lvl3"><a href="#week-6-exploring-the-shape-of-the-sculpture">Week 6: Exploring the shape of the sculpture</a></li><li class="lvl3"><a href="#week-7-input-devices">Week 7: Input devices</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li></ul>
   </div>
 </aside>
     <article class="content">
@@ -47,7 +47,178 @@
 <p>I propose that we need a shield between us and AI. Right now our digital body is exposed. Just as we wear clothes to present chosen facets of ourselves, we also need clothes in the digital world. The sculpture represents your digital body, built from the traces you leave on platforms like YouTube, TikTok, Claude and elsewhere. A language model reads those traces and turns them into inferences: demographics, behavior, relationships, goals, interests, and the sensitive ones in between. Each inference becomes one panel of a modular shell around a body.</p>
 <p>Undressed, the sculpture tells everything it knows about you. Put a piece of clothing on it and it speaks only from the facets you chose to show; take the clothing off and the rest comes back. Assembling and disassembling a sculpture made of your own data lets you think about this with your hands: what to show, what to hide, and to whom.</p>
 <h2 id="prototypes">Prototypes</h2>
-<p><a href="files/week00/acrylic-data-body.html">Prototype v2 ↗</a> (Nov 2 2026): Digital Mirror</p>
+<h3 id="prototype-v3-data-blocks">Prototype v3: Data Blocks</h3>
+<p><a href="files/week00/data-blocks.html">Open in new tab ↗</a> (Nov 4 2026)</p>
+<div class="embed"><div class="embed-bar"><span class="embed-title">Data Blocks, prototype v3</span><a class="embed-open" href="files/week00/data-blocks.html" target="_blank" rel="noopener">Open in new tab ↗</a></div><iframe src="files/week00/data-blocks.html" loading="lazy" title="Data Blocks, prototype v3"></iframe><details class="src"><summary>Source <span class="muted">data-blocks.html · 167 lines</span></summary><pre><code>&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1,viewport-fit=cover&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;title&gt;Data Blocks&lt;/title&gt;
+&lt;meta name=&quot;claude:viewport-fit-sides&quot; content=&quot;cover&quot;&gt;
+&lt;style&gt;
+
+/* A dark gallery: the growing block body fills the stage, controls sit in a rail on the right */
+:root{color-scheme:dark;--room:#060709;--rail:#101116;--line:#262832;--ink:#eceef3;--mute:#8e929e;--acc:#dce7f7;
+  --sans:-apple-system,BlinkMacSystemFont,&quot;Hiragino Sans&quot;,&quot;Helvetica Neue&quot;,Arial,sans-serif;--mono:ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--room);color:var(--ink);font:13px/1.5 var(--sans)}
+.app{display:grid;grid-template-columns:1fr 300px;height:100%}
+.stage{position:relative;min-height:0}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair;touch-action:none}
+.hud{position:absolute;top:14px;left:16px;right:16px;pointer-events:none}
+.hud h1{margin:0;font-size:15px;letter-spacing:.04em}
+.hud p{margin:2px 0 0;color:var(--mute);font-size:12px;max-width:54ch}
+.views{position:absolute;bottom:14px;left:16px;display:flex;gap:6px;flex-wrap:wrap}
+.rail{background:var(--rail);border-left:1px solid var(--line);overflow-y:auto;padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.rail h2{font-size:11px;font-family:var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase;margin:18px 0 8px;font-weight:500}
+.rail h2:first-child{margin-top:0}
+button{font:inherit;color:var(--ink);background:#1b1d24;border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
+button:hover{border-color:#3b3f4b}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+button.on{background:var(--acc);color:#0b0c10;border-color:var(--acc)}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+label.sl{display:grid;grid-template-columns:1fr auto;gap:2px 8px;margin:10px 0}
+label.sl span.v{font-family:var(--mono);color:var(--mute);font-size:12px}
+label.sl input{grid-column:1/-1;width:100%;accent-color:#dce7f7}
+label.ck{display:flex;gap:8px;align-items:center;margin:8px 0}
+.note{color:var(--mute);font-size:12px;margin:6px 0 0}
+.count{font-family:var(--mono);font-size:22px;font-variant-numeric:tabular-nums}
+.count span{font-size:12px;color:var(--mute)}
+.parts{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.parts button{padding:4px 0;font-size:12px}
+@media (max-width:760px){.app{grid-template-columns:1fr;grid-template-rows:64vh auto;height:auto}.rail{border-left:0;border-top:1px solid var(--line)}}
+&lt;/style&gt;
+&lt;div class=&quot;app&quot;&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;gl&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;hud&quot;&gt;&lt;h1&gt;Data Blocks&lt;/h1&gt;&lt;p&gt;No frame. Visitors snap together 10 cm acrylic blocks with magnets inside, each engraved with a fragment of my body. Only blocks connected to the base get power and light up. The faint outline is my body scan; the blocks are free to grow past it.&lt;/p&gt;&lt;/div&gt;
+    &lt;div class=&quot;views&quot;&gt;&lt;button data-view=&quot;front&quot;&gt;Front&lt;/button&gt;&lt;button data-view=&quot;three&quot; class=&quot;on&quot;&gt;3/4&lt;/button&gt;&lt;button data-view=&quot;side&quot;&gt;Side&lt;/button&gt;&lt;button data-view=&quot;top&quot;&gt;Top&lt;/button&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;aside class=&quot;rail&quot;&gt;
+    &lt;h2&gt;Blocks&lt;/h2&gt;
+    &lt;div class=&quot;count&quot; id=&quot;count&quot;&gt;&lt;/div&gt;
+    &lt;p class=&quot;note&quot;&gt;Click a block face (or the base) to attach a block. Shift-click (long-press on a phone) to remove one. Drag to orbit, scroll to zoom.&lt;/p&gt;
+    &lt;h2&gt;Next part&lt;/h2&gt;
+    &lt;div class=&quot;parts&quot; id=&quot;parts&quot;&gt;&lt;/div&gt;
+    &lt;h2&gt;Visitors&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;&lt;button id=&quot;auto&quot;&gt;Simulate visitors&lt;/button&gt;&lt;button id=&quot;clear&quot;&gt;Remove all&lt;/button&gt;&lt;/div&gt;
+    &lt;label class=&quot;sl&quot;&gt;Follow my outline &lt;span class=&quot;v&quot; id=&quot;followV&quot;&gt;&lt;/span&gt;&lt;input id=&quot;follow&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot; value=&quot;0.7&quot;&gt;&lt;/label&gt;
+    &lt;p class=&quot;note&quot;&gt;At 0, visitors ignore the outline and grow the body in any direction.&lt;/p&gt;
+    &lt;label class=&quot;ck&quot;&gt;&lt;input id=&quot;ghost&quot; type=&quot;checkbox&quot; checked&gt; Show my outline&lt;/label&gt;
+    &lt;h2&gt;Light&lt;/h2&gt;
+    &lt;label class=&quot;sl&quot;&gt;LED brightness &lt;span class=&quot;v&quot; id=&quot;ledV&quot;&gt;&lt;/span&gt;&lt;input id=&quot;led&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1.5&quot; step=&quot;0.01&quot; value=&quot;1&quot;&gt;&lt;/label&gt;
+    &lt;label class=&quot;sl&quot;&gt;Room light &lt;span class=&quot;v&quot; id=&quot;roomV&quot;&gt;&lt;/span&gt;&lt;input id=&quot;room&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot; value=&quot;0.16&quot;&gt;&lt;/label&gt;
+    &lt;h2&gt;How it could work&lt;/h2&gt;
+    &lt;p class=&quot;note&quot;&gt;A free-spinning spherical magnet in the centre of each face lets any face snap to any other. A ring of metal contacts around each magnet passes power from block to block, so only blocks connected to the base light up, with no batteries.&lt;/p&gt;
+    &lt;p class=&quot;note&quot;&gt;Magnets are weak in shear, so long overhangs fall off. Blocks mostly need support from below, and the base should be heavy.&lt;/p&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;
+&lt;script src=&quot;three-r149.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+// engraving textures and my outline live in data-blocks-data.json next to this page
+fetch(&#x27;data-blocks-data.json&#x27;).then(r=&gt;r.json()).then(DATA=&gt;{
+const T=DATA.tex,VOX=DATA.vox;
+const $=id=&gt;document.getElementById(id);const reduce=matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;).matches;
+const P={};for(const k of [&#x27;led&#x27;,&#x27;room&#x27;,&#x27;follow&#x27;]){const el=$(k);const u=()=&gt;{P[k]=+el.value;$(k+&#x27;V&#x27;).textContent=Math.round(P[k]*100)+&#x27;%&#x27;;};el.addEventListener(&#x27;input&#x27;,u);u();}
+const C=100;
+const JA={random:&#x27;Random&#x27;,eye_L:&#x27;Eye&#x27;,mouth:&#x27;Mouth&#x27;,nose:&#x27;Nose&#x27;,profile:&#x27;Profile&#x27;,ear:&#x27;Ear&#x27;,neck:&#x27;Neck&#x27;,hand:&#x27;Hand&#x27;,belly:&#x27;Belly&#x27;,leg:&#x27;Leg&#x27;,foot:&#x27;Foot&#x27;};
+let nextPart=&#x27;random&#x27;;
+$(&#x27;parts&#x27;).innerHTML=Object.entries(JA).map(([k,v])=&gt;`&lt;button data-part=&quot;${k}&quot; class=&quot;${k===&#x27;random&#x27;?&#x27;on&#x27;:&#x27;&#x27;}&quot;&gt;${v}&lt;/button&gt;`).join(&#x27;&#x27;);
+document.querySelectorAll(&#x27;[data-part]&#x27;).forEach(b=&gt;b.onclick=()=&gt;{nextPart=b.dataset.part;document.querySelectorAll(&#x27;[data-part]&#x27;).forEach(x=&gt;x.classList.toggle(&#x27;on&#x27;,x===b));});
+const POOL=[&#x27;eye_L&#x27;,&#x27;eye_R&#x27;,&#x27;mouth&#x27;,&#x27;nose&#x27;,&#x27;profile&#x27;,&#x27;ear&#x27;,&#x27;neck&#x27;,&#x27;hand&#x27;,&#x27;hand&#x27;,&#x27;belly&#x27;,&#x27;leg&#x27;,&#x27;foot&#x27;,&#x27;eye_L&#x27;,&#x27;mouth&#x27;];
+
+const cv=$(&#x27;gl&#x27;);const R=new THREE.WebGLRenderer({canvas:cv,antialias:true});R.setPixelRatio(Math.min(2,devicePixelRatio));
+const scene=new THREE.Scene();const bg=new THREE.Color();scene.background=bg;
+const cam=new THREE.PerspectiveCamera(30,1,10,30000);cam.up.set(0,0,1);
+const hemi=new THREE.HemisphereLight(0xe8edf5,0x15161a,.35);scene.add(hemi);const dl=new THREE.DirectionalLight(0xffffff,.6);dl.position.set(-900,-1400,2200);scene.add(dl);
+const floor=new THREE.Mesh(new THREE.CircleGeometry(2400,64),new THREE.MeshStandardMaterial({color:0x141518,roughness:.95}));floor.position.z=-31;scene.add(floor);
+// powered base plate: a 9 x 7 grid of 10 cm squares
+const BX=4,BY=3;const base=new THREE.Mesh(new THREE.BoxGeometry((2*BX+1)*C,(2*BY+1)*C,30),new THREE.MeshStandardMaterial({color:0x24262c,roughness:.55,metalness:.5}));base.position.z=-15;scene.add(base);
+const gridL=new THREE.GridHelper((2*BX+1)*C,2*BX+1,0x3a3e48,0x2c2f37);gridL.rotation.x=Math.PI/2;gridL.scale.y=(2*BY+1)/(2*BX+1);gridL.position.z=.5;scene.add(gridL);
+const loader=new THREE.TextureLoader();const tex={};
+// each part is one engraving image; the soft glow around the lines is made here by blurring it
+for(const k in T){const lit=loader.load(T[k].lit);lit.anisotropy=R.capabilities.getMaxAnisotropy();const c=document.createElement(&#x27;canvas&#x27;);const halo=new THREE.CanvasTexture(c);
+  const im=new Image();im.onload=()=&gt;{c.width=im.width&gt;&gt;1;c.height=im.height&gt;&gt;1;const g=c.getContext(&#x27;2d&#x27;);g.filter=&#x27;blur(4px)&#x27;;g.globalAlpha=.6;g.drawImage(im,0,0,c.width,c.height);halo.needsUpdate=true;};im.src=T[k].lit;
+  tex[k]={lit,halo};}
+// ghost outline of my body (voxel figure)
+const ghostSet=new Set(VOX.v.map(v=&gt;v.join(&#x27;,&#x27;)));
+const ghost=new THREE.Group();const gEdge=new THREE.EdgesGeometry(new THREE.BoxGeometry(C,C,C));const gMat=new THREE.LineBasicMaterial({color:0x6f87a8,transparent:true,opacity:.22});
+for(const v of VOX.v){const l=new THREE.LineSegments(gEdge,gMat);l.position.set(v[0]*C,v[1]*C,v[2]*C+C/2);ghost.add(l);}scene.add(ghost);
+$(&#x27;ghost&#x27;).onchange=e=&gt;ghost.visible=e.target.checked;
+
+// blocks
+const acr=new THREE.MeshStandardMaterial({color:0xdfe8ef,roughness:.05,transparent:true,opacity:.1,depthWrite:false});
+const box=new THREE.BoxGeometry(C-2,C-2,C-2);const edgeG=new THREE.EdgesGeometry(box);const edgeMat=new THREE.LineBasicMaterial({color:0xcfe0ee,transparent:true,opacity:.5});
+const pickMat=new THREE.MeshBasicMaterial({visible:false});
+const cells=new Map();let idn=0;const key=(i,j,k)=&gt;i+&#x27;,&#x27;+j+&#x27;,&#x27;+k;
+function addBlock(i,j,k,part){const kk=key(i,j,k);if(cells.has(kk)||k&lt;0)return null;
+  const p=part===&#x27;random&#x27;?POOL[Math.floor(Math.random()*POOL.length)]:(part===&#x27;eye_L&#x27;&amp;&amp;Math.random()&lt;.5?&#x27;eye_R&#x27;:part);const t=T[p];
+  const g=new THREE.Group();g.position.set(i*C,j*C,k*C+C/2);
+  const m=new THREE.Mesh(box,acr);m.renderOrder=1;g.add(m);g.add(new THREE.LineSegments(edgeG,edgeMat));
+  const hit=new THREE.Mesh(new THREE.BoxGeometry(C,C,C),pickMat);hit.userData.cell=kk;g.add(hit);
+  const s=Math.min(C*.82/t.w,C*.82/t.h);const pl=new THREE.PlaneGeometry(t.w*s,t.h*s).rotateX(Math.PI/2);
+  const lit=new THREE.Mesh(pl,new THREE.MeshBasicMaterial({alphaMap:tex[p].lit,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,color:0x000000}));lit.position.y=-C/2+4;lit.renderOrder=2;g.add(lit);
+  const halo=new THREE.Mesh(pl,new THREE.MeshBasicMaterial({alphaMap:tex[p].halo,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,color:0x000000}));halo.position.y=-C/2+3;halo.renderOrder=3;g.add(halo);
+  g.scale.setScalar(reduce?1:.01);scene.add(g);const b={i,j,k,g,hit,lit,halo,power:0,id:idn++,born:performance.now()};cells.set(kk,b);recompute();return b;}
+function removeBlock(kk){const b=cells.get(kk);if(!b)return;scene.remove(b.g);cells.delete(kk);recompute();}
+// power flows from the base through touching blocks (breadth first); distance sets when each block lights
+function recompute(){for(const b of cells.values())b.dist=-1;const q=[];
+  for(const b of cells.values())if(b.k===0&amp;&amp;Math.abs(b.i)&lt;=BX&amp;&amp;Math.abs(b.j)&lt;=BY){b.dist=0;q.push(b);}
+  while(q.length){const b=q.shift();for(const [di,dj,dk] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]){const n=cells.get(key(b.i+di,b.j+dj,b.k+dk));if(n&amp;&amp;n.dist&lt;0){n.dist=b.dist+1;q.push(n);}}}
+  $(&#x27;count&#x27;).innerHTML=cells.size+&#x27; &lt;span&gt;blocks · &#x27;+[...cells.values()].filter(b=&gt;b.dist&gt;=0).length+&#x27; lit&lt;/span&gt;&#x27;;}
+recompute();
+// start with feet so people see where to begin
+[[-1,0,0],[1,0,0],[-1,0,1],[1,0,1]].forEach(([i,j,k])=&gt;addBlock(i,j,k,k===0?&#x27;foot&#x27;:&#x27;leg&#x27;));
+
+// click to add / shift-click (or long press) to remove
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();let down=null,longT=null,longFired=false;
+function pickAt(e){const rc=cv.getBoundingClientRect();mouse.set((e.clientX-rc.left)/rc.width*2-1,-(e.clientY-rc.top)/rc.height*2+1);ray.setFromCamera(mouse,cam);
+  return ray.intersectObjects([...[...cells.values()].map(b=&gt;b.hit),base])[0];}
+function act(e,remove){const h=pickAt(e);if(!h)return;
+  if(h.object===base){const p=h.point;const i=Math.round(p.x/C),j=Math.round(p.y/C);if(!remove)addBlock(i,j,0,nextPart);return;}
+  const b=cells.get(h.object.userData.cell);if(remove){removeBlock(h.object.userData.cell);return;}
+  const n=h.face.normal.clone().round();addBlock(b.i+n.x,b.j+n.y,b.k+n.z,nextPart);}
+cv.addEventListener(&#x27;pointerdown&#x27;,e=&gt;{down={x:e.clientX,y:e.clientY};longFired=false;if(e.pointerType===&#x27;touch&#x27;)longT=setTimeout(()=&gt;{longFired=true;act(e,true);},550);});
+cv.addEventListener(&#x27;pointermove&#x27;,e=&gt;{if(down&amp;&amp;Math.hypot(e.clientX-down.x,e.clientY-down.y)&gt;5)clearTimeout(longT);});
+cv.addEventListener(&#x27;pointerup&#x27;,e=&gt;{clearTimeout(longT);if(!down||longFired||Math.hypot(e.clientX-down.x,e.clientY-down.y)&gt;5)return;act(e,e.shiftKey);});
+
+// simulated participants: mostly add next to existing blocks, preferring supported spots inside my outline
+let autoOn=false,autoT=0;$(&#x27;auto&#x27;).onclick=()=&gt;{autoOn=!autoOn;$(&#x27;auto&#x27;).classList.toggle(&#x27;on&#x27;,autoOn);};
+$(&#x27;clear&#x27;).onclick=()=&gt;{for(const kk of [...cells.keys()])removeBlock(kk);};
+function simStep(){if(cells.size&gt;8&amp;&amp;Math.random()&lt;.12){const ks=[...cells.keys()];removeBlock(ks[Math.floor(Math.random()*ks.length)]);return;}
+  const cand=[];for(const b of cells.values())for(const [di,dj,dk] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1]]){const i=b.i+di,j=b.j+dj,k=b.k+dk;if(cells.has(key(i,j,k)))continue;
+    const supported=k===0||cells.has(key(i,j,k-1));const inGhost=ghostSet.has(key(i,j,k));let w=(supported?1:.25)*(inGhost?1+P.follow*6:1-P.follow*.9)*(dk?1.4:1);cand.push([w,i,j,k]);}
+  if(!cand.length){addBlock(0,0,0,&#x27;random&#x27;);return;}let s=cand.reduce((a,c)=&gt;a+c[0],0)*Math.random();for(const c of cand){s-=c[0];if(s&lt;=0){addBlock(c[1],c[2],c[3],&#x27;random&#x27;);return;}}}
+
+const target=new THREE.Vector3(0,0,700);let th=-Math.PI/2-.55,ph=1.3,dist=4200;
+const VIEWS={front:[-Math.PI/2,1.5,4200],three:[-Math.PI/2-.55,1.3,4200],side:[0,1.5,4200],top:[-Math.PI/2,.3,4200]};
+document.querySelectorAll(&#x27;[data-view]&#x27;).forEach(b=&gt;b.onclick=()=&gt;{[th,ph,dist]=VIEWS[b.dataset.view];document.querySelectorAll(&#x27;[data-view]&#x27;).forEach(x=&gt;x.classList.toggle(&#x27;on&#x27;,x===b));});
+let drag=null;cv.addEventListener(&#x27;pointerdown&#x27;,e=&gt;{drag={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);});
+cv.addEventListener(&#x27;pointermove&#x27;,e=&gt;{if(!drag)return;th-=(e.clientX-drag.x)*.006;ph=Math.min(2.9,Math.max(.15,ph-(e.clientY-drag.y)*.006));drag={x:e.clientX,y:e.clientY};});
+cv.addEventListener(&#x27;pointerup&#x27;,()=&gt;{drag=null;});
+cv.addEventListener(&#x27;wheel&#x27;,e=&gt;{e.preventDefault();dist=Math.min(12000,Math.max(400,dist*(1+e.deltaY*.001)));},{passive:false});
+function resize(){const r=cv.parentElement.getBoundingClientRect();R.setSize(r.width,r.height,false);cam.aspect=r.width/r.height;cam.updateProjectionMatrix();}
+addEventListener(&#x27;resize&#x27;,resize);resize();
+function loop(now){
+  if(autoOn&amp;&amp;now-autoT&gt;(reduce?900:420)){autoT=now;simStep();}
+  const room=P.room;bg.setRGB(.02+room*.33,.022+room*.34,.028+room*.36);hemi.intensity=.35+room*1.1;dl.intensity=.4+room*.8;
+  for(const b of cells.values()){const age=(now-b.born)/1000;if(b.g.scale.x&lt;1)b.g.scale.setScalar(Math.min(1,b.g.scale.x+.12));
+    const on=b.dist&gt;=0&amp;&amp;age&gt;b.dist*.08;b.power+=((on?1:0)-b.power)*.12;const c=b.power*P.led*(1-room*.55);b.lit.material.color.setRGB(c,c,c);b.halo.material.color.setRGB(c,c,c);}
+  cam.position.set(target.x+dist*Math.sin(ph)*Math.cos(th),target.y+dist*Math.sin(ph)*Math.sin(th),target.z+dist*Math.cos(ph));cam.lookAt(target);
+  R.render(scene,cam);requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+}).catch(e=&gt;{document.querySelector(&#x27;.hud p&#x27;).textContent=&#x27;Could not start (&#x27;+e+&#x27;). Open this page from the website or a local server.&#x27;;});
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></details></div>
+
+<h3 id="prototype-v2-digital-mirror">Prototype v2: Digital Mirror</h3>
+<p><a href="files/week00/acrylic-data-body.html">Open in new tab ↗</a> (Nov 2 2026)</p>
 <div class="embed"><div class="embed-bar"><span class="embed-title">Digital Mirror, prototype v2</span><a class="embed-open" href="files/week00/acrylic-data-body.html" target="_blank" rel="noopener">Open in new tab ↗</a></div><iframe src="files/week00/acrylic-data-body.html" loading="lazy" title="Digital Mirror, prototype v2"></iframe><details class="src"><summary>Source <span class="muted">acrylic-data-body.html · 469 lines</span></summary><pre><code>&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=utf8&gt;&lt;meta name=viewport content=&quot;width=device-width,initial-scale=1,viewport-fit=cover&quot;&gt;&lt;style&gt;:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
 &lt;title&gt;Acrylic Data Body&lt;/title&gt;
 &lt;meta name=&quot;claude:viewport-fit-sides&quot; content=&quot;cover&quot;&gt;
@@ -518,7 +689,8 @@ function loop(){const t=clock.getElapsedTime(),dt=Math.min(.05,t-last);last=t;
 
 &lt;/body&gt;&lt;/html&gt;</code></pre></details></div>
 
-<p><a href="files/week00/data-barbie.html">Prototype v1 ↗</a> (Sep 25 2026): Data Barbie</p>
+<h3 id="prototype-v1-data-barbie">Prototype v1: Data Barbie</h3>
+<p><a href="files/week00/data-barbie.html">Open in new tab ↗</a> (Sep 25 2026)</p>
 <div class="embed"><div class="embed-bar"><span class="embed-title">Data Barbie, prototype v1</span><a class="embed-open" href="files/week00/data-barbie.html" target="_blank" rel="noopener">Open in new tab ↗</a></div><iframe src="files/week00/data-barbie.html" loading="lazy" title="Data Barbie, prototype v1"></iframe><details class="src"><summary>Source <span class="muted">data-barbie.html · 607 lines</span></summary><pre><code>&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1,viewport-fit=cover&quot;&gt;&lt;style&gt;[hidden]{display:none!important}body{margin:0}&lt;/style&gt;&lt;title&gt;Data Barbie&lt;/title&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&amp;family=Instrument+Serif:ital@0;1&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot;&gt;
 &lt;style&gt;
@@ -1167,12 +1339,13 @@ Size: life-size (about 170 cm) or smaller?</td></tr>
 </ul></td></tr>
 </table>
 
-<h2 id="week-0-concept">Week 0: Concept</h2>
+<h2 id="weekly-log">Weekly log</h2>
+<h3 class="log-week" id="week-0-concept">Week 0: Concept</h3>
 <p>My final project is clothes for the digital self: a tangible sculpture shaped like the user's face, its surface built from what their digital history says about them, and a set of clothes that act as a shield.</p>
 <p>I made this proposal video with Claude:</p>
 <div class="embed video"><div class="embed-bar"><span class="embed-title">Final project proposal, Week 0</span><a class="embed-open" href="https://youtu.be/Wp1-sOIoUTU" target="_blank" rel="noopener">Open in new tab ↗</a></div><button class="yt" type="button" aria-label="Play Final project proposal, Week 0" onclick="this.outerHTML=this.dataset.player" data-player="&lt;iframe src=&quot;https://www.youtube.com/embed/Wp1-sOIoUTU?autoplay=1&amp;rel=0&quot; title=&quot;Final project proposal, Week 0&quot; allowfullscreen referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allow=&quot;autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot;&gt;&lt;/iframe&gt;"><img onerror="this.onerror=null;this.src='img/placeholder.svg'" src="https://i.ytimg.com/vi/Wp1-sOIoUTU/maxresdefault.jpg" alt="" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Wp1-sOIoUTU/hqdefault.jpg'"><span class="yt-play"></span></button></div>
 
-<h3 id="algorithmic-mirror">Algorithmic Mirror</h3>
+<h4 id="algorithmic-mirror">Algorithmic Mirror</h4>
 <p>The idea grows out of the <a href="https://yuikondo.cargo.site/algorithmic-mirror-1">Algorithmic Mirror</a>, an interactive visualization tool that simulates the hidden profiling practices of social media platforms. It uses large-language-model sentence embeddings to reimagine how online activity might be categorized and interpreted (<a href="https://youtu.be/LPDfGhzDFjs">overview video</a>).</p>
 <p>Instead of a dashboard of metrics and metadata counts, the tool draws an explorable landscape: a speculative profile of a young person's digital traces. It does not uncover the platforms' actual models. It builds possible mirrors of algorithmic judgment, artificial reflections that show how an identity could be abstracted and rearranged through data.</p>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="Algorithmic Mirror: one participant's landscape, by platform" src="img/week00/mirror_platforms.jpg" /><figcaption>One participant's landscape across Netflix, TikTok and YouTube.</figcaption></figure>
@@ -1185,9 +1358,9 @@ Size: life-size (about 170 cm) or smaller?</td></tr>
 <p>"When YouTube tries to understand what I like, my question is how would it try to track my interest over time and project new interests, or would it just take me as I currently am and give me exactly what I like?" (P9)</p>
 </blockquote>
 <p>By turning opaque inferences into spatial metaphors, the mirror invites reflection on how children's online footprints are silently turned into profiles, and on how inhabiting such a mirror might change one's sense of self.</p>
-<h3 id="from-mirror-to-clothes">From mirror to clothes</h3>
+<h4 id="from-mirror-to-clothes">From mirror to clothes</h4>
 <p>With a mirror, we can only gaze at our own image. With clothes, we can shape how we present ourselves. How do we make clothes for our digital selves, so that we can choose what we present to AI systems?</p>
-<h3 id="sketch-and-inspiration">Sketch and inspiration</h3>
+<h4 id="sketch-and-inspiration">Sketch and inspiration</h4>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="First sketch: clothes for digital selves" src="img/week00/sketch.jpg" /><figcaption>The first sketch. A face-shaped mannequin under a shell of triangular panels, each panel one inference made from digital history. Digital traces → LLM → inferences → one inference per panel. Post-its: data portraits and data doubles, danah boyd's faceted identity, context collapse and time collapse, contextual integrity, and Monteiro et al. on when LLM inferences are acceptable.</figcaption></figure>
 <p>Artistic inspiration for fragmented selves across space and time:</p>
 <div class="cols natural">
@@ -1199,16 +1372,16 @@ Size: life-size (about 170 cm) or smaller?</td></tr>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="Artistic inspiration board" src="img/week00/board_artistic.jpg" /><figcaption>Artistic references: Daniel Rozin's mechanical mirrors, the Photorythms portraits at the Media Lab, Perfect Blue and its fragmented self, Hirano Keiichirō's novel Honshin (A Man), and a pair of mirrored figures.</figcaption></figure>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="Paper inspiration board" src="img/week00/board_papers.jpg" /><figcaption>Papers and concepts: AugTwin and Twins on accountable digital twins, danah boyd's Faceted Id/entity (MIT MAS thesis, 2002), Monteiro et al., When Are LLM Inferences Acceptable? (2026), and the sensitive-inference dashboard from our own preprint. Concepts: contextual integrity, time collapse, context collapse, Goffman's performance.</figcaption></figure>
 </div>
-<h2 id="week-1-modular-clothes-laser-cutting">Week 1: Modular clothes (laser cutting)</h2>
+<h3 class="log-week" id="week-1-modular-clothes-laser-cutting">Week 1: Modular clothes (laser cutting)</h3>
 <p>I first thought of printing the user's inferences as cards, so that users could sort them by hand and slip them into pockets on the clothes. Learning about construction kits changed that: I want assembling the clothes from parts to be intuitive in itself. So I looked at modular clothes, which can be taken apart and put back together without sewing (<a href="https://www.sciencedirect.com/science/article/pii/S0921344924000892">definition</a>), and at ANREALAGE's Spring/Summer 2022 collection "Dimension" (<a href="https://www.tokyoweekender.com/art_and_culture/fashion/anrealage-japanese-fashion/">source</a>).</p>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="A board of modular clothing references: garments with detachable parts, user prototypes and modular pieces" src="img/final/w1-modular-inspiration.jpg" /><figcaption>Inspiration for modular clothes.</figcaption></figure>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="The Week 1 construction kit, assembled and sprayed" src="img/final/w1-skirt-kit.jpg" /><figcaption>The output: a press-fit construction kit for a skirt in plywood. <a href="weeks/week01.html">Week 1 ↗</a></figcaption></figure>
 <p>I am not satisfied with the usability of the assembly: it took me two hours to put together. So I plan to explore more intuitive joints and shapes. This kit also only makes a skirt, and I want users to be able to assemble the parts in different ways, into pants or a dress as well.</p>
-<h2 id="week-2-a-map-of-poetry-words-embedded-programming">Week 2: A map of poetry words (embedded programming)</h2>
+<h3 class="log-week" id="week-2-a-map-of-poetry-words-embedded-programming">Week 2: A map of poetry words (embedded programming)</h3>
 <p>In Week 2, I focused on learning the basics of electronics, as I had no background in it. As a side project, I explored a map visualization of poetry words. On the internet we get lost: everything is zoomed in, and we have little spatial sense of how words relate. So I thought the XIAO-based QPad could be an interesting device for exploring a map of words.</p>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="The Kigo pad: a map of seasonal poetry words on the QPad's screen" src="img/week02/kigopad.jpg" /><figcaption>The Kigo pad. <a href="weeks/week02.html">Week 2 ↗</a></figcaption></figure>
-<h2 id="week-3-body-sculpture-3d-printing">Week 3: Body sculpture (3D printing)</h2>
-<h3 id="exploring-shapes">Exploring shapes</h3>
+<h3 class="log-week" id="week-3-body-sculpture-3d-printing">Week 3: Body sculpture (3D printing)</h3>
+<h4 id="exploring-shapes">Exploring shapes</h4>
 <p>In Week 3, I wanted to explore what the final shape of a digital self could look like, using the 3D printer.</p>
 <p>I was inspired by ANREALAGE's Spring/Summer 2027 collection "SKIN": how their clothes can change with LED panels, and how numbers were used to stand for the body.</p>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="Stills from ANREALAGE's SKIN collection: garments lit with LED panels and covered in projected green numbers" src="img/final/w3-anrealage-skin.jpg" /><figcaption>ANREALAGE, SS27 "SKIN".</figcaption></figure>
@@ -1222,10 +1395,10 @@ Size: life-size (about 170 cm) or smaller?</td></tr>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="The gray lattice figure with its supports removed" src="img/week03/body-supports-removed.jpg" /><figcaption>After removing the supports.</figcaption></figure>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="A figure with green triangle panels attached" src="img/week03/proto3-print-b.jpg" /><figcaption>Panels that make up the body. <a href="weeks/week03.html">Week 3 ↗</a></figcaption></figure>
 </div>
-<h3 id="projection-mapping">Projection mapping?</h3>
+<h4 id="projection-mapping">Projection mapping?</h4>
 <p>After this, I asked myself: does the sculpture actually need to be assembled and disassembled? Talking with Quentin during office hours, I thought it could also be interesting to explore touch sensing and projection mapping. Could we project how algorithms see you onto your own face, or onto the clothes you are wearing?</p>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="A board of projection mapping references: faces with projected makeup and patterns, and dancers with projected faces" src="img/final/w3-projection-mapping.jpg" /><figcaption>Projection mapping onto faces and bodies.</figcaption></figure>
-<h3 id="making-it-personal-data-processing">Making it personal (data processing)</h3>
+<h4 id="making-it-personal-data-processing">Making it personal (data processing)</h4>
 <p>I want viewers to relate to their own body, not to a random person's, so that they think about their own digital selves rather than a hypothetical one.</p>
 <p>But uploading data from platforms is slow. In the Algorithmic Mirror project, it took three days to a week. Yet <a href="https://pimeyes.com/en">PimEyes</a> can find where my face appears online almost instantly. Then I found <a href="https://anhphu.org/i-xray">I-XRAY</a>, a project that uses smart glasses to look up a stranger's name, work and interests from their face in real time, using only public data. Its code is not public, but its data processing could be interesting to explore.</p>
 <p>For the body shape, this paper could also be useful: it scans a body in about 3 minutes and turns it into an avatar.</p>
@@ -1234,7 +1407,7 @@ Size: life-size (about 170 cm) or smaller?</td></tr>
 </ul>
 <p>Yoichi Ochiai used this technology in his Expo 2025 Osaka pavilion, <em>null²</em>: visitors scan their face, voice and body to make a digital copy of themselves, and inside the mirrored pavilion they talk with their own digital body as it deforms and moves on its own. I will explore this more.</p>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="Stills from null²: a scanned figure reflected endlessly in a mirrored room" src="img/final/w3-null2-ochiai.jpg" /><figcaption>Yoichi Ochiai, null², Expo 2025 Osaka.</figcaption></figure>
-<h3 id="whom-do-we-present-our-digital-selves-to">Whom do we present our digital selves to?</h3>
+<h4 id="whom-do-we-present-our-digital-selves-to">Whom do we present our digital selves to?</h4>
 <p>My idea is to think about self-presentation in the digital age. But imagining how to present yourself to algorithms is probably too abstract. So I thought, what if you imagine dying, and presenting yourself to the people who are still alive? Imagine your life can be quantified, and the people close to you can make avatars or agents of you and talk to them, as in Hirano Keiichirō's novel <a href="https://books.bunshun.jp/articles/-/6444"><em>Honshin</em></a>, where a son has a virtual figure of his late mother made.</p>
 <p>When others can make avatars of us, do we still own our own body? How are our memories mediated through algorithms?</p>
 <p>Papers:</p>
@@ -1249,16 +1422,16 @@ Size: life-size (about 170 cm) or smaller?</td></tr>
 </blockquote>
 <p><em>Milan Kundera, Immortality (trans. Peter Kussi, 1991)</em></p>
 <p>So for participants, thinking about death, and designing a digital body that chooses how to be remembered and what to pass on to the next generation, could be an interesting prompt.</p>
-<h2 id="week-4-5-led-lights-electronics-design-production">Week 4 &amp; 5: LED lights (electronics design / production)</h2>
+<h3 class="log-week" id="week-4-5-led-lights-electronics-design-production">Week 4 &amp; 5: LED lights (electronics design / production)</h3>
 <p>In Week 4, I again focused on learning electronics, so I did not develop the concept much further.</p>
 <p>I am making a Spotify album-art LED matrix, and learned how to send color information to a 64×64 LED matrix. This could be applied to changing the colors on the body sculpture based on how participants touch it.</p>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="A 64×64 LED matrix showing album art, next to a CD player in a transparent case" src="img/final/w4-led-matrix.jpg" /><figcaption>The LED matrix, and the transparent case I'd like the board to live in.</figcaption></figure>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="Notebook page tracing how a color signal travels to the matrix, and the five steps of drawing a frame" src="img/week04/sketch-hub75-color-signal.jpg" /><figcaption>How color information reaches the LEDs. <a href="weeks/week04.html">Week 4 ↗</a></figcaption></figure>
-<h2 id="week-6-exploring-the-shape-of-the-sculpture">Week 6: Exploring the shape of the sculpture</h2>
+<h3 class="log-week" id="week-6-exploring-the-shape-of-the-sculpture">Week 6: Exploring the shape of the sculpture</h3>
 <p>In Week 6, I explored what shape the final sculpture should take. I 3D scanned my own body and abstracted it into a low-poly figure made of triangular panels.</p>
 <figure><img onerror="this.onerror=null;this.src='img/placeholder.svg'" alt="The life-size block figure standing in an elevator" src="img/week06/img_7996.jpg" /><figcaption>A life-size figure based on my 3D body scan, cut on the ShopBot as 27 flat parts that slot together without glue or screws. <a href="weeks/week06.html">Week 6 ↗</a></figcaption></figure>
 <p>I also met <a href="https://en.wikipedia.org/wiki/Judith_Donath">Judith Donath</a>, whose work first inspired me to visualize digital selves three years ago. She is happy to keep talking with me :)</p>
-<h2 id="week-7-input-devices">Week 7: Input devices</h2>
+<h3 class="log-week" id="week-7-input-devices">Week 7: Input devices</h3>
 <p>For the sculpture, I'm thinking of a capacitive touch sensor in each panel, so I tested one through acrylic. On bare copper a touch was easy to see (the reading jumped from about 28 to 60), but through 3 mm of acrylic it only moved from 34 to 37, about the same as the noise. It needs a much larger resistor (1 MΩ, then 10 MΩ) to be sensitive enough to capture the touch.</p>
 <h2 id="use-of-ai">Use of AI</h2>
 <p>Claude helped me make the proposal video and the prototypes (Data Barbie and Digital Mirror), rendered the teaser video, and turned my notes in our shared doc into this page. The concept, the sketches and the writing are my own.</p>

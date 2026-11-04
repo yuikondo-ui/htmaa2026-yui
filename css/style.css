@@ -482,3 +482,7 @@ html[data-theme="dark"] .about-photo img{background:#14149a}
 .sea::after,.about-photo::after{content:"";position:absolute;inset:0;background:var(--red);mix-blend-mode:color;opacity:.45;pointer-events:none}
 .about-photo{position:relative}
 .about-photo::after{bottom:.7em}
+
+/* final project: weekly log — week titles read as section heads, their subsections stay quiet */
+.content h3.log-week{color:var(--fg);font-size:1.15em;margin:2em 0 .5em}
+.content h3.log-week ~ h4{font-weight:545;font-size:inherit;color:var(--muted);margin:1.4em 0 .4em}

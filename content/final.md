@@ -16,11 +16,21 @@ Undressed, the sculpture tells everything it knows about you. Put a piece of clo
 
 ## Prototypes
 
-[Prototype v2 ↗](files/week00/acrylic-data-body.html) (Nov 2 2026): Digital Mirror
+### Prototype v3: Data Blocks
+
+[Open in new tab ↗](files/week00/data-blocks.html) (Nov 4 2026)
+
+:::embed files/week00/data-blocks.html | Data Blocks, prototype v3
+
+### Prototype v2: Digital Mirror
+
+[Open in new tab ↗](files/week00/acrylic-data-body.html) (Nov 2 2026)
 
 :::embed files/week00/acrylic-data-body.html | Digital Mirror, prototype v2
 
-[Prototype v1 ↗](files/week00/data-barbie.html) (Sep 25 2026): Data Barbie
+### Prototype v1: Data Barbie
+
+[Open in new tab ↗](files/week00/data-barbie.html) (Sep 25 2026)
 
 :::embed files/week00/data-barbie.html | Data Barbie, prototype v1
 
@@ -65,15 +75,16 @@ Size: life-size (about 170 cm) or smaller?</td></tr>
 </ul></td></tr>
 </table>
 
-## Week 0: Concept
+## Weekly log
 
+### Week 0: Concept { .log-week }
 My final project is clothes for the digital self: a tangible sculpture shaped like the user's face, its surface built from what their digital history says about them, and a set of clothes that act as a shield.
 
 I made this proposal video with Claude:
 
 :::video https://youtu.be/Wp1-sOIoUTU | Final project proposal, Week 0
 
-### Algorithmic Mirror
+#### Algorithmic Mirror
 
 The idea grows out of the [Algorithmic Mirror](https://yuikondo.cargo.site/algorithmic-mirror-1), an interactive visualization tool that simulates the hidden profiling practices of social media platforms. It uses large-language-model sentence embeddings to reimagine how online activity might be categorized and interpreted ([overview video](https://youtu.be/LPDfGhzDFjs)).
 
@@ -92,11 +103,11 @@ A time slider then replays the landscape month by month, so the participant watc
 
 By turning opaque inferences into spatial metaphors, the mirror invites reflection on how children's online footprints are silently turned into profiles, and on how inhabiting such a mirror might change one's sense of self.
 
-### From mirror to clothes
+#### From mirror to clothes
 
 With a mirror, we can only gaze at our own image. With clothes, we can shape how we present ourselves. How do we make clothes for our digital selves, so that we can choose what we present to AI systems?
 
-### Sketch and inspiration
+#### Sketch and inspiration
 
 ![First sketch: clothes for digital selves](img/week00/sketch.jpg)
 *The first sketch. A face-shaped mannequin under a shell of triangular panels, each panel one inference made from digital history. Digital traces → LLM → inferences → one inference per panel. Post-its: data portraits and data doubles, danah boyd's faceted identity, context collapse and time collapse, contextual integrity, and Monteiro et al. on when LLM inferences are acceptable.*
@@ -119,8 +130,7 @@ Artistic inspiration for fragmented selves across space and time:
 *Papers and concepts: AugTwin and Twins on accountable digital twins, danah boyd's Faceted Id/entity (MIT MAS thesis, 2002), Monteiro et al., When Are LLM Inferences Acceptable? (2026), and the sensitive-inference dashboard from our own preprint. Concepts: contextual integrity, time collapse, context collapse, Goffman's performance.*
 :::
 
-## Week 1: Modular clothes (laser cutting)
-
+### Week 1: Modular clothes (laser cutting) { .log-week }
 I first thought of printing the user's inferences as cards, so that users could sort them by hand and slip them into pockets on the clothes. Learning about construction kits changed that: I want assembling the clothes from parts to be intuitive in itself. So I looked at modular clothes, which can be taken apart and put back together without sewing ([definition](https://www.sciencedirect.com/science/article/pii/S0921344924000892)), and at ANREALAGE's Spring/Summer 2022 collection "Dimension" ([source](https://www.tokyoweekender.com/art_and_culture/fashion/anrealage-japanese-fashion/)).
 
 ![A board of modular clothing references: garments with detachable parts, user prototypes and modular pieces](img/final/w1-modular-inspiration.jpg)
@@ -131,16 +141,14 @@ I first thought of printing the user's inferences as cards, so that users could 
 
 I am not satisfied with the usability of the assembly: it took me two hours to put together. So I plan to explore more intuitive joints and shapes. This kit also only makes a skirt, and I want users to be able to assemble the parts in different ways, into pants or a dress as well.
 
-## Week 2: A map of poetry words (embedded programming)
-
+### Week 2: A map of poetry words (embedded programming) { .log-week }
 In Week 2, I focused on learning the basics of electronics, as I had no background in it. As a side project, I explored a map visualization of poetry words. On the internet we get lost: everything is zoomed in, and we have little spatial sense of how words relate. So I thought the XIAO-based QPad could be an interesting device for exploring a map of words.
 
 ![The Kigo pad: a map of seasonal poetry words on the QPad's screen](img/week02/kigopad.jpg)
 *The Kigo pad. [Week 2 ↗](weeks/week02.html)*
 
-## Week 3: Body sculpture (3D printing)
-
-### Exploring shapes
+### Week 3: Body sculpture (3D printing) { .log-week }
+#### Exploring shapes
 
 In Week 3, I wanted to explore what the final shape of a digital self could look like, using the 3D printer.
 
@@ -171,14 +179,14 @@ Then I explored how the body sculpture itself could be taken apart and put back 
 *Panels that make up the body. [Week 3 ↗](weeks/week03.html)*
 :::
 
-### Projection mapping?
+#### Projection mapping?
 
 After this, I asked myself: does the sculpture actually need to be assembled and disassembled? Talking with Quentin during office hours, I thought it could also be interesting to explore touch sensing and projection mapping. Could we project how algorithms see you onto your own face, or onto the clothes you are wearing?
 
 ![A board of projection mapping references: faces with projected makeup and patterns, and dancers with projected faces](img/final/w3-projection-mapping.jpg)
 *Projection mapping onto faces and bodies.*
 
-### Making it personal (data processing)
+#### Making it personal (data processing)
 
 I want viewers to relate to their own body, not to a random person's, so that they think about their own digital selves rather than a hypothetical one.
 
@@ -193,7 +201,7 @@ Yoichi Ochiai used this technology in his Expo 2025 Osaka pavilion, *null²*: vi
 ![Stills from null²: a scanned figure reflected endlessly in a mirrored room](img/final/w3-null2-ochiai.jpg)
 *Yoichi Ochiai, null², Expo 2025 Osaka.*
 
-### Whom do we present our digital selves to?
+#### Whom do we present our digital selves to?
 
 My idea is to think about self-presentation in the digital age. But imagining how to present yourself to algorithms is probably too abstract. So I thought, what if you imagine dying, and presenting yourself to the people who are still alive? Imagine your life can be quantified, and the people close to you can make avatars or agents of you and talk to them, as in Hirano Keiichirō's novel [*Honshin*](https://books.bunshun.jp/articles/-/6444), where a son has a virtual figure of his late mother made.
 
@@ -213,8 +221,7 @@ Quietly, I'm slightly against [TeleAbsence](https://news.mit.edu/2025/teleabsenc
 
 So for participants, thinking about death, and designing a digital body that chooses how to be remembered and what to pass on to the next generation, could be an interesting prompt.
 
-## Week 4 & 5: LED lights (electronics design / production)
-
+### Week 4 & 5: LED lights (electronics design / production) { .log-week }
 In Week 4, I again focused on learning electronics, so I did not develop the concept much further.
 
 I am making a Spotify album-art LED matrix, and learned how to send color information to a 64×64 LED matrix. This could be applied to changing the colors on the body sculpture based on how participants touch it.
@@ -225,8 +232,7 @@ I am making a Spotify album-art LED matrix, and learned how to send color inform
 ![Notebook page tracing how a color signal travels to the matrix, and the five steps of drawing a frame](img/week04/sketch-hub75-color-signal.jpg)
 *How color information reaches the LEDs. [Week 4 ↗](weeks/week04.html)*
 
-## Week 6: Exploring the shape of the sculpture
-
+### Week 6: Exploring the shape of the sculpture { .log-week }
 In Week 6, I explored what shape the final sculpture should take. I 3D scanned my own body and abstracted it into a low-poly figure made of triangular panels.
 
 ![The life-size block figure standing in an elevator](img/week06/img_7996.jpg)
@@ -234,8 +240,7 @@ In Week 6, I explored what shape the final sculpture should take. I 3D scanned m
 
 I also met [Judith Donath](https://en.wikipedia.org/wiki/Judith_Donath), whose work first inspired me to visualize digital selves three years ago. She is happy to keep talking with me :)
 
-## Week 7: Input devices
-
+### Week 7: Input devices { .log-week }
 For the sculpture, I'm thinking of a capacitive touch sensor in each panel, so I tested one through acrylic. On bare copper a touch was easy to see (the reading jumped from about 28 to 60), but through 3 mm of acrylic it only moved from 34 to 37, about the same as the noise. It needs a much larger resistor (1 MΩ, then 10 MΩ) to be sensitive enough to capture the touch.
 
 ## Use of AI

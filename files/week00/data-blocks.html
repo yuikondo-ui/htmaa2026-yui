@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Data Blocks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+
+/* A dark gallery: the growing block body fills the stage, controls sit in a rail on the right */
+:root{color-scheme:dark;--room:#060709;--rail:#101116;--line:#262832;--ink:#eceef3;--mute:#8e929e;--acc:#dce7f7;
+  --sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--room);color:var(--ink);font:13px/1.5 var(--sans)}
+.app{display:grid;grid-template-columns:1fr 300px;height:100%}
+.stage{position:relative;min-height:0}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair;touch-action:none}
+.hud{position:absolute;top:14px;left:16px;right:16px;pointer-events:none}
+.hud h1{margin:0;font-size:15px;letter-spacing:.04em}
+.hud p{margin:2px 0 0;color:var(--mute);font-size:12px;max-width:54ch}
+.views{position:absolute;bottom:14px;left:16px;display:flex;gap:6px;flex-wrap:wrap}
+.rail{background:var(--rail);border-left:1px solid var(--line);overflow-y:auto;padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.rail h2{font-size:11px;font-family:var(--mono);color:var(--mute);letter-spacing:.08em;text-transform:uppercase;margin:18px 0 8px;font-weight:500}
+.rail h2:first-child{margin-top:0}
+button{font:inherit;color:var(--ink);background:#1b1d24;border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
+button:hover{border-color:#3b3f4b}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+button.on{background:var(--acc);color:#0b0c10;border-color:var(--acc)}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+label.sl{display:grid;grid-template-columns:1fr auto;gap:2px 8px;margin:10px 0}
+label.sl span.v{font-family:var(--mono);color:var(--mute);font-size:12px}
+label.sl input{grid-column:1/-1;width:100%;accent-color:#dce7f7}
+label.ck{display:flex;gap:8px;align-items:center;margin:8px 0}
+.note{color:var(--mute);font-size:12px;margin:6px 0 0}
+.count{font-family:var(--mono);font-size:22px;font-variant-numeric:tabular-nums}
+.count span{font-size:12px;color:var(--mute)}
+.parts{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.parts button{padding:4px 0;font-size:12px}
+@media (max-width:760px){.app{grid-template-columns:1fr;grid-template-rows:64vh auto;height:auto}.rail{border-left:0;border-top:1px solid var(--line)}}
+</style>
+<div class="app">
+  <div class="stage">
+    <canvas id="gl"></canvas>
+    <div class="hud"><h1>Data Blocks</h1><p>No frame. Visitors snap together 10 cm acrylic blocks with magnets inside, each engraved with a fragment of my body. Only blocks connected to the base get power and light up. The faint outline is my body scan; the blocks are free to grow past it.</p></div>
+    <div class="views"><button data-view="front">Front</button><button data-view="three" class="on">3/4</button><button data-view="side">Side</button><button data-view="top">Top</button></div>
+  </div>
+  <aside class="rail">
+    <h2>Blocks</h2>
+    <div class="count" id="count"></div>
+    <p class="note">Click a block face (or the base) to attach a block. Shift-click (long-press on a phone) to remove one. Drag to orbit, scroll to zoom.</p>
+    <h2>Next part</h2>
+    <div class="parts" id="parts"></div>
+    <h2>Visitors</h2>
+    <div class="row"><button id="auto">Simulate visitors</button><button id="clear">Remove all</button></div>
+    <label class="sl">Follow my outline <span class="v" id="followV"></span><input id="follow" type="range" min="0" max="1" step="0.01" value="0.7"></label>
+    <p class="note">At 0, visitors ignore the outline and grow the body in any direction.</p>
+    <label class="ck"><input id="ghost" type="checkbox" checked> Show my outline</label>
+    <h2>Light</h2>
+    <label class="sl">LED brightness <span class="v" id="ledV"></span><input id="led" type="range" min="0" max="1.5" step="0.01" value="1"></label>
+    <label class="sl">Room light <span class="v" id="roomV"></span><input id="room" type="range" min="0" max="1" step="0.01" value="0.16"></label>
+    <h2>How it could work</h2>
+    <p class="note">A free-spinning spherical magnet in the centre of each face lets any face snap to any other. A ring of metal contacts around each magnet passes power from block to block, so only blocks connected to the base light up, with no batteries.</p>
+    <p class="note">Magnets are weak in shear, so long overhangs fall off. Blocks mostly need support from below, and the base should be heavy.</p>
+  </aside>
+</div>
+<script src="three-r149.min.js"></script>
+<script>
+// engraving textures and my outline live in data-blocks-data.json next to this page
+fetch('data-blocks-data.json').then(r=>r.json()).then(DATA=>{
+const T=DATA.tex,VOX=DATA.vox;
+const $=id=>document.getElementById(id);const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const P={};for(const k of ['led','room','follow']){const el=$(k);const u=()=>{P[k]=+el.value;$(k+'V').textContent=Math.round(P[k]*100)+'%';};el.addEventListener('input',u);u();}
+const C=100;
+const JA={random:'Random',eye_L:'Eye',mouth:'Mouth',nose:'Nose',profile:'Profile',ear:'Ear',neck:'Neck',hand:'Hand',belly:'Belly',leg:'Leg',foot:'Foot'};
+let nextPart='random';
+$('parts').innerHTML=Object.entries(JA).map(([k,v])=>`<button data-part="${k}" class="${k==='random'?'on':''}">${v}</button>`).join('');
+document.querySelectorAll('[data-part]').forEach(b=>b.onclick=()=>{nextPart=b.dataset.part;document.querySelectorAll('[data-part]').forEach(x=>x.classList.toggle('on',x===b));});
+const POOL=['eye_L','eye_R','mouth','nose','profile','ear','neck','hand','hand','belly','leg','foot','eye_L','mouth'];
+
+const cv=$('gl');const R=new THREE.WebGLRenderer({canvas:cv,antialias:true});R.setPixelRatio(Math.min(2,devicePixelRatio));
+const scene=new THREE.Scene();const bg=new THREE.Color();scene.background=bg;
+const cam=new THREE.PerspectiveCamera(30,1,10,30000);cam.up.set(0,0,1);
+const hemi=new THREE.HemisphereLight(0xe8edf5,0x15161a,.35);scene.add(hemi);const dl=new THREE.DirectionalLight(0xffffff,.6);dl.position.set(-900,-1400,2200);scene.add(dl);
+const floor=new THREE.Mesh(new THREE.CircleGeometry(2400,64),new THREE.MeshStandardMaterial({color:0x141518,roughness:.95}));floor.position.z=-31;scene.add(floor);
+// powered base plate: a 9 x 7 grid of 10 cm squares
+const BX=4,BY=3;const base=new THREE.Mesh(new THREE.BoxGeometry((2*BX+1)*C,(2*BY+1)*C,30),new THREE.MeshStandardMaterial({color:0x24262c,roughness:.55,metalness:.5}));base.position.z=-15;scene.add(base);
+const gridL=new THREE.GridHelper((2*BX+1)*C,2*BX+1,0x3a3e48,0x2c2f37);gridL.rotation.x=Math.PI/2;gridL.scale.y=(2*BY+1)/(2*BX+1);gridL.position.z=.5;scene.add(gridL);
+const loader=new THREE.TextureLoader();const tex={};
+// each part is one engraving image; the soft glow around the lines is made here by blurring it
+for(const k in T){const lit=loader.load(T[k].lit);lit.anisotropy=R.capabilities.getMaxAnisotropy();const c=document.createElement('canvas');const halo=new THREE.CanvasTexture(c);
+  const im=new Image();im.onload=()=>{c.width=im.width>>1;c.height=im.height>>1;const g=c.getContext('2d');g.filter='blur(4px)';g.globalAlpha=.6;g.drawImage(im,0,0,c.width,c.height);halo.needsUpdate=true;};im.src=T[k].lit;
+  tex[k]={lit,halo};}
+// ghost outline of my body (voxel figure)
+const ghostSet=new Set(VOX.v.map(v=>v.join(',')));
+const ghost=new THREE.Group();const gEdge=new THREE.EdgesGeometry(new THREE.BoxGeometry(C,C,C));const gMat=new THREE.LineBasicMaterial({color:0x6f87a8,transparent:true,opacity:.22});
+for(const v of VOX.v){const l=new THREE.LineSegments(gEdge,gMat);l.position.set(v[0]*C,v[1]*C,v[2]*C+C/2);ghost.add(l);}scene.add(ghost);
+$('ghost').onchange=e=>ghost.visible=e.target.checked;
+
+// blocks
+const acr=new THREE.MeshStandardMaterial({color:0xdfe8ef,roughness:.05,transparent:true,opacity:.1,depthWrite:false});
+const box=new THREE.BoxGeometry(C-2,C-2,C-2);const edgeG=new THREE.EdgesGeometry(box);const edgeMat=new THREE.LineBasicMaterial({color:0xcfe0ee,transparent:true,opacity:.5});
+const pickMat=new THREE.MeshBasicMaterial({visible:false});
+const cells=new Map();let idn=0;const key=(i,j,k)=>i+','+j+','+k;
+function addBlock(i,j,k,part){const kk=key(i,j,k);if(cells.has(kk)||k<0)return null;
+  const p=part==='random'?POOL[Math.floor(Math.random()*POOL.length)]:(part==='eye_L'&&Math.random()<.5?'eye_R':part);const t=T[p];
+  const g=new THREE.Group();g.position.set(i*C,j*C,k*C+C/2);
+  const m=new THREE.Mesh(box,acr);m.renderOrder=1;g.add(m);g.add(new THREE.LineSegments(edgeG,edgeMat));
+  const hit=new THREE.Mesh(new THREE.BoxGeometry(C,C,C),pickMat);hit.userData.cell=kk;g.add(hit);
+  const s=Math.min(C*.82/t.w,C*.82/t.h);const pl=new THREE.PlaneGeometry(t.w*s,t.h*s).rotateX(Math.PI/2);
+  const lit=new THREE.Mesh(pl,new THREE.MeshBasicMaterial({alphaMap:tex[p].lit,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,color:0x000000}));lit.position.y=-C/2+4;lit.renderOrder=2;g.add(lit);
+  const halo=new THREE.Mesh(pl,new THREE.MeshBasicMaterial({alphaMap:tex[p].halo,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,color:0x000000}));halo.position.y=-C/2+3;halo.renderOrder=3;g.add(halo);
+  g.scale.setScalar(reduce?1:.01);scene.add(g);const b={i,j,k,g,hit,lit,halo,power:0,id:idn++,born:performance.now()};cells.set(kk,b);recompute();return b;}
+function removeBlock(kk){const b=cells.get(kk);if(!b)return;scene.remove(b.g);cells.delete(kk);recompute();}
+// power flows from the base through touching blocks (breadth first); distance sets when each block lights
+function recompute(){for(const b of cells.values())b.dist=-1;const q=[];
+  for(const b of cells.values())if(b.k===0&&Math.abs(b.i)<=BX&&Math.abs(b.j)<=BY){b.dist=0;q.push(b);}
+  while(q.length){const b=q.shift();for(const [di,dj,dk] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]){const n=cells.get(key(b.i+di,b.j+dj,b.k+dk));if(n&&n.dist<0){n.dist=b.dist+1;q.push(n);}}}
+  $('count').innerHTML=cells.size+' <span>blocks · '+[...cells.values()].filter(b=>b.dist>=0).length+' lit</span>';}
+recompute();
+// start with feet so people see where to begin
+[[-1,0,0],[1,0,0],[-1,0,1],[1,0,1]].forEach(([i,j,k])=>addBlock(i,j,k,k===0?'foot':'leg'));
+
+// click to add / shift-click (or long press) to remove
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();let down=null,longT=null,longFired=false;
+function pickAt(e){const rc=cv.getBoundingClientRect();mouse.set((e.clientX-rc.left)/rc.width*2-1,-(e.clientY-rc.top)/rc.height*2+1);ray.setFromCamera(mouse,cam);
+  return ray.intersectObjects([...[...cells.values()].map(b=>b.hit),base])[0];}
+function act(e,remove){const h=pickAt(e);if(!h)return;
+  if(h.object===base){const p=h.point;const i=Math.round(p.x/C),j=Math.round(p.y/C);if(!remove)addBlock(i,j,0,nextPart);return;}
+  const b=cells.get(h.object.userData.cell);if(remove){removeBlock(h.object.userData.cell);return;}
+  const n=h.face.normal.clone().round();addBlock(b.i+n.x,b.j+n.y,b.k+n.z,nextPart);}
+cv.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};longFired=false;if(e.pointerType==='touch')longT=setTimeout(()=>{longFired=true;act(e,true);},550);});
+cv.addEventListener('pointermove',e=>{if(down&&Math.hypot(e.clientX-down.x,e.clientY-down.y)>5)clearTimeout(longT);});
+cv.addEventListener('pointerup',e=>{clearTimeout(longT);if(!down||longFired||Math.hypot(e.clientX-down.x,e.clientY-down.y)>5)return;act(e,e.shiftKey);});
+
+// simulated participants: mostly add next to existing blocks, preferring supported spots inside my outline
+let autoOn=false,autoT=0;$('auto').onclick=()=>{autoOn=!autoOn;$('auto').classList.toggle('on',autoOn);};
+$('clear').onclick=()=>{for(const kk of [...cells.keys()])removeBlock(kk);};
+function simStep(){if(cells.size>8&&Math.random()<.12){const ks=[...cells.keys()];removeBlock(ks[Math.floor(Math.random()*ks.length)]);return;}
+  const cand=[];for(const b of cells.values())for(const [di,dj,dk] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1]]){const i=b.i+di,j=b.j+dj,k=b.k+dk;if(cells.has(key(i,j,k)))continue;
+    const supported=k===0||cells.has(key(i,j,k-1));const inGhost=ghostSet.has(key(i,j,k));let w=(supported?1:.25)*(inGhost?1+P.follow*6:1-P.follow*.9)*(dk?1.4:1);cand.push([w,i,j,k]);}
+  if(!cand.length){addBlock(0,0,0,'random');return;}let s=cand.reduce((a,c)=>a+c[0],0)*Math.random();for(const c of cand){s-=c[0];if(s<=0){addBlock(c[1],c[2],c[3],'random');return;}}}
+
+const target=new THREE.Vector3(0,0,700);let th=-Math.PI/2-.55,ph=1.3,dist=4200;
+const VIEWS={front:[-Math.PI/2,1.5,4200],three:[-Math.PI/2-.55,1.3,4200],side:[0,1.5,4200],top:[-Math.PI/2,.3,4200]};
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{[th,ph,dist]=VIEWS[b.dataset.view];document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('on',x===b));});
+let drag=null;cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',e=>{if(!drag)return;th-=(e.clientX-drag.x)*.006;ph=Math.min(2.9,Math.max(.15,ph-(e.clientY-drag.y)*.006));drag={x:e.clientX,y:e.clientY};});
+cv.addEventListener('pointerup',()=>{drag=null;});
+cv.addEventListener('wheel',e=>{e.preventDefault();dist=Math.min(12000,Math.max(400,dist*(1+e.deltaY*.001)));},{passive:false});
+function resize(){const r=cv.parentElement.getBoundingClientRect();R.setSize(r.width,r.height,false);cam.aspect=r.width/r.height;cam.updateProjectionMatrix();}
+addEventListener('resize',resize);resize();
+function loop(now){
+  if(autoOn&&now-autoT>(reduce?900:420)){autoT=now;simStep();}
+  const room=P.room;bg.setRGB(.02+room*.33,.022+room*.34,.028+room*.36);hemi.intensity=.35+room*1.1;dl.intensity=.4+room*.8;
+  for(const b of cells.values()){const age=(now-b.born)/1000;if(b.g.scale.x<1)b.g.scale.setScalar(Math.min(1,b.g.scale.x+.12));
+    const on=b.dist>=0&&age>b.dist*.08;b.power+=((on?1:0)-b.power)*.12;const c=b.power*P.led*(1-room*.55);b.lit.material.color.setRGB(c,c,c);b.halo.material.color.setRGB(c,c,c);}
+  cam.position.set(target.x+dist*Math.sin(ph)*Math.cos(th),target.y+dist*Math.sin(ph)*Math.sin(th),target.z+dist*Math.cos(ph));cam.lookAt(target);
+  R.render(scene,cam);requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+}).catch(e=>{document.querySelector('.hud p').textContent='Could not start ('+e+'). Open this page from the website or a local server.';});
+</script>
+
+</body>
+</html>

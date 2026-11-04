@@ -157,7 +157,7 @@ def md_to_html(body):
     toc = []
     def walk(items, level):
         for it in items:
-            toc.append((level, it["id"], it["name"]))
+            toc.append((level, it["id"], __import__("html").unescape(it["name"])))  # name arrives HTML-escaped
             walk(it.get("children", []), level + 1)
     walk(md.toc_tokens, 2)
     return out, toc
