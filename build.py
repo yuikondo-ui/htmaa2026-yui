@@ -82,6 +82,7 @@ def blocks(body):
     :::cols … :::                      images (each followed by an *italic* caption) side by side
     :::embed files/x.html | Title      interactive page in a frame, with a Source toggle + open link
     :::source files/x.py               collapsible full source of a file in the repo
+    :::code files/x.ino | Title        dark code panel with line numbers and syntax colors
     :::video https://youtu.be/ID | Title   YouTube (or any embeddable) video, 16:9
     """
     body = re.sub(r"^:::cols([^\n]*)\n(.*?)^:::\s*$",
@@ -100,6 +101,59 @@ def blocks(body):
                 f'{src.count(chr(10)) + 1} lines</span></summary><pre><code>{esc(src)}</code></pre></details>'
                 f'</div>\n')
     body = re.sub(r"^:::embed\s+(\S+)(?:\s*\|\s*(.+))?\s*$", embed, body, flags=re.M)
+
+    def codeview(m):
+        """:::code files/x.ino | Title  -> dark code panel with line numbers + syntax colors."""
+        path = m.group(1).strip()
+        title = (m.group(2) or os.path.basename(path)).strip()
+        full = os.path.join(ROOT, path)
+        src = read(full).rstrip("\n") if os.path.exists(full) else "(file not found)"
+        try:
+            from pygments.lexers import get_lexer_for_filename, CppLexer
+            from pygments.token import Token
+            try:
+                lexer = get_lexer_for_filename(path)
+            except Exception:
+                lexer = CppLexer()
+            toks = list(lexer.get_tokens(src))
+        except ImportError:
+            toks = None
+        def cls(t, nxt):
+            from pygments.token import Token as T
+            if t in T.Comment.Preproc or t in T.Comment.PreprocFile: return "pp"
+            if t in T.Comment: return "cm"
+            if t in T.Keyword.Type: return "ty"
+            if t in T.Keyword: return "kw"
+            if t in T.Literal.String: return "st"
+            if t in T.Literal.Number: return "nu"
+            if t in T.Name.Function: return "fn"
+            if t in T.Name.Builtin: return "bi"
+            if t in T.Name and nxt == "(": return "fn"
+            return ""
+        lines = [[]]
+        if toks is None:
+            for ln in src.split("\n"):
+                lines[-1].append(esc(ln)); lines.append([])
+            lines.pop()
+        else:
+            for i, (t, v) in enumerate(toks):
+                nxt = toks[i + 1][1].lstrip()[:1] if i + 1 < len(toks) else ""
+                c = cls(t, nxt)
+                parts = v.split("\n")
+                for j, part in enumerate(parts):
+                    if j: lines.append([])
+                    if part:
+                        lines[-1].append(f'<span class="{c}">{esc(part)}</span>' if c else esc(part))
+            while lines and not "".join(lines[-1]).strip():
+                lines.pop()
+        body_html = "".join(f'<span class="ln">{"".join(l) or " "}</span>' for l in lines)
+        name = os.path.basename(path)
+        return (f'<details class="codeview" open><summary><span class="cv-title">{esc(title)}</span>'
+                f'<span class="cv-links"><span class="cv-toggle">Source</span>'
+                f'<a href="{esc(path)}" download>Download</a>'
+                f'<a href="{esc(path)}" target="_blank" rel="noopener">Open in new tab ↗</a></span></summary>'
+                f'<pre><code>{body_html}</code></pre></details>\n')
+    body = re.sub(r"^:::code\s+(\S+)(?:\s*\|\s*(.+))?\s*$", codeview, body, flags=re.M)
 
     def source(m):
         path = m.group(1).strip()

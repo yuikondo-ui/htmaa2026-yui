@@ -486,3 +486,27 @@ html[data-theme="dark"] .about-photo img{background:#14149a}
 /* final project: weekly log — week titles read as section heads, their subsections stay quiet */
 .content h3.log-week{color:var(--fg);font-size:1.15em;margin:2em 0 .5em}
 .content h3.log-week ~ h4{font-weight:545;font-size:inherit;color:var(--muted);margin:1.4em 0 .4em}
+
+/* :::code — dark code panel with line numbers (VS Code–like colors) */
+.content details.codeview{margin:1.6em 0;border:1px solid #2b2b2b;border-radius:10px;overflow:hidden;background:#1e1e1e;color:#d4d4d4}
+.content details.codeview summary{display:flex;justify-content:space-between;align-items:center;gap:1em;padding:.75em 1.1em;background:#2a2a2b;border-bottom:1px solid #3a3a3a;cursor:pointer;list-style:none;user-select:none}
+.content details.codeview summary::-webkit-details-marker{display:none}
+.content details.codeview .cv-title{color:#f0f0f0;font-weight:500}
+.content details.codeview .cv-links{display:flex;gap:1.2em;font-size:.85em;color:#a8a8a8;white-space:nowrap}
+.content details.codeview .cv-toggle::before{content:"▾\00a0"}
+.content details.codeview:not([open]) .cv-toggle::before{content:"▸\00a0"}
+.content details.codeview .cv-links a{color:#a8a8a8;text-decoration:underline;text-underline-offset:3px}
+.content details.codeview .cv-links a:hover{color:#fff}
+.content details.codeview pre{margin:0;padding:1em 0;max-height:75vh;overflow:auto;background:#1e1e1e;border:0;border-radius:0;color:#d4d4d4;font-size:.84em;line-height:1.65}
+.content details.codeview code{display:block;counter-reset:ln;background:none;color:inherit;padding:0}
+.content details.codeview .ln{display:block;padding-right:1.2em;white-space:pre}
+.content details.codeview .ln::before{counter-increment:ln;content:counter(ln);display:inline-block;width:3.2em;padding-right:1em;margin-right:1em;text-align:right;color:#6e7681;border-right:1px solid #333;user-select:none}
+.content details.codeview .kw{color:#c586c0}
+.content details.codeview .ty{color:#569cd6}
+.content details.codeview .pp{color:#569cd6}
+.content details.codeview .st{color:#ce9178}
+.content details.codeview .nu{color:#b5cea8}
+.content details.codeview .fn{color:#dcdcaa}
+.content details.codeview .bi{color:#4ec9b0}
+.content details.codeview .cm{color:#6a9955}
+html[data-theme="dark"] .content details.codeview pre{background:#1e1e1e;border:0}
