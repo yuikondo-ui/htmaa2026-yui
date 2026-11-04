@@ -288,8 +288,14 @@ def project_page(meta, depth, label, prev_link, next_link, active="", intro=""):
                 if meta.get("hero") else "")
     if hero_src and re.search(r"\.(mp4|webm)$", hero_src, re.I):   # video hero: loops silently, poster = same name .jpg
         poster = re.sub(r"\.(mp4|webm)$", ".jpg", hero_src)
-        hero_img = (f'<video class="cover-img" src="{esc(hero_src)}" poster="{esc(poster)}" '
-                    f'autoplay muted loop playsinline aria-hidden="true"></video>')
+        # AV1 first (sharp at a small size); a same-name _h264.mp4, if present, for browsers without AV1
+        av1_type = 'video/mp4; codecs="av01.0.05M.08"'
+        sources = f"<source src=\"{esc(hero_src)}\" type='{av1_type}'>"
+        fallback = re.sub(r"\.mp4$", "_h264.mp4", meta["hero"])
+        if fallback != meta["hero"] and os.path.exists(fallback):
+            sources += f'<source src="{esc(re.sub(r"[.]mp4$", "_h264.mp4", hero_src))}" type="video/mp4">'
+        hero_img = (f'<video class="cover-img" poster="{esc(poster)}" '
+                    f'autoplay muted loop playsinline aria-hidden="true">{sources}</video>')
     else:
         hero_img = (f'<img class="cover-img" src="{esc(hero_src)}" alt="" '
                     f'onerror="this.closest(\'.cover\').classList.add(\'no-img\');this.remove()">') if hero_src else ""
