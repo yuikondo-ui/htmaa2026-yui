@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Week 7 — input devices — Yui Kondo</title>
+<title>Week 7 — input device — Yui Kondo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wdth,wght@1,125,900&family=Geist:wght@100..900&family=Geist+Mono:wght@400..600&family=Inter+Tight:wght@100..900&display=swap" rel="stylesheet">
@@ -27,9 +27,9 @@
 
 <main class="project">
   <section class="cover">
-    <img class="cover-img" src="../img/week07/hero.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
-    <div class="cover-title" data-title="INPUT DEVICES" aria-hidden="true"><span>INPUT DEVICES</span></div>
-    <h2 class="cover-label">Week 7<span class="sr">: INPUT DEVICES</span></h2>
+    <img class="cover-img" src="../img/week07/img_8216.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
+    <div class="cover-title" data-title="INPUT DEVICE" aria-hidden="true"><span>INPUT DEVICE</span></div>
+    <h2 class="cover-label">Week 7<span class="sr">: INPUT DEVICE</span></h2>
     <div class="cover-strip" aria-label="Yui Kondo — MIT Media Lab, 2026">
       <div class="strip-track"><div class="strip-group"><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span></div><div class="strip-group"><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span><span class="strip-item"><a href="../index.html">Yui Kondo</a><span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, 2026</span></div></div>
     </div>
@@ -38,28 +38,173 @@
   <div class="project-body">
     <aside class="toc">
   <div class="toc-inner">
-    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#process">Process</a></li><li class="lvl3"><a href="#step-one">Step one</a></li><li class="lvl3"><a href="#step-two">Step two</a></li><li class="lvl2"><a href="#what-i-learned">What I learned</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
+    <ul><li class="lvl2"><a href="#assignment">Assignment</a></li><li class="lvl2"><a href="#what-i-made">What I made</a></li><li class="lvl2"><a href="#process">Process</a></li><li class="lvl3"><a href="#schematic">Schematic</a></li><li class="lvl3"><a href="#pcb-layout">PCB layout</a></li><li class="lvl3"><a href="#milling-on-the-carvera">Milling on the Carvera</a></li><li class="lvl3"><a href="#reading-the-sensor">Reading the sensor</a></li><li class="lvl3"><a href="#next-steps-from-touch-to-pressure">Next steps: from touch to pressure</a></li><li class="lvl3"><a href="#case">Case</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li><li class="lvl2"><a href="#files">Files</a></li></ul>
   </div>
 </aside>
     <article class="content">
 <h2 id="assignment">Assignment</h2>
-<p>What this week asked for, in a sentence or two.</p>
+<p>Measure something: add a sensor to a microcontroller board that I designed and read it.</p>
 <h2 id="what-i-made">What I made</h2>
-<p>Describe the outcome. Put the main photo first:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Main result" src="../img/week07/hero.jpg" /></figure>
+<p>I designed and milled a small XIAO RP2040 board that reads a copper electrode with step response (capacitive sensing) and drives an LED with four brightness steps. Touching the bare copper works. Through 3 mm of acrylic it does not.</p>
+<div class="cols">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" src="../img/week07/img_8216.jpg" alt="The soldered XIAO board wired to a copper plate electrode with a small LED module on it, a hand resting on the plate" style="width:100%;aspect-ratio:3/4;object-fit:cover"><figcaption>The board, the copper electrode and the LED module.</figcaption></figure>
+<figure>
+<video controls="controls" loop="loop" muted="muted" playsinline="playsinline" preload="metadata" src="../img/week07/img_8191.mp4" style="width:100%;aspect-ratio:3/4;object-fit:cover;background:#000"></video>
+<figcaption>Touching the copper changes the LED brightness.</figcaption>
+</figure>
+</div>
+<p>This connects to my final project, a sculpture of my "digital self": a body made of triangular panels, where each panel stands for one thing an AI infers about me. When you press a triangle, that inference dims or disappears (100 → 60 → 25 → 0 %).</p>
 <h2 id="process">Process</h2>
-<h3 id="step-one">Step one</h3>
-<p>Walk through what you did. Inline images are fine anywhere:</p>
-<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Work in progress" src="../img/week07/01.jpg" /></figure>
-<h3 id="step-two">Step two</h3>
-<p>Code blocks render too:</p>
-<pre><code class="language-python">print(&quot;hello, week 08&quot;)
-</code></pre>
-<h2 id="what-i-learned">What I learned</h2>
-<p>Reflections, mistakes, what you'd do differently.</p>
+<h3 id="schematic">Schematic</h3>
+<p>My first schematic had eight touch electrodes (T1–T8) on a 2×8 header. I simplified it to one electrode and one LED, so I could test whether sensing through acrylic works at all before making eight of them.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="First KiCad schematic with eight touch inputs on a XIAO RP2040" src="../img/week07/sch_v1_8touch.jpg" /><figcaption>First version: eight electrodes.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Simplified KiCad schematic: one touch input, one LED with a 100 Ω resistor" src="../img/week07/ss_1102_55703.jpg" /><figcaption>Final version: one electrode and one LED.</figcaption></figure>
+</div>
+<table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>Part</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1</td>
+<td>XIAO RP2040 (Fab module)</td>
+<td>Microcontroller</td>
+</tr>
+<tr>
+<td>J1</td>
+<td>1×1 pin header</td>
+<td>D0 → copper electrode (touch)</td>
+</tr>
+<tr>
+<td>J2</td>
+<td>1×2 pin header</td>
+<td>D8 → LED inside the panel, and GND</td>
+</tr>
+<tr>
+<td>R1</td>
+<td>100 Ω (1206)</td>
+<td>LED resistor</td>
+</tr>
+</tbody>
+</table>
+<p>ERC first complained that the power pins were not driven. Adding power flags fixed it.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad electrical rules check window with the power pin error" src="../img/week07/ss_1102_55739_c.jpg" /><figcaption>ERC: "Input Power pin not driven by any Output Power pins".</figcaption></figure>
+<h3 id="pcb-layout">PCB layout</h3>
+<p>I set the net classes (track width and clearance) in Board Setup, placed the footprints and routed the board. DRC still showed warnings about the silkscreen and text height, which do not matter for milling.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad Board Setup with the net class track widths" src="../img/week07/ss_1102_61105.jpg" /><figcaption>Board Setup: net classes.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The routed board in KiCad" src="../img/week07/pcb_routed.jpg" /><figcaption>Routed board.</figcaption></figure>
+</div>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="KiCad design rules check window" src="../img/week07/drc.jpg" /><figcaption>DRC.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="3D view of the board with the XIAO and two headers" src="../img/week07/pcb_3d.jpg" /><figcaption>3D view.</figcaption></figure>
+</div>
+<h3 id="milling-on-the-carvera">Milling on the Carvera</h3>
+<p>I exported F.Cu and Edge.Cuts as PNG and made the toolpaths in mods.</p>
+<div class="cols natural medium">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="mods PNG export settings" src="../img/week07/mods.jpg" /><figcaption>Exporting the PNG for mods.</figcaption></figure>
+</div>
+<p>The first boards had thin copper strips left between the traces. One side also came out badly because the board was lifted, so I taped the whole back and used auto-leveling. I also learned to export F.Cu and Edge.Cuts with the same settings, otherwise the outline does not line up.</p>
+<div class="cols natural narrow">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The milled touch board held between two fingers" src="../img/week07/img_8185.jpg" /><figcaption>The milled board.</figcaption></figure>
+</div>
+<h3 id="reading-the-sensor">Reading the sensor</h3>
+<p>The code reads the electrode with the XIAO's internal pull-up (step response): it charges the pin and counts how long it takes to read HIGH, averaged over 32 samples. It keeps a slowly moving baseline, and each new touch moves the LED to the next brightness step.</p>
+<figure><video src="../img/week07/serial_touch.mp4" controls muted loop playsinline preload="metadata" style="width:100%;max-width:640px;display:block;margin:0 auto;background:#000"></video><figcaption>Serial monitor: raw value, baseline, threshold and LED level.</figcaption></figure>
+
+<table>
+<thead>
+<tr>
+<th>Setup</th>
+<th>Untouched</th>
+<th>Touched</th>
+<th>Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Copper only</td>
+<td>27–28 (noise 27–34)</td>
+<td>about 60</td>
+<td>+32</td>
+</tr>
+<tr>
+<td>Through 3 mm acrylic</td>
+<td>34</td>
+<td>37</td>
+<td>+3</td>
+</tr>
+</tbody>
+</table>
+<p>On bare copper a touch is very clear. The acrylic alone raises the baseline (27 → 34), and through it the change is only +3, the same size as the noise. So with this setup I cannot detect a touch through 3 mm of acrylic. The next step for touch is an external 1 MΩ resistor from a send pin (D10), which should make the measurement more sensitive.</p>
+<h3 id="next-steps-from-touch-to-pressure">Next steps: from touch to pressure</h3>
+<p>Then I decided to try it on the 64×64 LED matrix (Adafruit 4732, 192 mm) from week 5: a frosted acrylic plate floats in front of the matrix, and you press it. I planned to use <strong>transmit-receive step response</strong>, but I didn't have time to build it yet. Here is the plan:</p>
+<ul>
+<li>A copper ring on the back of the acrylic plate is the transmitter (TX), one wire for all corners.</li>
+<li>Each corner has a copper pad (RX) on a 3D-printed post, with 3 mm of soft foam on top.</li>
+<li>Pressing squeezes the foam, the TX–RX gap gets smaller and the signal gets bigger.</li>
+<li>The corner with the largest reading picks one of 4 zones, and the sum of the four readings gives 4 press levels.</li>
+</ul>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Diagram: four copper electrodes under the corners of the plate, the cross-section at one corner, and the four press levels" src="../img/week07/press_4levels_stepresponse.jpg" /><figcaption>4 zones × 4 press levels.</figcaption></figure>
+<h3 id="case">Case</h3>
+<p>I designed a case for the matrix and the sensor and printed it on the Prusa MK4S.</p>
+<div class="cols natural">
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Cross-section at one corner of the case" src="../img/week07/section.jpg" /><figcaption>One corner: bezel, acrylic, foam and electrodes, spacer, matrix.</figcaption></figure>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Back cover and easel foot" src="../img/week07/back_cover_preview.jpg" /><figcaption>Back cover for the wiring, and the foot that leans it back 15°.</figcaption></figure>
+</div>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Size (mm)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Body</td>
+<td>208 × 208 × 50</td>
+<td>holds the matrix on a 3 mm lip</td>
+</tr>
+<tr>
+<td>Spacer</td>
+<td>195 × 195 × 25</td>
+<td>white, so it reflects the light; the four corner posts hold the electrodes</td>
+</tr>
+<tr>
+<td>Bezel</td>
+<td>208 × 208 × 3</td>
+<td>keeps the plate from falling out, with 1 mm of play so it can sink</td>
+</tr>
+<tr>
+<td>Back cover</td>
+<td>208 × 208 × 33</td>
+<td>wiring, driver board, cable exit at the bottom</td>
+</tr>
+<tr>
+<td>Acrylic</td>
+<td>190 square + 194/168 ring</td>
+<td>3 mm, laser cut</td>
+</tr>
+</tbody>
+</table>
+<p>Printing notes: the 208 mm parts only just fit the 210 mm bed, so only an inner brim works. The first spacer print shook and lifted, so I slowed it down (gyroid infill, outer walls 60 mm/s, acceleration 2500, fan 40–70 %).</p>
+<h2 id="use-of-ai">Use of AI</h2>
+<p>I used Claude to answer KiCad questions, check my milling jobs, write the Arduino code, design the case (as Python scripts that output STLs), slice the G-code, and draw the illustrations and the sensing schematic. Claude also turned my notes and photos into this page. The board design, milling, soldering, measurements and the direction of the project are my own.</p>
 <h2 id="files">Files</h2>
 <ul>
-<li><a href="../files/week07/">Design files</a> — CAD, code, exports</li>
+<li><a href="../files/week07/input_device_kicad/">KiCad project and Gerbers</a></li>
+<li><a href="../files/week07/touch_panel.ino">touch_panel.ino</a> — one-electrode touch with 4 LED steps</li>
+<li><a href="../files/week07/txrx_test_1ch.ino">txrx_test_1ch.ino</a> — first tx/rx test with one electrode pair</li>
+<li><a href="../files/week07/cap_press_4zone.ino">cap_press_4zone.ino</a> — 4 zones × 4 press levels</li>
+<li><a href="../files/week07/cap_press_xy.ino">cap_press_xy.ino</a> — x/y version</li>
+<li><a href="../files/week07/cap4-schematic.svg">Sensing schematic (SVG)</a></li>
+<li><a href="../files/week07/case/">Case STLs and acrylic SVG</a></li>
 </ul>
     </article>
   </div>
