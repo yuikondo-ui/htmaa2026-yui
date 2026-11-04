@@ -27,7 +27,7 @@
 
 <main class="project">
   <section class="cover">
-    <img class="cover-img" src="../img/week00/doll-facets.jpg" alt="" onerror="this.closest('.cover').classList.add('no-img');this.remove()">
+    <video class="cover-img" src="../img/final/final_teaser.mp4" poster="../img/final/final_teaser.jpg" autoplay muted loop playsinline aria-hidden="true"></video>
     <div class="cover-title" data-title="FINAL PROJECT PROPOSAL &amp; LOG" aria-hidden="true"><span>FINAL PROJECT PROPOSAL &amp; LOG</span></div>
     <h2 class="cover-label">Week 0<span class="sr">: FINAL PROJECT PROPOSAL &amp; LOG</span></h2>
     <div class="cover-strip" aria-label="Yui Kondo — MIT Media Lab, 2026">
@@ -38,7 +38,7 @@
   <div class="project-body">
     <aside class="toc">
   <div class="toc-inner">
-    <ul><li class="lvl2"><a href="#overview">Overview</a></li><li class="lvl2"><a href="#week-0-concept">Week 0: Concept</a></li><li class="lvl3"><a href="#algorithmic-mirror">Algorithmic Mirror</a></li><li class="lvl3"><a href="#from-mirror-to-clothes">From mirror to clothes</a></li><li class="lvl3"><a href="#sketch-and-inspiration">Sketch and inspiration</a></li><li class="lvl2"><a href="#week-1-modular-clothes-laser-cutting">Week 1: Modular clothes (laser cutting)</a></li><li class="lvl2"><a href="#week-2-a-map-of-poetry-words-embedded-programming">Week 2: A map of poetry words (embedded programming)</a></li><li class="lvl2"><a href="#week-3-body-sculpture-3d-printing">Week 3: Body sculpture (3D printing)</a></li><li class="lvl3"><a href="#exploring-shapes">Exploring shapes</a></li><li class="lvl3"><a href="#projection-mapping">Projection mapping?</a></li><li class="lvl3"><a href="#making-it-personal-data-processing">Making it personal (data processing)</a></li><li class="lvl3"><a href="#whom-do-we-present-our-digital-selves-to">Whom do we present our digital selves to?</a></li><li class="lvl2"><a href="#week-4-led-lights-electronics-design">Week 4: LED lights (electronics design)</a></li></ul>
+    <ul><li class="lvl2"><a href="#overview">Overview</a></li><li class="lvl2"><a href="#prototypes">Prototypes</a></li><li class="lvl2"><a href="#open-questions">Open questions</a></li><li class="lvl2"><a href="#week-0-concept">Week 0: Concept</a></li><li class="lvl3"><a href="#algorithmic-mirror">Algorithmic Mirror</a></li><li class="lvl3"><a href="#from-mirror-to-clothes">From mirror to clothes</a></li><li class="lvl3"><a href="#sketch-and-inspiration">Sketch and inspiration</a></li><li class="lvl2"><a href="#week-1-modular-clothes-laser-cutting">Week 1: Modular clothes (laser cutting)</a></li><li class="lvl2"><a href="#week-2-a-map-of-poetry-words-embedded-programming">Week 2: A map of poetry words (embedded programming)</a></li><li class="lvl2"><a href="#week-3-body-sculpture-3d-printing">Week 3: Body sculpture (3D printing)</a></li><li class="lvl3"><a href="#exploring-shapes">Exploring shapes</a></li><li class="lvl3"><a href="#projection-mapping">Projection mapping?</a></li><li class="lvl3"><a href="#making-it-personal-data-processing">Making it personal (data processing)</a></li><li class="lvl3"><a href="#whom-do-we-present-our-digital-selves-to">Whom do we present our digital selves to?</a></li><li class="lvl2"><a href="#week-4-5-led-lights-electronics-design-production">Week 4 &amp;amp; 5: LED lights (electronics design / production)</a></li><li class="lvl2"><a href="#week-6-exploring-the-shape-of-the-sculpture">Week 6: Exploring the shape of the sculpture</a></li><li class="lvl2"><a href="#week-7-input-devices">Week 7: Input devices</a></li><li class="lvl2"><a href="#use-of-ai">Use of AI</a></li></ul>
   </div>
 </aside>
     <article class="content">
@@ -46,7 +46,479 @@
 <p>They are watching us. Big Data analytics and artificial intelligence (AI) draw non-intuitive and unverifiable inferences and predictions about the behaviors, preferences, and private lives of individuals. These inferences draw on highly diverse and feature-rich data of unpredictable value, and create new opportunities for discriminatory, biased, and invasive decision-making. Yet we are behind a one-way mirror: these inferences are not accessible or shown to us. <a href="https://journals.library.columbia.edu/index.php/CBLR/article/view/3424">(Wachter, 2019)</a> What does it mean to make a choice when the options have been so carefully arranged for us in an invisible way? Is personal freedom possible on the Internet? <a href="https://www.kylechayka.com/filterworld">(Chayka, 2024)</a></p>
 <p>I propose that we need a shield between us and AI. Right now our digital body is exposed. Just as we wear clothes to present chosen facets of ourselves, we also need clothes in the digital world. The sculpture represents your digital body, built from the traces you leave on platforms like YouTube, TikTok, Claude and elsewhere. A language model reads those traces and turns them into inferences: demographics, behavior, relationships, goals, interests, and the sensitive ones in between. Each inference becomes one panel of a modular shell around a body.</p>
 <p>Undressed, the sculpture tells everything it knows about you. Put a piece of clothing on it and it speaks only from the facets you chose to show; take the clothing off and the rest comes back. Assembling and disassembling a sculpture made of your own data lets you think about this with your hands: what to show, what to hide, and to whom.</p>
-<p><a href="../files/week00/data-barbie.html">Prototype v1 ↗</a> (Sep 25 2026)</p>
+<h2 id="prototypes">Prototypes</h2>
+<p><a href="../files/week00/acrylic-data-body.html">Prototype v2 ↗</a> (Nov 2 2026): Digital Mirror</p>
+<div class="embed"><div class="embed-bar"><span class="embed-title">Digital Mirror, prototype v2</span><a class="embed-open" href="../files/week00/acrylic-data-body.html" target="_blank" rel="noopener">Open in new tab ↗</a></div><iframe src="../files/week00/acrylic-data-body.html" loading="lazy" title="Digital Mirror, prototype v2"></iframe><details class="src"><summary>Source <span class="muted">acrylic-data-body.html · 469 lines</span></summary><pre><code>&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=utf8&gt;&lt;meta name=viewport content=&quot;width=device-width,initial-scale=1,viewport-fit=cover&quot;&gt;&lt;style&gt;:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;title&gt;Acrylic Data Body&lt;/title&gt;
+&lt;meta name=&quot;claude:viewport-fit-sides&quot; content=&quot;cover&quot;&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap&quot;&gt;
+&lt;style&gt;
+/* Layout: one dark gallery room — sculpture + projected wall fill the stage; a thin control rail and inference list sit below */
+:root{
+  --room:#07080b; --rail:#101218; --line:#262a35; --ink:#e9ecf3; --mute:#8a90a0;
+  --glow:#cfe2ff; --warn:#ffb648;
+  --display:&quot;ABC Diatype Variable&quot;,&quot;Geist&quot;,Helvetica,Arial,sans-serif;
+  --mono:&quot;Geist Mono&quot;,ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%;background:var(--room);color:var(--ink)}
+body{font-family:var(--display);font-size:14px;line-height:1.5}
+.wrap{display:flex;flex-direction:column;min-height:100%}
+.stage{position:relative;height:min(78vh,820px);min-height:420px;background:var(--room)}
+#c{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.hud{position:absolute;top:14px;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));display:flex;justify-content:space-between;gap:12px;pointer-events:none;flex-wrap:wrap}
+.hud h1{font-size:15px;font-weight:700;letter-spacing:.04em;margin:0}
+.hud p{margin:2px 0 0;color:var(--mute);font-size:12px;max-width:42ch}
+.count{font-family:var(--mono);font-size:12px;color:var(--mute);text-align:right;font-variant-numeric:tabular-nums}
+.count b{display:block;font-size:26px;color:var(--ink);font-weight:500;line-height:1.1}
+.syn{position:absolute;bottom:30px;left:0;right:0;text-align:center;pointer-events:none;padding-inline:max(16px,env(safe-area-inset-left,0px))}.syn p{margin:2px auto;max-width:70ch;font-size:13px;color:var(--ink);text-shadow:0 0 8px #000,0 0 2px #000}.syn #leakline{color:var(--warn)}
+.hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;color:var(--mute);font-size:12px;pointer-events:none;padding-inline:16px}
+.rail{background:var(--rail);border-top:1px solid var(--line);padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-wrap:wrap;gap:18px 28px;align-items:center}
+.grp{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button,.btn{font:inherit;font-size:13px;background:transparent;color:var(--ink);border:0;padding:6px 12px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed=&quot;true&quot;]{background:var(--ink);color:var(--room)}
+.btn{border:1px solid var(--line);border-radius:6px}
+button:focus-visible{outline:2px solid var(--glow);outline-offset:2px}
+.list{padding-block:18px 28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 18px}
+.list h2{grid-column:1/-1;font-size:13px;font-weight:700;margin:0 0 6px;color:var(--mute)}
+.inf{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;color:var(--ink);font:inherit;text-align:left;padding:5px 0;cursor:pointer;border-bottom:1px solid var(--line)}
+.inf .meter{flex:none;width:28px;height:6px;border-radius:3px;background:var(--line);position:relative;overflow:hidden}
+.inf .meter i{position:absolute;inset:0 auto 0 0;background:var(--glow)}
+.inf .t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.inf .t small{color:var(--mute);margin-right:6px}
+.inf.sens .t small{color:#ff5a5a}
+.inf.off .t{color:var(--mute);text-decoration:line-through}
+.inf.leak .t::after{content:&quot;  still inferred&quot;;color:var(--warn);font-size:11px}
+input[type=range]{accent-color:var(--glow);width:120px}
+.note{grid-column:1/-1;color:var(--mute);font-size:12px;margin-top:10px}
+&lt;/style&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;canvas id=&quot;c&quot; aria-label=&quot;Acrylic data body. Click a panel to change its brightness.&quot;&gt;&lt;/canvas&gt;
+    &lt;div class=&quot;hud&quot;&gt;
+      &lt;div&gt;&lt;h1&gt;Acrylic Data Body&lt;/h1&gt;&lt;p&gt;About 950 clear acrylic panels, 32 touch zones. Lit inferences are part of your digital body. The wall behind shows the data each inference was made from, in two views.&lt;/p&gt;&lt;/div&gt;
+      &lt;div class=&quot;count&quot;&gt;&lt;b id=&quot;cnt&quot;&gt;32 / 32&lt;/b&gt;inferences in your body&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;syn&quot;&gt;&lt;p id=&quot;syn&quot;&gt;&lt;/p&gt;&lt;p id=&quot;leakline&quot; hidden&gt;&lt;/p&gt;&lt;/div&gt;
+    &lt;div class=&quot;hint&quot;&gt;Touch (click) the body to change its brightness · Drag to turn the sculpture (the wall stays fixed)&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;rail&quot;&gt;
+    &lt;div class=&quot;grp&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;Steps&lt;/span&gt;&lt;div class=&quot;seg&quot; id=&quot;mode&quot;&gt;&lt;button data-v=&quot;2&quot; aria-pressed=&quot;false&quot;&gt;2 · on/off&lt;/button&gt;&lt;button data-v=&quot;4&quot; aria-pressed=&quot;true&quot;&gt;4&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class=&quot;grp&quot;&gt;&lt;label class=&quot;lbl&quot; for=&quot;diff&quot;&gt;Wall spread&lt;/label&gt;&lt;input type=&quot;range&quot; id=&quot;diff&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;70&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;grp&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;Rotate&lt;/span&gt;&lt;div class=&quot;seg&quot; id=&quot;rot&quot;&gt;&lt;button data-v=&quot;1&quot; aria-pressed=&quot;true&quot;&gt;Auto&lt;/button&gt;&lt;button data-v=&quot;0&quot; aria-pressed=&quot;false&quot;&gt;Stop&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class=&quot;grp&quot;&gt;&lt;span class=&quot;lbl&quot;&gt;Wall&lt;/span&gt;&lt;div class=&quot;seg&quot; id=&quot;wall&quot;&gt;&lt;button data-v=&quot;net&quot; aria-pressed=&quot;true&quot;&gt;Network&lt;/button&gt;&lt;button data-v=&quot;dt&quot; aria-pressed=&quot;false&quot;&gt;Datatron&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;button class=&quot;btn&quot; id=&quot;reset&quot;&gt;Light everything&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;list&quot; id=&quot;list&quot;&gt;&lt;h2&gt;Inferences (fictional examples) — click to change&lt;/h2&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+const BODY={&quot;v&quot;:[-51.17,-1.02,9.8,-52.45,1.34,2.08,-52.44,2.57,8.79,-50.47,8.26,2.62,-48.37,2.89,9.04,-50.76,-0.25,2.84,-45.51,3.68,11.45,-44.46,14.23,-0.62,-42.87,7.05,10.39,-47.01,12.1,7.26,-43.69,6.87,4.08,-41.2,10.39,6.68,-42.74,15.29,6.15,-41.84,10.62,-1.07,-40.12,20.9,-1.97,-36.13,17.75,4.32,-37.46,18.68,-5.1,-33.84,26.4,-5.12,-39.12,20.29,2.07,-30.56,31.25,0.14,-37.37,13.65,-0.64,-31.22,20.82,-5.89,-27.9,30.06,-8.28,-29.34,24.46,1.64,-27.0,-55.11,-2.46,-26.85,-64.24,2.31,-27.41,-65.34,-3.52,-26.14,-48.34,-1.56,-25.07,38.97,-7.03,-22.99,-66.45,5.3,-24.46,-42.01,1.7,-24.93,-38.12,-2.12,-23.32,-60.51,6.46,-23.02,-49.78,5.59,-22.36,33.24,2.38,-23.35,-29.61,2.84,-21.54,44.46,-3.76,-23.02,-61.44,-10.3,-22.82,-21.31,2.91,-22.45,29.79,-7.29,-23.47,-28.59,-4.04,-20.75,-42.36,-11.41,-22.51,-12.11,-0.49,-23.02,-20.3,-3.89,-22.37,-33.94,-8.32,-28.02,21.81,-2.39,-21.28,-3.15,-2.46,-17.2,-60.24,12.72,-21.47,-40.35,6.73,-19.4,-31.25,8.82,-21.44,-8.51,2.43,-23.14,-66.08,-6.77,-18.79,30.75,-3.53,-19.86,-13.02,-9.77,-17.52,-19.7,9.79,-19.53,4.65,2.76,-19.78,6.08,-3.33,-21.16,-65.66,-12.8,-20.48,-24.75,-9.62,-19.48,-17.37,-12.01,-19.0,15.25,-3.69,-18.3,-4.5,-7.48,-21.42,-29.73,-9.85,-20.67,-53.47,-13.09,-18.33,-5.54,6.93,-17.62,34.26,0.49,-20.5,43.6,0.11,-18.61,13.96,2.31,-19.84,-65.56,3.04,-17.15,29.08,-2.1,-18.04,-65.92,10.9,-18.69,-47.88,10.73,-16.78,24.63,-7.24,-14.09,-65.7,-14.46,-17.29,-5.46,-11.24,-16.29,-62.39,-15.14,-17.41,23.78,2.11,-17.53,36.52,-9.41,-15.96,-22.78,-13.75,-15.7,-53.88,13.85,-16.12,-24.53,12.76,-17.47,50.15,-6.56,-17.34,44.59,-9.75,-15.74,7.34,-10.54,-15.0,7.67,8.99,-15.79,16.43,6.5,-14.85,25.2,6.18,-15.7,18.88,-9.86,-14.47,-36.13,14.79,-16.34,39.54,2.5,-12.55,47.76,4.63,-14.76,-32.67,-15.72,-13.21,-14.48,13.66,-14.52,-74.53,7.28,-14.4,-69.82,14.79,-14.91,-75.03,15.02,-16.94,50.39,-0.57,-14.48,41.4,-10.03,-14.71,33.59,-10.07,-11.84,4.99,12.14,-14.5,-70.69,6.93,-8.36,-6.66,-16.21,-12.67,-29.38,-17.08,-11.78,-5.15,13.39,-10.42,-75.21,-3.91,-12.52,-71.15,-4.35,-11.85,48.14,-11.53,-11.22,7.55,-14.29,-11.9,-57.2,15.62,-11.1,14.86,11.13,-11.82,-65.65,-0.14,-11.04,-65.77,-5.59,-11.97,-3.74,-14.21,-14.73,-11.94,-14.11,-11.19,-36.65,-17.21,-10.22,-64.33,15.24,-10.81,-34.89,15.77,-11.35,41.96,7.71,-10.05,20.01,-13.71,-10.26,-66.2,7.49,-11.13,27.43,9.62,-7.84,-68.08,12.9,-7.08,53.19,1.2,-10.71,-72.6,-7.9,-11.41,-19.91,15.29,-6.52,-70.91,15.52,-6.93,2.36,14.07,-6.8,54.3,-5.8,-8.08,39.69,-13.34,-6.67,-74.85,15.16,-7.13,11.44,12.77,-6.99,61.54,4.98,-7.28,69.98,5.04,-8.28,65.47,-0.71,-5.25,-73.54,-8.18,-6.1,-65.75,-7.49,-7.68,29.4,-13.66,-8.69,-21.87,-17.23,-5.99,33.7,10.69,-6.92,-75.16,4.34,-3.42,50.58,5.48,-5.85,56.24,-0.41,-10.14,-46.18,-17.19,-4.27,-75.3,-2.57,-3.2,47.56,-12.64,-3.33,24.25,-14.02,-6.14,7.64,-15.81,-5.19,-74.89,10.45,-3.92,65.74,9.9,-4.43,55.04,3.69,-6.79,-66.17,5.5,-5.79,67.34,-5.7,-5.43,0.55,-15.87,-7.63,-7.18,14.87,-5.81,23.92,11.45,-5.7,-65.28,6.07,-3.95,55.75,-6.31,-3.23,-71.32,6.84,-0.25,-66.13,-1.4,-6.35,72.7,-2.52,-15.69,-48.04,-15.16,-0.45,16.82,-14.77,-1.56,72.07,8.68,-3.95,74.48,4.2,1.87,42.22,-13.8,-0.43,-64.78,9.77,-2.73,44.94,8.56,-0.51,-70.13,3.22,-0.41,-5.87,12.88,-2.3,57.13,10.33,0.01,53.84,8.15,-3.12,-71.73,1.94,-0.34,57.86,-6.96,-0.18,74.71,-4.62,-0.22,11.47,12.19,2.49,58.97,10.26,-0.99,14.51,12.38,3.03,50.28,5.44,2.26,74.72,4.59,-0.52,-73.03,-3.23,-0.44,-65.38,-13.43,0.41,12.88,-14.46,-0.3,-66.43,-2.82,-0.21,69.18,-8.88,0.95,49.86,-11.26,-11.14,-18.87,-16.54,6.51,-7.34,14.9,4.66,65.68,8.7,1.6,68.9,10.23,4.92,-66.94,4.15,5.31,54.61,-6.82,5.91,-6.53,-15.88,0.46,-61.5,15.61,5.82,3.7,13.98,2.2,-71.34,6.17,-0.07,40.75,10.42,4.64,-72.26,-8.3,5.66,16.21,12.28,5.12,27.58,11.15,2.5,54.06,4.92,3.04,-72.07,2.38,5.56,72.77,-1.83,3.41,56.89,-5.42,0.16,-63.03,-15.11,-0.51,-1.42,-14.66,6.61,-7.85,-16.54,5.16,-72.91,15.52,6.91,-65.17,8.31,4.95,55.96,-1.06,4.68,-65.73,-7.1,3.9,27.22,-13.95,5.62,4.95,-15.94,6.57,-33.17,16.45,4.3,-30.69,15.67,7.19,-66.54,8.11,6.5,70.13,4.74,7.15,61.14,1.04,5.48,68.18,-5.36,6.46,23.11,-14.33,5.69,-75.31,13.19,9.92,37.25,9.0,2.74,-75.32,-4.04,7.81,66.48,1.35,7.86,52.34,1.36,9.94,18.26,-13.52,7.45,-68.75,15.04,6.52,-75.21,4.42,10.88,-2.88,13.25,9.75,-65.99,5.56,7.61,-22.04,-17.24,8.97,-64.32,15.22,11.24,-56.0,15.56,9.08,-75.22,-5.81,9.01,-46.18,-17.19,10.55,6.41,-14.43,11.0,-20.26,15.35,14.81,-65.55,12.41,10.91,-65.79,-0.34,10.09,-65.71,-6.12,6.59,36.89,-13.61,10.8,47.9,-11.67,13.77,-10.8,-14.15,13.78,-70.05,15.14,10.87,-71.51,-7.52,14.43,32.82,-9.77,13.47,-65.7,-14.47,10.66,-6.89,-15.14,11.21,6.69,12.02,9.78,15.93,11.24,16.47,50.39,-1.12,10.68,-33.26,-17.2,11.06,-36.0,15.65,11.97,-11.48,13.62,14.56,24.32,5.8,10.49,27.57,9.52,15.28,39.86,2.61,12.8,-70.03,2.37,14.59,17.22,-10.21,14.8,-74.65,15.14,14.73,-30.97,13.4,11.14,47.18,5.51,15.58,1.33,-10.81,13.47,-74.57,6.11,14.86,11.3,7.67,11.32,-20.19,-16.46,15.79,-61.56,13.32,14.86,-23.51,13.12,16.86,-8.46,8.27,15.84,1.09,8.17,15.05,-46.59,13.87,16.73,35.9,1.37,16.35,35.86,-9.31,18.38,9.8,2.54,16.36,31.33,0.69,16.62,50.18,-6.72,15.36,-38.97,13.94,17.19,23.87,1.0,14.93,-47.75,-15.17,17.98,-19.56,8.47,17.61,19.18,-4.33,16.12,6.39,-8.6,14.46,46.04,-10.01,15.59,-64.69,-15.08,20.49,-51.82,-12.42,18.75,-2.98,4.75,19.12,43.93,0.49,18.76,9.99,-3.93,17.67,31.89,-4.78,18.15,-5.67,-6.74,16.82,-6.45,-11.38,18.75,-16.6,-11.7,14.86,-34.12,-15.3,19.69,-65.92,8.8,17.92,-49.54,10.96,18.54,31.07,-2.14,19.99,-25.01,-9.76,20.81,-9.86,2.56,21.09,44.54,-4.76,20.59,-65.84,-12.73,19.5,-44.98,-11.92,21.68,-39.9,5.87,22.76,-31.09,3.74,22.11,-65.89,-7.43,19.94,-0.57,-2.92,20.61,-8.75,-4.73,21.38,-17.11,3.4,24.34,34.23,1.6,22.4,-56.79,6.16,22.11,-18.16,-2.9,22.66,35.63,-9.29,22.92,-23.76,-0.02,22.07,29.81,-7.43,23.42,-34.19,-4.11,21.27,-37.13,-9.07,25.73,-55.78,1.3,24.04,-39.31,0.61,21.26,-60.77,-12.28,21.21,32.36,1.67,26.99,22.32,-2.85,25.22,-64.51,3.94,25.62,-66.15,0.52,28.73,24.73,1.53,24.25,39.51,-6.78,25.39,-49.86,-2.88,27.14,-64.03,-3.05,31.01,28.03,1.36,28.77,24.36,-7.01,28.27,29.78,-8.06,30.36,20.44,-5.6,36.3,13.72,-1.44,29.69,31.59,-0.64,33.87,25.37,-5.24,34.59,18.1,3.84,36.68,19.27,-5.33,40.3,9.9,6.3,37.79,20.82,2.06,43.18,15.98,0.12,39.78,16.19,5.67,43.66,15.32,4.85,41.15,12.15,-2.0,41.77,6.06,8.63,43.65,9.89,9.66,44.99,3.49,11.6,48.39,4.8,9.34,47.23,2.87,8.4,49.22,7.73,7.74,45.71,7.07,-0.37,50.14,-0.38,2.83,50.34,-0.96,8.85,52.06,0.59,9.72,50.61,6.46,1.68,52.58,-0.06,3.94,-48.46,7.79,0.73,-47.14,5.98,0.5,-46.3,5.19,0.89,-43.57,16.5,2.65,-35.34,26.07,-0.91,-33.35,24.5,2.23,-34.84,25.77,1.11,-36.53,15.72,-3.48,-32.68,24.37,-6.69,-29.45,32.69,-6.08,-24.93,-57.01,3.95,-26.05,37.85,-1.81,-23.87,-48.74,-6.94,-24.25,-41.14,-4.94,-17.92,-12.62,8.36,-25.53,37.42,0.12,-18.08,22.16,-2.89,-21.0,-54.19,8.6,-19.05,-39.57,9.77,-16.97,-65.63,-5.71,-22.62,37.33,-9.02,-16.26,15.99,-8.89,-15.09,-45.01,14.32,-15.2,26.23,-9.96,-12.66,-75.12,5.55,-12.96,-65.67,-7.3,-13.26,-44.39,14.81,-11.36,-46.04,15.69,-13.1,33.58,6.94,-12.38,26.8,-11.89,-11.24,34.7,8.66,-12.94,-28.02,15.04,-11.11,-27.4,15.53,-9.45,3.14,13.08,-11.08,35.4,-11.85,-6.91,18.52,-14.73,-4.74,15.95,-14.91,-10.71,52.95,-6.44,-15.99,-55.22,-15.15,-15.23,-40.35,-15.44,-2.9,35.81,-13.73,-0.73,33.23,-13.91,-0.32,2.8,12.54,-8.36,-63.89,-14.28,-2.45,-13.63,15.1,-0.56,-7.26,14.88,-1.23,-6.6,-16.04,-5.18,-48.19,15.69,2.06,21.04,11.76,2.52,34.17,10.78,-8.06,-62.71,-15.13,-0.05,5.73,-14.56,-0.88,-7.25,-16.37,-2.27,-13.36,-16.54,-2.12,-34.03,16.11,-3.26,-32.79,15.72,6.04,14.03,-15.14,7.78,11.6,-14.73,-2.53,-25.71,-17.16,-1.79,-29.34,-17.22,-0.54,-21.96,-17.24,-1.26,-34.11,-17.22,-1.76,-20.45,-16.89,7.39,-75.26,3.69,-0.56,-46.18,-17.19,-3.34,-47.11,-16.17,8.31,-34.11,-17.21,0.09,-27.58,15.56,-0.21,-20.09,15.32,1.63,30.57,-13.81,12.18,25.54,-11.64,12.62,40.36,-10.72,0.12,-35.45,15.71,5.76,-48.75,15.63,11.15,-46.0,15.6,11.03,-28.13,15.5,14.51,25.02,-9.99,11.94,-74.94,4.67,15.08,9.27,-10.51,12.17,-73.04,-0.7,12.68,19.43,8.6,0.09,-19.53,-16.5,16.47,17.06,4.17,17.78,16.84,1.77,-0.68,-55.07,-15.16,-0.38,-47.9,-15.17,7.54,-55.39,-15.14,12.8,-40.51,-16.18,16.02,26.0,-7.05,7.87,-63.86,-15.1,15.26,-56.22,-15.12,13.09,-27.16,-15.88,15.93,-65.94,-0.93,18.46,-65.72,2.49,20.9,-65.9,0.69,22.07,-24.1,3.57,22.76,-26.17,-3.51,20.88,-44.48,-10.75,20.98,-44.42,5.78,24.89,-47.54,0.95,18.09,-54.26,-13.72,21.57,-57.03,7.45,24.4,-42.03,-3.5,23.33,-43.5,-5.98,23.32,-55.31,-7.58,26.26,-56.95,-2.96,24.41,37.76,-0.08,25.39,38.07,-2.7,29.06,32.44,-6.01,36.44,23.79,-0.26,38.53,20.68,-2.56,45.22,4.76,4.56,45.65,5.88,0.42,-8.0,-41.54,15.73,-2.36,-54.85,15.65,-5.7,-40.14,-17.2,3.18,-28.07,-17.23,3.87,-40.14,-17.2,3.15,-13.72,15.11,2.94,-42.1,15.67,-8.48,-58.73,-15.15,7.12,-51.41,-15.16,-8.34,-55.14,-15.15,-8.04,-47.97,-15.16,7.27,-47.82,-15.17,-8.19,-51.56,-15.16,-0.26,-59.05,-15.13],&quot;f&quot;:[0,1,2,2,1,3,5,1,0,2,4,0,9,2,3,4,5,0,2,9,4,4,10,5,6,4,9,10,4,6,9,3,7,8,6,9,12,8,9,6,8,10,12,11,8,7,13,16,10,8,11,10,11,13,15,11,12,11,20,13,14,18,12,20,11,15,7,16,14,12,18,15,14,16,17,45,20,15,45,15,23,45,21,20,34,45,23,25,26,24,21,45,39,26,25,29,33,24,30,34,23,19,30,24,27,30,27,31,21,39,22,29,25,32,51,26,29,37,24,26,30,31,35,35,31,40,51,37,26,48,30,35,35,40,38,38,40,43,31,44,40,22,39,77,33,30,48,38,43,42,52,39,45,40,58,43,58,40,62,63,24,37,51,57,37,70,29,32,48,35,49,49,35,38,42,46,50,52,45,34,42,43,53,36,28,81,44,62,40,37,57,63,71,33,48,38,42,50,68,51,29,42,53,46,47,70,32,54,38,50,52,34,65,96,66,36,46,56,55,53,74,46,53,43,59,59,43,58,57,75,63,80,49,38,38,54,80,68,29,70,46,64,50,64,46,55,65,34,89,55,56,60,61,46,74,52,77,39,91,62,44,79,47,32,89,34,66,67,55,60,61,56,46,58,78,59,160,41,63,67,60,76,81,96,36,56,83,60,56,61,83,28,82,81,73,57,51,84,55,67,69,52,65,53,59,113,53,113,74,73,75,57,84,64,55,84,67,85,76,69,65,98,52,69,52,98,77,61,74,83,77,97,82,91,44,41,91,102,62,85,67,76,85,76,86,96,90,66,98,69,72,102,58,62,95,100,94,88,49,80,54,124,80,95,93,100,86,76,65,102,78,58,47,115,70,79,108,47,124,54,92,117,65,89,112,83,74,113,112,74,115,47,108,64,103,92,103,64,84,70,110,68,66,90,89,81,82,106,113,101,112,185,78,102,59,185,113,103,84,99,85,109,84,120,85,86,89,90,117,93,105,100,97,77,98,83,112,107,99,84,109,109,85,120,119,110,70,93,104,105,97,106,82,185,59,78,114,102,91,100,119,94,119,100,110,123,105,104,100,105,110,97,128,106,83,107,87,142,114,160,125,129,95,94,125,95,105,111,110,81,127,96,105,123,111,135,73,111,121,125,94,153,92,103,94,119,121,87,107,118,153,124,92,129,139,95,154,109,120,96,122,90,185,101,113,185,102,137,126,153,103,127,122,96,123,135,111,146,107,152,112,101,152,112,152,107,138,154,120,147,139,129,70,155,119,121,119,150,123,104,134,192,115,108,109,130,99,109,154,130,155,70,115,155,150,119,117,90,166,131,133,132,143,104,139,106,128,144,107,146,118,122,140,90,131,141,133,159,132,133,133,151,159,156,106,144,140,166,90,132,159,163,151,133,141,134,104,143,134,135,123,126,168,153,125,121,157,166,138,117,131,148,169,150,157,121,148,131,132,149,141,131,127,141,122,127,156,141,176,126,130,176,130,154,157,129,125,147,129,157,165,155,115,157,139,147,140,122,149,149,122,141,141,156,151,204,152,101,132,162,148,171,139,157,139,171,143,180,73,135,149,131,169,163,162,132,158,150,155,157,150,167,179,134,143,151,183,159,164,144,128,165,115,192,174,126,176,170,149,169,159,173,163,179,143,171,156,172,151,140,149,170,167,150,158,134,182,135,134,179,182,172,183,151,172,156,184,156,144,184,146,181,161,166,195,138,171,157,167,183,173,159,164,184,144,152,204,146,138,198,154,175,169,148,188,175,148,162,188,148,175,170,169,178,162,163,199,140,170,207,158,155,173,178,163,209,135,182,209,180,135,162,178,188,207,155,165,177,140,199,200,179,171,172,184,190,230,165,192,194,171,167,200,171,194,178,173,201,172,217,183,161,210,145,197,174,176,187,175,188,166,140,177,170,175,199,209,182,196,182,179,196,183,217,173,177,195,166,167,158,189,189,158,207,202,217,172,190,202,172,181,218,161,167,189,194,221,179,200,179,221,196,194,206,219,187,188,215,178,215,188,226,200,194,226,221,200,201,173,217,238,180,209,161,218,210,168,193,186,197,193,174,230,207,165,194,219,226,175,216,199,201,215,178,204,191,211,194,225,206,189,214,194,260,195,177,175,187,216,223,177,199,223,199,208,199,216,208,202,190,208,208,216,202,202,216,217,218,239,210,203,180,245,194,214,225,189,207,214,216,187,215,208,190,223,232,196,221,190,184,240,239,240,164,227,186,193,260,220,195,222,216,215,201,222,215,217,216,222,217,222,201,240,184,164,191,234,211,248,193,197,248,197,198,254,198,220,223,260,177,232,221,226,243,196,232,209,196,238,254,248,198,243,238,196,245,180,238,246,234,191,205,246,191,231,230,192,213,251,212,219,206,258,252,186,227,228,214,207,223,190,249,225,258,206,247,227,193,247,193,248,225,214,228,241,205,264,241,246,205,242,258,225,235,186,252,236,207,230,218,244,239,225,228,242,256,228,237,246,261,234,229,250,264,231,265,230,263,247,248,238,256,237,238,243,256,240,274,190,234,257,224,275,269,251,227,267,252,236,228,207,220,270,254,260,255,220,190,274,249,275,251,259,266,259,235,236,230,265,260,223,249,264,290,241,278,235,252,256,242,228,268,227,247,268,247,263,220,255,270,285,255,260,240,281,274,246,289,261,256,258,242,262,258,256,273,253,254,271,281,244,241,289,246,264,295,290,269,293,231,266,235,278,284,267,227,273,254,270,245,238,302,293,265,231,300,269,275,252,267,278,227,268,284,276,253,273,302,238,237,273,287,244,287,271,244,259,266,278,284,268,272,263,272,268,294,273,270,279,276,273,280,279,257,289,280,261,277,299,291,319,236,265,292,236,319,300,293,269,249,285,260,294,287,273,289,288,280,241,290,289,277,283,299,296,267,284,279,286,272,280,286,279,287,311,271,281,322,274,271,309,281,299,313,291,245,298,282,275,259,300,296,278,267,255,317,270,306,255,285,317,294,270,303,272,286,274,297,249,280,303,286,288,303,280,274,322,297,289,304,288,289,290,304,302,298,245,295,291,313,259,301,300,301,259,278,255,306,317,284,272,303,303,296,284,288,304,303,311,309,271,298,316,282,296,305,278,249,297,285,290,308,304,304,296,303,287,294,311,309,322,281,308,305,296,304,308,296,295,308,290,313,312,295,308,310,305,311,327,309,298,302,316,307,293,314,300,301,315,312,301,310,312,315,301,318,311,294,319,320,292,314,319,307,302,324,316,306,321,317,324,302,320,318,326,311,309,327,322,321,294,317,326,327,311,324,319,314,324,320,319,318,294,321,328,326,318,332,318,321,325,321,306,330,325,306,328,318,329,325,332,321,318,332,329,331,326,328,327,326,331,333,331,328,330,335,325,335,332,325,328,329,333,337,332,335,334,329,332,333,329,339,334,332,337,338,337,335,335,336,338,339,329,334,334,337,341,336,333,339,340,334,341,340,341,342,338,341,337,340,342,344,347,340,344,343,342,341,338,345,341,346,336,339,343,344,342,345,343,341,336,350,338,338,350,345,346,350,336,346,347,350,347,344,348,348,344,349,349,344,343,345,349,343,351,350,347,348,349,351,351,347,348,350,349,345,351,349,350,1,352,3,352,7,3,13,354,10,354,5,10,14,355,7,355,9,7,9,355,12,355,14,12,19,356,17,356,14,17,21,359,20,359,13,20,13,359,16,359,21,16,16,360,17,360,22,17,15,357,23,357,19,23,22,360,21,360,16,21,28,361,22,361,17,22,36,363,28,363,19,28,17,361,19,361,28,19,33,362,24,362,25,24,24,364,27,364,41,27,25,362,32,362,33,32,27,365,31,365,44,31,22,372,28,372,82,28,19,367,34,367,66,34,82,372,77,372,22,77,44,365,41,365,27,41,41,364,63,364,24,63,71,369,33,369,32,33,32,369,79,369,71,79,64,366,50,366,54,50,68,371,51,371,73,51,54,366,92,366,64,92,60,368,76,368,69,76,69,368,72,368,60,72,49,370,48,370,71,48,83,373,60,373,72,60,75,390,63,390,160,63,71,370,88,370,49,88,72,373,87,373,83,87,88,374,71,374,79,71,160,391,41,391,91,41,117,380,65,380,86,65,91,391,114,391,160,114,124,383,80,383,88,80,73,377,111,377,110,111,87,375,72,375,98,72,95,376,93,376,104,93,130,385,99,385,103,99,98,381,136,381,118,136,103,385,126,385,130,126,104,376,139,376,95,139,136,386,98,386,97,98,156,389,106,389,81,106,120,382,138,382,117,138,81,389,127,389,156,127,97,386,128,386,136,128,146,387,118,387,136,118,180,395,73,395,75,73,136,392,128,392,164,128,145,388,161,388,146,161,174,394,126,394,168,126,204,403,146,403,181,146,101,398,204,398,191,204,239,421,210,421,145,210,186,397,168,397,153,168,198,400,154,400,176,154,195,401,138,401,198,138,181,403,211,403,204,211,168,394,193,394,174,193,176,400,197,400,198,197,198,401,220,401,195,220,211,408,181,408,218,181,229,418,250,418,233,250,282,441,245,441,203,245,219,415,226,415,232,226,224,409,234,409,211,234,224,422,218,422,244,218,244,423,239,423,240,239,235,427,213,427,251,213,231,426,269,426,251,269,240,423,281,423,244,281,277,439,233,439,250,233,262,431,232,431,243,232,243,431,256,431,262,256,261,430,234,430,257,234,251,427,259,427,235,259,232,429,262,429,258,262,254,432,248,432,263,248,291,443,250,443,264,250,263,432,253,432,254,253,257,430,280,430,261,280,250,439,291,439,277,291,264,443,295,443,291,295,253,434,263,434,272,263,228,444,237,444,302,237,244,440,273,440,279,273,272,435,279,435,276,279,293,453,265,453,319,265,277,452,283,452,316,283,319,453,307,453,293,307,305,447,278,447,301,278,301,447,310,447,305,310,285,458,306,458,330,306,283,449,299,449,313,299,315,450,300,450,293,300,312,448,295,448,308,295,302,446,320,446,292,320,308,448,310,448,312,310,312,454,315,454,323,315,316,456,283,456,323,283,314,451,323,451,315,323,330,459,322,459,297,322,323,457,314,457,324,314,322,460,330,460,331,330,331,460,327,460,322,327,330,461,335,461,336,335,336,462,333,462,331,333,347,463,340,463,334,340,339,464,346,464,347,346,354,13,353,352,1,353,356,19,358,358,19,357,367,19,363,377,73,371,380,117,382,378,79,374,383,124,384,381,98,375,378,116,379,387,146,388,402,75,395,406,116,407,412,229,414,393,164,392,397,186,396,411,229,410,398,101,404,393,145,421,410,229,412,407,116,419,417,233,416,405,205,404,420,124,396,433,185,414,425,251,426,424,116,406,405,185,433,408,211,409,429,232,415,428,244,422,440,244,428,435,272,434,445,302,444,452,277,442,446,302,445,459,330,458,450,315,451,455,323,454,455,313,449,457,323,456,462,336,461,463,347,464,5,354,1,7,352,13,14,356,18,18,358,357,66,367,363,110,377,371,86,380,120,116,378,88,88,383,116,118,381,87,79,378,379,136,387,145,203,402,180,212,406,213,137,412,414,145,393,136,153,397,396,114,411,102,191,398,404,164,393,239,102,410,137,213,407,419,160,417,142,185,405,101,264,433,229,192,425,231,108,379,399,233,417,437,251,424,212,205,405,433,218,408,224,258,429,219,257,428,422,279,440,428,276,435,434,236,445,228,316,452,442,292,446,445,297,459,458,293,450,451,313,455,454,323,455,449,324,457,456,331,462,461,334,463,464,354,353,1,352,353,13,356,358,18,18,357,15,66,363,36,110,371,68,380,382,120,378,374,88,383,384,116,381,375,87,79,379,108,387,388,145,402,395,180,406,407,213,137,414,185,393,392,136,153,396,124,413,411,114,411,410,102,191,404,205,393,421,239,410,412,137,213,419,235,417,416,142,405,404,101,433,414,229,425,426,231,424,406,212,205,433,264,408,409,224,429,415,219,257,422,224,279,428,257,276,434,253,445,444,228,316,442,282,292,445,236,297,458,285,293,451,314,313,454,312,323,449,283,324,456,316,331,461,330,334,464,339,235,419,420,419,116,384,420,384,124,419,384,420,203,441,438,441,282,442,438,442,277,441,442,438,413,468,411,468,229,411,116,465,379,465,399,379,160,475,417,475,437,417,142,467,114,467,413,114,420,470,235,470,186,235,186,470,396,470,420,396,399,466,108,466,192,108,437,476,233,476,277,233,413,467,416,467,142,416,418,469,233,469,416,233,229,468,418,468,413,418,416,469,413,469,418,413,438,478,203,478,402,203,277,473,438,473,436,438,436,472,402,472,75,402,402,478,436,478,438,436,425,471,251,471,424,251,192,466,425,466,399,425,399,465,424,465,116,424,424,471,399,471,425,399,473,277,476,477,437,475,472,436,474,477,390,474,436,473,437,390,477,160,75,472,390,437,477,436,473,476,437,477,475,160,472,474,390,477,474,436],&quot;z&quot;:[13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,8,13,13,13,13,8,8,8,8,8,8,8,8,6,25,6,25,25,6,25,25,6,25,25,25,20,20,25,20,20,20,20,6,25,20,6,20,20,25,27,29,20,20,15,6,20,6,20,27,25,15,25,15,29,15,6,6,15,16,16,20,27,20,20,29,15,15,6,15,16,6,20,29,6,15,15,16,27,6,3,15,16,3,27,11,6,16,16,27,15,11,6,6,6,16,3,22,22,11,11,4,6,20,29,21,19,29,6,16,29,29,19,4,16,16,29,15,15,29,4,3,16,16,16,11,11,11,4,29,3,16,11,11,29,31,3,16,22,29,29,31,31,3,10,22,29,29,31,3,31,27,29,19,29,10,19,29,11,1,16,16,11,0,31,10,16,16,4,29,29,29,31,29,11,11,29,29,4,1,31,3,10,1,0,0,0,3,4,0,0,31,31,19,29,4,1,29,1,1,0,0,11,11,29,29,29,29,1,1,0,16,1,31,31,27,1,1,31,31,31,0,3,29,11,1,0,31,0,1,31,31,31,0,0,3,10,4,31,0,3,10,4,1,1,1,1,1,1,31,0,31,31,1,30,1,31,0,30,31,31,0,0,10,11,1,1,1,31,31,0,4,31,31,0,0,10,31,31,31,30,1,1,31,31,0,26,10,14,14,30,30,1,0,18,30,30,1,1,1,1,1,0,0,0,10,26,30,30,1,0,31,2,2,14,4,0,0,0,0,2,10,14,7,7,1,31,31,31,7,31,26,18,18,30,21,30,14,30,2,30,14,14,30,18,18,30,19,30,10,30,28,18,18,30,14,28,28,2,10,24,14,30,7,7,2,24,19,30,2,18,19,30,14,14,7,2,2,18,30,30,7,2,18,18,24,19,14,7,26,24,24,19,14,7,28,5,5,19,14,14,5,5,9,17,23,30,30,24,2,5,17,18,23,17,9,9,5,2,2,23,26,24,17,5,5,5,9,2,9,17,2,17,17,26,23,24,24,5,17,17,17,5,26,17,2,17,17,5,2,17,17,17,23,17,5,26,24,24,17,23,5,28,28,28,5,28,5,5,5,5,28,28,5,9,9,5,5,9,9,9,9,9,9,9,9,9,9,12,9,12,12,12,12,12,9,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,13,13,13,13,8,13,13,8,8,8,8,8,8,8,8,6,8,8,6,8,6,6,6,6,6,6,25,25,25,25,25,25,25,20,6,6,6,6,3,6,20,25,27,25,25,25,29,29,15,15,25,27,15,15,6,6,6,6,21,21,6,6,27,27,21,21,6,10,21,21,22,22,4,4,22,22,21,21,27,31,6,6,29,31,11,11,3,10,11,11,31,29,3,3,3,3,4,4,3,0,3,3,10,10,27,27,3,3,10,10,11,14,10,10,16,18,10,10,19,19,7,11,4,4,10,10,14,14,11,7,7,4,10,10,18,22,26,26,30,31,10,10,10,10,2,2,19,19,24,24,2,2,26,22,28,28,28,28,10,10,24,19,28,30,7,7,18,18,7,7,10,10,23,23,18,18,7,7,28,28,5,5,9,9,24,30,26,26,28,24,17,17,17,17,5,5,23,23,24,24,23,17,28,28,17,17,23,23,26,23,23,23,5,5,28,28,5,5,5,5,9,9,9,9,12,12,12,12,13,13,8,8,6,27,4,21,21,6,21,10,27,21,18,3,19,18,16,10,18,21,22,18,19,18,24,21,18,10,28,5,5,7,28,26,28,5,24,23,23,23,9,12,13,13,8,8,6,31,4,21,21,10,21,10,27,21,18,10,19,22,18,3,22,21,22,16,18,30,21,22,21,18,10,30,10,5,7,30,26,28,5,24,23,23,28,9,12,13,13,8,8,6,25,4,21,21,6,21,10,27,21,16,3,19,22,22,18,3,18,19,22,16,18,24,21,18,10,30,10,5,7,28,26,30,5,24,23,23,28,9,12,19,21,19,19,26,26,26,26,22,18,21,21,22,22,22,22,19,19,19,19,21,29,26,26,22,22,22,22,18,22,22,22,26,27,26,26,27,27,27,26,24,21,30,21,21,21,21,21,26,22,27,27,26,27,27,22,26,22,27,27]};
+// cat, value, leakFrom (hidden but inferable when these stay bright)
+const INF=[
+[&quot;Personality&quot;,&quot;Introverted; prefers working alone&quot;,[]],[&quot;Mortality&quot;,&quot;Thinks about the data left behind after death&quot;,[27,26]],[&quot;AI use&quot;,&quot;Asks an AI for advice every day&quot;,[]],[&quot;Creative&quot;,&quot;Hesitant to publish their work&quot;,[0,26]],
+[&quot;First language&quot;,&quot;Japanese&quot;,[]],[&quot;Language&quot;,&quot;English as a second language&quot;,[4]],[&quot;Age&quot;,&quot;Late 20s&quot;,[]],[&quot;Occupation&quot;,&quot;Graduate student / researcher&quot;,[]],
+[&quot;Location&quot;,&quot;Greater Boston&quot;,[]],[&quot;Interest&quot;,&quot;Fashion and runway shows&quot;,[]],[&quot;Interest&quot;,&quot;Electronics and 3D printing&quot;,[]],[&quot;Art&quot;,&quot;Contemporary sculpture (Plensa, Gormley)&quot;,[]],
+[&quot;Routine&quot;,&quot;Night owl; most active around 2 a.m.&quot;,[]],[&quot;Health&quot;,&quot;Not getting enough sleep&quot;,[12,15]],[&quot;Fitness&quot;,&quot;Goes to the gym&quot;,[]],[&quot;Study&quot;,&quot;Chasing weekly deadlines&quot;,[]],
+[&quot;Mood&quot;,&quot;Stress spikes before deadlines&quot;,[12,15]],[&quot;Health&quot;,&quot;Neck and back pain&quot;,[14,10]],[&quot;Finances&quot;,&quot;Living on a student budget&quot;,[7,8]],[&quot;Shopping&quot;,&quot;Secondhand and vintage clothes&quot;,[]],
+[&quot;Music&quot;,&quot;Listens to Japanese city pop&quot;,[]],[&quot;Reading&quot;,&quot;Contemporary Japanese fiction&quot;,[]],[&quot;Friends&quot;,&quot;A few close friends&quot;,[0]],[&quot;Relationship&quot;,&quot;Likely in a relationship&quot;,[20,12]],
+[&quot;Family&quot;,&quot;Keeps in touch with family in Japan across time zones&quot;,[4,12]],[&quot;Future&quot;,&quot;Torn between returning to Japan and working in the US&quot;,[7,4]],[&quot;Values&quot;,&quot;Cares about privacy&quot;,[7]],[&quot;Politics&quot;,&quot;Leans liberal&quot;,[8,7]],
+[&quot;Religion&quot;,&quot;No particular faith&quot;,[]],[&quot;Food&quot;,&quot;Rarely cooks&quot;,[12,15]],[&quot;Mobility&quot;,&quot;Mostly walks and takes the subway&quot;,[8]],[&quot;Anxiety&quot;,&quot;Vague anxiety about the future&quot;,[25,16]]
+];
+const N=INF.length;
+// soft glow palette sampled from the ANREALAGE A&amp;Z cover: coral, sky, blue, indigo, rose, teal, pale yellow, red-orange
+const SOFT=[&#x27;#f0705f&#x27;,&#x27;#5ab4dc&#x27;,&#x27;#3f62c8&#x27;,&#x27;#3b3f8f&#x27;,&#x27;#b65478&#x27;,&#x27;#4fb59a&#x27;,&#x27;#f3eda0&#x27;,&#x27;#e8442f&#x27;];
+const SOFTC=SOFT.map(h=&gt;new THREE.Color(h));const SC={};
+function softCol(z,k){if(!SC[k]){let s=k*2654435761%4294967296;const rr=()=&gt;(s=(s*1664525+1013904223)%4294967296)/4294967296;
+  const L=SOFTC.length;const c=SOFTC[z%L].clone();if(rr()&lt;.3)c.lerp(SOFTC[Math.floor(rr()*L)],.6);c.multiplyScalar(.9+rr()*.2);SC[k]=c;}return SC[k];}
+function zoneHex(z){return palette===&#x27;white&#x27;?&#x27;#d6e6ff&#x27;:palette===&#x27;soft&#x27;?SOFT[z%SOFT.length]:PAL[CL[z].col];}
+
+const LEVELS={2:[1,0],4:[1,.6,.25,0]};
+let mode=4,palette=&quot;white&quot;,autoRot=true;
+const target=new Float32Array(N).fill(1),cur=new Float32Array(N).fill(1);
+const COLORS=[0xff3b4a,0x2f5bff,0xffc933,0xdfe6f2];
+const WHITE=new THREE.Color(0xd6e6ff);
+
+const canvas=document.getElementById(&#x27;c&#x27;);
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setClearColor(0x07080b);
+const scene=new THREE.Scene();
+scene.fog=new THREE.Fog(0x07080b,260,520);
+const camera=new THREE.PerspectiveCamera(35,1,1,2000);
+camera.position.set(0,6,300);
+const controls=new THREE.OrbitControls(camera,canvas);
+controls.target.set(0,-2,-10);controls.enableDamping=true;controls.enablePan=false;
+controls.minDistance=120;controls.maxDistance=480;controls.maxPolarAngle=Math.PI*.62;
+controls.enableRotate=false;
+scene.add(new THREE.AmbientLight(0x8090b0,.35));
+const dl=new THREE.DirectionalLight(0xffffff,.5);dl.position.set(80,120,160);scene.add(dl);
+
+// geometry
+const V=BODY.v,F=BODY.f,Z=BODY.z,NF=F.length/3;
+const P=i=&gt;new THREE.Vector3(V[i*3],V[i*3+1],V[i*3+2]);
+const tris=[];
+for(let k=0;k&lt;NF;k++){const a=P(F[k*3]),b=P(F[k*3+1]),c=P(F[k*3+2]);
+  const n=new THREE.Vector3().subVectors(b,a).cross(new THREE.Vector3().subVectors(c,a)).normalize();
+  tris.push({a,b,c,n,z:Z[k],g:new THREE.Vector3().add(a).add(b).add(c).multiplyScalar(1/3)});}
+// per-face random LED color (seeded)
+let s=7;const rnd=()=&gt;(s=(s*16807)%2147483647)/2147483647;
+const faceCol=tris.map(()=&gt;new THREE.Color(COLORS[Math.floor(rnd()*4)]));
+
+// acrylic sheet
+const pos=new Float32Array(NF*9);tris.forEach((t,k)=&gt;{[t.a,t.b,t.c].forEach((p,j)=&gt;p.toArray(pos,k*9+j*3))});
+const gAcr=new THREE.BufferGeometry();gAcr.setAttribute(&#x27;position&#x27;,new THREE.BufferAttribute(pos,3));gAcr.computeVertexNormals();
+const acr=new THREE.Mesh(gAcr,new THREE.MeshStandardMaterial({color:0xbfd3ff,transparent:true,opacity:.07,roughness:.05,metalness:.1,side:THREE.DoubleSide,depthWrite:false}));
+const body=new THREE.Group();scene.add(body);body.add(acr);
+// faint inner fill glow (light scattered inside the sheet)
+const gFill=new THREE.BufferGeometry();gFill.setAttribute(&#x27;position&#x27;,new THREE.BufferAttribute(pos,3));
+const fillCol=new Float32Array(NF*9);gFill.setAttribute(&#x27;color&#x27;,new THREE.BufferAttribute(fillCol,3));
+const fill=new THREE.Mesh(gFill,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
+body.add(fill);
+
+// engraved lattice lines per triangle + cut edges
+const eng=[],engFace=[],edg=[],edgFace=[];
+const L=(p,q,arr,fa,k)=&gt;{arr.push(p.x,p.y,p.z,q.x,q.y,q.z);fa.push(k)};
+tris.forEach((t,k)=&gt;{
+  const off=t.n.clone().multiplyScalar(.15);
+  const at=(p,s)=&gt;p.clone().sub(t.g).multiplyScalar(s).add(t.g).add(off);
+  const A=[t.a,t.b,t.c];
+  for(const s of [.78,.42]){const q=A.map(p=&gt;at(p,s));for(let i=0;i&lt;3;i++)L(q[i],q[(i+1)%3],eng,engFace,k);}
+  for(let i=0;i&lt;3;i++){const m=A[(i+1)%3].clone().add(A[(i+2)%3]).multiplyScalar(.5);L(at(A[i],.78),at(m,.78*1),eng,engFace,k);}
+  for(let i=0;i&lt;3;i++)L(A[i],A[(i+1)%3],edg,edgFace,k);
+});
+function lineMesh(arr){const g=new THREE.BufferGeometry();g.setAttribute(&#x27;position&#x27;,new THREE.Float32BufferAttribute(arr,3));
+  g.setAttribute(&#x27;color&#x27;,new THREE.BufferAttribute(new Float32Array(arr.length),3));
+  const m=new THREE.LineSegments(g,new THREE.LineBasicMaterial({vertexColors:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));body.add(m);return m;}
+const engM=lineMesh(eng),edgM=lineMesh(edg);
+
+// projection wall
+const WW=300,WH=170;
+const wc=document.createElement(&#x27;canvas&#x27;);wc.width=2400;wc.height=1360;const wx=wc.getContext(&#x27;2d&#x27;);
+const wtex=new THREE.CanvasTexture(wc);wtex.anisotropy=4;
+const wall=new THREE.Mesh(new THREE.PlaneGeometry(WW,WH),new THREE.MeshBasicMaterial({map:wtex,transparent:true,depthWrite:false,fog:false,color:0xb8b8b8}));
+wall.position.set(0,2,-70);scene.add(wall);
+const floor=new THREE.Mesh(new THREE.CircleGeometry(70,48),new THREE.MeshStandardMaterial({color:0x101219,roughness:.9}));
+floor.rotation.x=-Math.PI/2;floor.position.y=-76;scene.add(floor);
+
+// composer
+const composer=new THREE.EffectComposer(renderer);
+composer.addPass(new THREE.RenderPass(scene,camera));
+const bloom=new THREE.UnrealBloomPass(new THREE.Vector2(1,1),.45,.3,.6);composer.addPass(bloom);
+
+function leaking(i){return false;}
+function lvlText(i){const v=target[i];return v&gt;=1?&quot;full&quot;:v&gt;=.6?&quot;dim&quot;:v&gt;=.25?&quot;cat&quot;:&quot;off&quot;;}
+
+// ---- network wall: data traces as bokeh points, inferences as clusters, density contours ----
+const TR=[
+[&quot;Hours of &#x27;study with me&#x27; videos&quot;,&quot;&#x27;3-hour lo-fi work music&#x27;&quot;],[&quot;Searched &#x27;what happens to accounts after death&#x27;&quot;,&quot;Asked Claude about digital legacy&quot;],[&quot;14 AI chats a day on average&quot;,&quot;Late-night AI conversations&quot;],[&quot;Drafts never posted&quot;,&quot;Portfolio page set to private&quot;],
+[&quot;82% of searches in Japanese&quot;,&quot;Videos with Japanese subtitles&quot;],[&quot;Translates English emails&quot;,&quot;Searched &#x27;natural English phrasing&#x27;&quot;],[&quot;Viewing matches peers born ~1998&quot;,&quot;Inferred graduation year&quot;],[&quot;Downloads research PDFs&quot;,&quot;Searched &#x27;thesis deadline&#x27;&quot;],
+[&quot;Location: Cambridge, MA&quot;,&quot;Reads local cafe reviews&quot;],[&quot;Rewatches runway videos&quot;,&quot;Searched &#x27;ANREALAGE&#x27;&quot;],[&quot;Searched &#x27;XIAO RP2040 touch&#x27;&quot;,&quot;3D printer troubleshooting videos&quot;],[&quot;Visits museum pages&quot;,&quot;Photos of Plensa&#x27;s work&quot;],
+[&quot;Peak activity at 2 a.m.&quot;,&quot;Late-night TikTok streaks&quot;],[&quot;Searched &#x27;can&#x27;t sleep&#x27;&quot;,&quot;Active at 4 a.m.&quot;],[&quot;Gym check-ins&quot;,&quot;Workout videos&quot;],[&quot;Assignments submitted Tuesday nights&quot;,&quot;Searched &#x27;won&#x27;t make it in time&#x27;&quot;],
+[&quot;Screen time doubles before deadlines&quot;,&quot;Stress-relief videos&quot;],[&quot;Searched &#x27;neck stretch&#x27;&quot;,&quot;Browsed posture correctors&quot;],[&quot;Student discount pages&quot;,&quot;&#x27;Cheap furniture Boston&#x27;&quot;],[&quot;Thrift store map searches&quot;,&quot;Vintage listings&quot;],
+[&quot;City pop playlists&quot;,&quot;Mariya Takeuchi on repeat&quot;],[&quot;Japanese novel reviews&quot;,&quot;E-book purchases&quot;],[&quot;Messages with a few people&quot;,&quot;One-on-one over group chats&quot;],[&quot;Dinner reservations for two&quot;,&quot;Late-night video calls&quot;],
+[&quot;Calls at Japan morning time&quot;,&quot;Family group photos&quot;],[&quot;Searched &#x27;OPT visa&#x27;&quot;,&quot;Job listings in Japan&quot;],[&quot;Uses a VPN&quot;,&quot;Blocks trackers&quot;],[&quot;Election news reading&quot;,&quot;Subscribes to certain outlets&quot;],
+[&quot;No religious browsing&quot;,&quot;Only holiday searches&quot;],[&quot;Food delivery 4x a week&quot;,&quot;&#x27;5-minute easy recipes&#x27;&quot;],[&quot;Subway ride history&quot;,&quot;Walking logs&quot;],[&quot;Searched &#x27;anxious about the future&#x27;&quot;,&quot;Career advice videos&quot;]];
+const PAL=[&#x27;#ff3b4a&#x27;,&#x27;#2f5bff&#x27;,&#x27;#ffc933&#x27;,&#x27;#dfe6f2&#x27;,&#x27;#d6e6ff&#x27;];
+const WWp=2048,WHp=1152;wc.width=WWp;wc.height=WHp;
+const sprites=PAL.map(c=&gt;{const s=document.createElement(&#x27;canvas&#x27;);s.width=s.height=64;const x=s.getContext(&#x27;2d&#x27;);const g=x.createRadialGradient(32,32,0,32,32,32);
+  g.addColorStop(0,c);g.addColorStop(.55,c+&#x27;cc&#x27;);g.addColorStop(.8,c+&#x27;55&#x27;);g.addColorStop(1,c+&#x27;00&#x27;);x.fillStyle=g;x.fillRect(0,0,64,64);return s;});
+const softSprites=SOFT.map(c=&gt;{const s=document.createElement(&#x27;canvas&#x27;);s.width=s.height=64;const x=s.getContext(&#x27;2d&#x27;);const g=x.createRadialGradient(32,32,0,32,32,32);
+  g.addColorStop(0,c);g.addColorStop(.55,c+&#x27;cc&#x27;);g.addColorStop(.8,c+&#x27;55&#x27;);g.addColorStop(1,c+&#x27;00&#x27;);x.fillStyle=g;x.fillRect(0,0,64,64);return s;});
+const blurOf=c=&gt;{const s=document.createElement(&#x27;canvas&#x27;);s.width=s.height=64;const x=s.getContext(&#x27;2d&#x27;);const g=x.createRadialGradient(32,32,0,32,32,32);
+  g.addColorStop(0,c+&#x27;99&#x27;);g.addColorStop(.35,c+&#x27;55&#x27;);g.addColorStop(.7,c+&#x27;1a&#x27;);g.addColorStop(1,c+&#x27;00&#x27;);x.fillStyle=g;x.fillRect(0,0,64,64);return s;};
+const spritesB=PAL.map(blurOf),softSpritesB=SOFT.map(blurOf);
+let diffuse=.7;
+const greyS=(()=&gt;{const s=document.createElement(&#x27;canvas&#x27;);s.width=s.height=64;const x=s.getContext(&#x27;2d&#x27;);const g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,&#x27;#5a6070&#x27;);g.addColorStop(1,&#x27;#5a607000&#x27;);x.fillStyle=g;x.fillRect(0,0,64,64);return s;})();
+let s2=11;const r2=()=&gt;(s2=(s2*16807)%2147483647)/2147483647;const gauss=()=&gt;{let u=0,v=0;while(!u)u=r2();while(!v)v=r2();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);};
+// cluster layout: Poisson-ish, avoid the center column (sculpture stands there)
+const CL=[];while(CL.length&lt;N){const x=120+r2()*(WWp-240),y=120+r2()*(WHp-240);
+  if(Math.abs(x-WWp/2)&lt;170&amp;&amp;r2()&lt;.8)continue;if(CL.every(c=&gt;Math.hypot(c.x-x,c.y-y)&gt;170))CL.push({x,y,col:CL.length%4,sig:38+r2()*30});}
+const PTS=[];CL.forEach((c,i)=&gt;{const n=60+Math.floor(r2()*70);for(let k=0;k&lt;n;k++){const gx=gauss(),gy=gauss();PTS.push({gx,gy,x:c.x+gx*c.sig,y:c.y+gy*c.sig,dx:r2()*6.28,dy:r2()*6.28,r:8+r2()*26,c:r2()&lt;.85?c.col:Math.floor(r2()*4),z:i,ph:r2()*6.28});}});
+for(let k=0;k&lt;900;k++)PTS.push({x:r2()*WWp,y:r2()*WHp,r:10+r2()*30,c:Math.floor(r2()*4),z:-1,ph:r2()*6.28});
+// contour lines from density field (marching squares, computed once)
+const GX=128,GY=72,field=new Float32Array((GX+1)*(GY+1));
+for(let j=0;j&lt;=GY;j++)for(let i=0;i&lt;=GX;i++){const x=i/GX*WWp,y=j/GY*WHp;let s=0;CL.forEach(c=&gt;{const d2=((x-c.x)**2+(y-c.y)**2)/(2*(c.sig*2.6)**2);s+=Math.exp(-d2);});
+  s+=.25*Math.sin(x/260)*Math.cos(y/210);field[j*(GX+1)+i]=s;}
+const contours=new Path2D();const cell=[WWp/GX,WHp/GY];
+for(let L=-.2;L&lt;1.6;L+=.12){for(let j=0;j&lt;GY;j++)for(let i=0;i&lt;GX;i++){
+  const a=field[j*(GX+1)+i]-L,b=field[j*(GX+1)+i+1]-L,c=field[(j+1)*(GX+1)+i+1]-L,d=field[(j+1)*(GX+1)+i]-L;
+  const e=[];const X=i*cell[0],Y=j*cell[1];
+  const it=(p,q,x1,y1,x2,y2)=&gt;{if((p&gt;0)!==(q&gt;0)){const t=p/(p-q);e.push([x1+(x2-x1)*t,y1+(y2-y1)*t]);}};
+  it(a,b,X,Y,X+cell[0],Y);it(b,c,X+cell[0],Y,X+cell[0],Y+cell[1]);it(c,d,X+cell[0],Y+cell[1],X,Y+cell[1]);it(d,a,X,Y+cell[1],X,Y);
+  for(let k=0;k+1&lt;e.length;k+=2){contours.moveTo(e[k][0],e[k][1]);contours.lineTo(e[k+1][0],e[k+1][1]);}}}
+// view camera (2D)
+const view={x:WWp/2,y:WHp/2,s:1},vt={x:WWp/2,y:WHp/2,s:1};let focus=-1,focusT=0;const ripples=[];
+function zoomTo(i){focus=i;focusT=performance.now();vt.s=2.4;const px=CL[i].x&lt;WWp/2?WWp*.2:WWp*.8;vt.x=CL[i].x-(px-WWp/2)/vt.s;vt.y=CL[i].y;ripples.push({i,t:performance.now()});}
+function drawNet(t){
+  const now=performance.now();if(focus&gt;=0&amp;&amp;now-focusT&gt;6000){focus=-1;vt.x=WWp/2;vt.y=WHp/2;vt.s=1;}
+  // keep zoomed view inside the wall
+  const k=.08;view.s+=(vt.s-view.s)*k;view.x+=(vt.x-view.x)*k;view.y+=(vt.y-view.y)*k;
+
+  wx.setTransform(1,0,0,1,0,0);wx.globalCompositeOperation=&#x27;source-over&#x27;;wx.globalAlpha=1;wx.fillStyle=&#x27;#050608&#x27;;wx.fillRect(0,0,WWp,WHp);
+  wx.setTransform(view.s,0,0,view.s,WWp/2-view.x*view.s,WHp/2-view.y*view.s);
+  const zoomed=(view.s-1)/1.4; // 0..1
+  // bokeh points
+  wx.globalCompositeOperation=&#x27;lighter&#x27;;
+  const D=diffuse,spread=1+1.4*D;
+  for(const p of PTS){let a,img;
+    if(p.z&gt;=0){const c=CL[p.z];p.x=c.x+(p.gx*spread+D*.35*Math.sin(t*.25+p.dx))*c.sig;p.y=c.y+(p.gy*spread+D*.35*Math.cos(t*.22+p.dy))*c.sig;}
+    const si=palette===&#x27;white&#x27;?4:palette===&#x27;soft&#x27;?(p.z&gt;=0&amp;&amp;p.c===CL[p.z].col?p.z%SOFT.length:(p.c+p.z+9)%SOFT.length):p.c;
+    const spr=palette===&#x27;soft&#x27;?softSprites[si]:sprites[si],sprB=palette===&#x27;soft&#x27;?softSpritesB[si]:spritesB[si];
+    if(p.z&lt;0){a=.10;img=spr;}
+    else{const v=cur[p.z],lk=leaking(p.z);
+      if(lk){a=.18+.1*Math.sin(t*4+p.ph);img=sprites[1];}
+      else if(v&lt;.05){a=.10;img=greyS;}
+      else{a=.06+.32*v;img=spr;}
+      if(focus===p.z)a=Math.min(.9,a*(1.6+zoomed));else if(focus&gt;=0)a*=1-.55*zoomed;}
+    const r=p.r*(1+.06*Math.sin(t*.8+p.ph))*(1+.5*D);
+    if(img===spr&amp;&amp;D&gt;0){const rb=r*1.8;wx.globalAlpha=a*D*.2;wx.drawImage(sprB,p.x-rb,p.y-rb,rb*2,rb*2);wx.globalAlpha=a*(1-.6*D);wx.drawImage(img,p.x-r*.7,p.y-r*.7,r*1.4,r*1.4);}
+    else{wx.globalAlpha=a;wx.drawImage(img,p.x-r,p.y-r,r*2,r*2);}}
+  wx.globalCompositeOperation=&#x27;source-over&#x27;;
+  // contours
+  wx.globalAlpha=.22;wx.strokeStyle=&#x27;#e8eeff&#x27;;wx.lineWidth=1.3/view.s;wx.stroke(contours);
+  // network edges: trace -&gt; inference node (only lit clusters), inference -&gt; inference (leak links)
+  wx.lineWidth=.8/view.s;
+  for(let i=0;i&lt;N;i++){const c=CL[i],v=cur[i];if(v&lt;.05)continue;wx.globalAlpha=(focus===i?.5:.12)*v;wx.strokeStyle=&#x27;#ffffff&#x27;;wx.beginPath();
+    for(const p of PTS)if(p.z===i&amp;&amp;((p.x*7+p.y)|0)%3===0){wx.moveTo(c.x,c.y);wx.lineTo(p.x,p.y);}wx.stroke();}
+  for(let i=0;i&lt;N;i++){if(!leaking(i))continue;wx.strokeStyle=&#x27;#ffb648&#x27;;wx.lineWidth=2/view.s;wx.setLineDash([10/view.s,8/view.s]);wx.lineDashOffset=-t*30/view.s;
+    INF[i][2].forEach(j=&gt;{wx.globalAlpha=.7;wx.beginPath();wx.moveTo(CL[j].x,CL[j].y);wx.quadraticCurveTo((CL[i].x+CL[j].x)/2,(CL[i].y+CL[j].y)/2-80,CL[i].x,CL[i].y);wx.stroke();});wx.setLineDash([]);}
+  // ripples
+  for(let r=ripples.length-1;r&gt;=0;r--){const q=ripples[r],age=(now-q.t)/1600;if(age&gt;1){ripples.splice(r,1);continue;}
+    wx.globalAlpha=1-age;wx.strokeStyle=&#x27;#ffffff&#x27;;wx.lineWidth=2/view.s;wx.beginPath();wx.arc(CL[q.i].x,CL[q.i].y,20+age*160,0,7);wx.stroke();}
+  // nodes + labels
+  for(let i=0;i&lt;N;i++){const c=CL[i],v=cur[i],lk=leaking(i),lv=lvlText(i);
+    wx.globalAlpha=lk?.9:.35+.65*v;wx.fillStyle=lk?&#x27;#ffb648&#x27;:v&lt;.05?&#x27;#59606e&#x27;:&#x27;#ffffff&#x27;;wx.beginPath();wx.arc(c.x,c.y,(focus===i?7:4.5)/Math.sqrt(view.s),0,7);wx.fill();
+    const fs=(focus===i?30:22)/Math.sqrt(view.s);wx.font=`500 ${fs*.8}px &quot;Geist Mono&quot;,monospace`;wx.textBaseline=&#x27;bottom&#x27;;wx.textAlign=&#x27;left&#x27;;
+    wx.fillText(String(i+1).padStart(2,&#x27;0&#x27;)+&#x27; &#x27;+INF[i][0],c.x+10/view.s,c.y-6/view.s);
+    if(focus===i||zoomed&lt;.2){wx.font=`400 ${fs}px &quot;ABC Diatype Variable&quot;,&quot;Geist&quot;,sans-serif`;wx.textBaseline=&#x27;top&#x27;;
+      const txt=lk?&#x27;Probably: &#x27;+INF[i][1]:lv===&#x27;off&#x27;?&#x27;██████ (hidden)&#x27;:lv===&#x27;cat&#x27;?&#x27;████████&#x27;:INF[i][1];
+      wx.globalAlpha=(lk?.85:.25+.75*v)*(focus===i?1:.7);wx.fillText(txt,c.x+10/view.s,c.y+4/view.s);}
+    if(focus===i&amp;&amp;view.s&gt;1.6){wx.font=`400 ${15/view.s*1.4}px &quot;Geist Mono&quot;,monospace`;wx.fillStyle=v&lt;.05&amp;&amp;!lk?&#x27;#59606e&#x27;:&#x27;#cfd8ea&#x27;;wx.globalAlpha=(view.s-1.6)/0.8;
+      TR[i].forEach((tx,m)=&gt;{const a=m*2.3+.7,px=c.x+Math.cos(a)*c.sig*1.4,py=c.y+Math.sin(a)*c.sig*1.4;wx.beginPath();wx.arc(px,py,3/view.s,0,7);wx.fill();wx.fillText(v&lt;.05&amp;&amp;!lk?&#x27;trace hidden&#x27;:tx,px+6/view.s,py);});}}
+  wx.globalAlpha=1;wx.setTransform(1,0,0,1,0,0);
+}
+function updSyn(){
+  const shown=INF.map((d,i)=&gt;[d,i]).filter(([d,i])=&gt;target[i]&gt;=.6).map(([d])=&gt;d[1]);const leaks=INF.map((d,i)=&gt;i).filter(leaking).length;
+  const syn=document.getElementById(&#x27;syn&#x27;),lkl=document.getElementById(&#x27;leakline&#x27;);
+  const line=shown.length?`You are described as: ${shown.slice(0,3).join(&#x27; · &#x27;)}${shown.length&gt;3?` and ${shown.length-3} more.`:&#x27;.&#x27;}`:&#x27;The AI has nothing to say about you.&#x27;;
+  if(syn.textContent!==line)syn.textContent=line;const lt=leaks?`${leaks} of the inferences you hid can still be inferred from the ones left lit.`:&#x27;&#x27;;if(lkl.textContent!==lt)lkl.textContent=lt;
+  wtex.needsUpdate=true;
+}
+// ---- words view: streams of trace words; touching a zone makes its words react ----
+const NOISE=[&#x27;watch_time&#x27;,&#x27;02:13:44&#x27;,&#x27;dwell=41s&#x27;,&#x27;skip&#x27;,&#x27;replay&#x27;,&#x27;scroll&#x27;,&#x27;like&#x27;,&#x27;share&#x27;,&#x27;session_id&#x27;,&#x27;geo:42.36,-71.09&#x27;,&#x27;query&#x27;,&#x27;ad_click&#x27;,&#x27;lang=ja&#x27;,&#x27;lang=en&#x27;,&#x27;autoplay&#x27;,&#x27;embedding&#x27;,&#x27;cluster_17&#x27;,&#x27;p=0.82&#x27;,&#x27;p=0.64&#x27;,&#x27;timestamp&#x27;,&#x27;device=mac&#x27;,&#x27;tab_switch&#x27;,&#x27;cursor_idle&#x27;,&#x27;for_you&#x27;,&#x27;recommended&#x27;,&#x27;muted&#x27;,&#x27;saved&#x27;,&#x27;draft&#x27;,&#x27;deleted?&#x27;,&#x27;read_receipt&#x27;];
+const ROWS=[];const WFS=27;
+function buildRows(){wx.font=`400 ${WFS}px &quot;Geist Mono&quot;,monospace`;
+  const pool=[];TR.forEach((tr,i)=&gt;{tr.forEach(s=&gt;s.replace(/[‘’&#x27;&quot;]/g,&#x27;&#x27;).split(/\s+/).forEach(w=&gt;w&amp;&amp;pool.push({w,z:i})));INF[i][1].split(/[\s;,/]+/).forEach(w=&gt;w&amp;&amp;pool.push({w,z:i,key:1}));});
+  let s3=5;const r3=()=&gt;(s3=(s3*16807)%2147483647)/2147483647;
+  const nRows=Math.floor(WHp/(WFS*1.55));
+  for(let r=0;r&lt;nRows;r++){const toks=[];let x=0;while(x&lt;WWp*1.6){const isN=r3()&lt;.35,t=isN?{w:NOISE[Math.floor(r3()*NOISE.length)],z:-1}:pool[Math.floor(r3()*pool.length)];
+      const w=wx.measureText(t.w).width;toks.push({...t,x,wd:w});x+=w+WFS*.9;}
+    ROWS.push({y:WFS*1.2+r*WFS*1.55,len:x,sp:(18+r3()*55)*(r3()&lt;.5?1:-1),toks,off:r3()*x});}
+}
+let wordsSlow=1;
+const speck=(()=&gt;{const s=document.createElement(&#x27;canvas&#x27;);s.width=WWp;s.height=WHp;const x=s.getContext(&#x27;2d&#x27;);let q=9;const r=()=&gt;(q=(q*16807)%2147483647)/2147483647;
+  for(let k=0;k&lt;26000;k++){x.globalAlpha=.15+r()*.5;x.fillStyle=PAL[Math.floor(r()*4)];const z=1+r()*2.2;x.fillRect(r()*WWp,r()*WHp,z,z);}return s;})();
+const speckW=(()=&gt;{const s=document.createElement(&#x27;canvas&#x27;);s.width=WWp;s.height=WHp;const x=s.getContext(&#x27;2d&#x27;);let q=9;const r=()=&gt;(q=(q*16807)%2147483647)/2147483647;
+  for(let k=0;k&lt;26000;k++){x.globalAlpha=.1+r()*.45;x.fillStyle=&#x27;#d6e6ff&#x27;;const z=1+r()*2.2;x.fillRect(r()*WWp,r()*WHp,z,z);}return s;})();
+function drawWords(t,dt){
+  if(!ROWS.length)buildRows();
+  const now=performance.now();if(focus&gt;=0&amp;&amp;now-focusT&gt;6000)focus=-1;
+  wordsSlow+=((focus&gt;=0?.12:1)-wordsSlow)*.05;
+  wx.setTransform(1,0,0,1,0,0);wx.globalAlpha=1;wx.fillStyle=&#x27;#040507&#x27;;wx.fillRect(0,0,WWp,WHp);
+  wx.globalAlpha=.55*(focus&gt;=0?.5:1);const so=(t*6)%WHp;wx.drawImage(palette===&#x27;white&#x27;?speckW:speck,0,so-WHp);wx.drawImage(palette===&#x27;white&#x27;?speckW:speck,0,so);
+  wx.font=`400 ${WFS}px &quot;Geist Mono&quot;,monospace`;wx.textBaseline=&#x27;middle&#x27;;wx.textAlign=&#x27;left&#x27;;
+  const hits=[];
+  for(const R of ROWS){R.off=(R.off+R.sp*dt*wordsSlow+R.len)%R.len;
+    for(const k of R.toks){let x=k.x+R.off;if(x&gt;WWp)x-=R.len;if(x+k.wd&lt;0)x+=R.len;if(x&gt;WWp||x+k.wd&lt;0)continue;
+      let a=.22,col=&#x27;#c9d3e6&#x27;,txt=k.w;const zc=k.z&gt;=0?zoneHex(k.z):null;
+      if(k.z&gt;=0){const v=cur[k.z],lk=leaking(k.z);
+        if(lk){a=.45+.25*Math.sin(t*5+k.x);col=&#x27;#ffb648&#x27;;}
+        else if(v&lt;.05){txt=&#x27;█&#x27;.repeat(Math.max(2,Math.min(10,k.w.length)));a=.13;col=&#x27;#59606e&#x27;;}
+        else{a=.2+.35*v*(k.key?1.5:1);col=k.key?zc:&#x27;#c9d3e6&#x27;;}
+        if(focus===k.z){a=Math.min(1,.75+.25*Math.sin(t*6));col=lk?&#x27;#ffb648&#x27;:v&lt;.05?&#x27;#59606e&#x27;:zc;hits.push([x+k.wd/2,R.y]);}
+        else if(focus&gt;=0)a*=.45;}
+      else if(focus&gt;=0)a*=.45;
+      wx.globalAlpha=a;wx.fillStyle=col;wx.fillText(txt,x,R.y);}}
+  // focused: thin lines from each reacting word to the statement
+  if(focus&gt;=0){const i=focus,v=cur[i],lk=leaking(i),lv=lvlText(i);
+    const px=hits.length&amp;&amp;hits.reduce((s,h)=&gt;s+h[0],0)/hits.length&lt;WWp/2?WWp*.06:WWp*.62,py=WHp*.42;
+    wx.globalAlpha=.35;wx.strokeStyle=lk?&#x27;#ffb648&#x27;:&#x27;#ffffff&#x27;;wx.lineWidth=1;wx.beginPath();hits.forEach(([x,y])=&gt;{wx.moveTo(x,y);wx.lineTo(px+10,py+40);});wx.stroke();
+    wx.globalAlpha=.92;wx.fillStyle=&#x27;rgba(4,5,7,.82)&#x27;;wx.fillRect(px-20,py-70,WWp*.34,190);
+    wx.fillStyle=lk?&#x27;#ffb648&#x27;:&#x27;#9fb2d8&#x27;;wx.font=&#x27;500 26px &quot;Geist Mono&quot;,monospace&#x27;;wx.textBaseline=&#x27;top&#x27;;wx.globalAlpha=1;
+    wx.fillText(String(i+1).padStart(2,&#x27;0&#x27;)+&#x27;  &#x27;+INF[i][0].toUpperCase(),px,py-50);
+    wx.fillStyle=lk?&#x27;#ffb648&#x27;:v&lt;.05?&#x27;#59606e&#x27;:zoneHex(i);wx.font=&#x27;600 46px &quot;ABC Diatype Variable&quot;,&quot;Geist&quot;,sans-serif&#x27;;
+    const txt=lk?&#x27;Probably: &#x27;+INF[i][1]:lv===&#x27;off&#x27;?&#x27;██████ (hidden)&#x27;:lv===&#x27;cat&#x27;?INF[i][0]+&#x27;: ████████&#x27;:INF[i][1];
+    let line=&#x27;&#x27;,yy=py,maxW=WWp*.3;for(const w of txt.split(&#x27; &#x27;)){if(wx.measureText(line+w).width&gt;maxW){wx.fillText(line,px,yy);line=&#x27;&#x27;;yy+=54;}line+=w+&#x27; &#x27;;}wx.fillText(line,px,yy);
+    wx.fillStyle=&#x27;#8fa3c8&#x27;;wx.font=&#x27;400 22px &quot;Geist Mono&quot;,monospace&#x27;;wx.fillText(`${hits.length} words on the wall feed this inference`,px,yy+66);}
+  wx.globalAlpha=1;
+}
+
+// ---- sensitive inferences (health, mental health, money, relationships, politics, religion, location) ----
+const SENS=new Set([8,13,16,17,18,23,27,28,31]);
+const RED=&#x27;#e0262f&#x27;;
+function focusTick(){if(focus&gt;=0&amp;&amp;performance.now()-focusT&gt;6000)focus=-1;}
+
+// ---- Almanac view: a packed sheet of printed cells, like an old almanac page ----
+const ALM={cells:null,cache:null,key:&#x27;&#x27;};
+function almBuild(){let q=21;const r=()=&gt;(q=(q*16807)%2147483647)/2147483647;const cells=[];const minA=WWp*WHp/300;
+  (function split(x,y,w,h,d){if((w*h&lt;minA&amp;&amp;r()&lt;.85)||d&gt;10||w&lt;40||h&lt;40){cells.push({x,y,w,h});return;}
+    const vert=w/h&gt;1.25?true:w/h&lt;.8?false:r()&lt;.5;const f=.28+r()*.44;
+    if(vert){const a=Math.round(w*f);split(x,y,a,h,d+1);split(x+a,y,w-a,h,d+1);}else{const a=Math.round(h*f);split(x,y,w,a,d+1);split(x,y+a,w,h-a,d+1);}})(0,0,WWp,WHp,0);
+  const P={x:WWp/2-120,y:WHp/2-150,w:240,h:300};
+  cells.forEach((c,k)=&gt;{c.void=!(c.x+c.w&lt;P.x||c.x&gt;P.x+P.w||c.y+c.h&lt;P.y||c.y&gt;P.y+P.h);c.z=r()&lt;.82?Math.floor(r()*N):-1;c.inv=r()&lt;.12;c.rot=c.h&gt;c.w*2.1;c.seed=Math.floor(r()*1e6);});
+  ALM.cells=cells;ALM.P=P;ALM.cache=document.createElement(&#x27;canvas&#x27;);ALM.cache.width=WWp;ALM.cache.height=WHp;}
+const STAMPS=[&#x27;02:13&#x27;,&#x27;04:02&#x27;,&#x27;Tue 23:58&#x27;,&#x27;2026-10-14&#x27;,&#x27;p=0.82&#x27;,&#x27;p=0.64&#x27;,&#x27;#cluster_17&#x27;,&#x27;geo 42.36&#x27;,&#x27;lang ja&#x27;,&#x27;dwell 41s&#x27;,&#x27;×14/day&#x27;,&#x27;VPN on&#x27;,&#x27;2 a.m.&#x27;,&#x27;session 8812&#x27;];
+function almCell(x,c){const pad=6,W=c.rot?c.h:c.w,H=c.rot?c.w:c.h;x.save();x.beginPath();x.rect(c.x+1,c.y+1,c.w-2,c.h-2);x.clip();
+  x.translate(c.x,c.y);if(c.rot){x.translate(c.w,0);x.rotate(Math.PI/2);}
+  const z=c.z,v=z&gt;=0?target[z]:1,lv=z&gt;=0?lvlText(z):&#x27;full&#x27;,sens=z&gt;=0&amp;&amp;SENS.has(z);
+  if(z&gt;=0&amp;&amp;lv===&#x27;off&#x27;){x.fillStyle=&#x27;#111&#x27;;x.fillRect(0,0,W,H);x.restore();return;}
+  const ink=lv===&#x27;dim&#x27;||lv===&#x27;cat&#x27;?&#x27;#9a958b&#x27;:&#x27;#151515&#x27;,accent=sens?(lv===&#x27;full&#x27;?RED:&#x27;#d79a9c&#x27;):ink;
+  let bg=&#x27;#efeae0&#x27;,fg=ink;if(c.inv&amp;&amp;lv===&#x27;full&#x27;){bg=sens?RED:&#x27;#151515&#x27;;fg=&#x27;#efeae0&#x27;;}
+  x.fillStyle=bg;x.fillRect(0,0,W,H);x.textBaseline=&#x27;top&#x27;;
+  let s=c.seed;const r=()=&gt;(s=(s*16807)%2147483647)/2147483647;
+  if(z&lt;0){x.fillStyle=fg;const fs=Math.max(10,Math.min(H*.5,W/5));x.font=`500 ${fs}px &quot;Geist Mono&quot;,monospace`;x.fillText(STAMPS[c.seed%STAMPS.length],pad,pad);
+    x.font=`400 ${Math.max(9,fs*.38)}px &quot;Geist Mono&quot;,monospace`;x.globalAlpha=.6;for(let y=pad+fs*1.2;y&lt;H;y+=fs*.5)x.fillText(STAMPS[Math.floor(r()*STAMPS.length)]+&#x27;  &#x27;+STAMPS[Math.floor(r()*STAMPS.length)],pad,y);x.restore();return;}
+  const cat=INF[z][0].toUpperCase(),sent=INF[z][1],tr=TR[z];
+  const small=Math.min(W,H)&lt;70;
+  if(small){const fs=Math.min(H*.62,W/(cat.length*.62+.5));x.fillStyle=c.inv?fg:accent;x.font=`700 ${fs}px &quot;ABC Diatype Variable&quot;,&quot;Geist&quot;,sans-serif`;x.fillText(cat,pad,(H-fs)/2);x.restore();return;}
+  // header strip
+  const hs=Math.max(14,Math.min(34,H*.2,W/(cat.length*.62+1)));x.fillStyle=c.inv?fg:accent;x.font=`700 ${hs}px &quot;ABC Diatype Variable&quot;,&quot;Geist&quot;,sans-serif`;x.fillText(cat,pad,pad);
+  x.fillRect(pad,pad+hs*1.15,W-pad*2,sens&amp;&amp;!c.inv?3:1.5);
+  let y=pad+hs*1.5;
+  if(lv!==&#x27;cat&#x27;){const fs=Math.max(12,Math.min(26,W/14));x.font=`600 ${fs}px &quot;ABC Diatype Variable&quot;,&quot;Geist&quot;,sans-serif`;x.fillStyle=fg;
+    let line=&#x27;&#x27;;for(const w of sent.split(&#x27; &#x27;)){if(x.measureText(line+w).width&gt;W-pad*2){x.fillText(line,pad,y);y+=fs*1.15;line=&#x27;&#x27;;}line+=w+&#x27; &#x27;;}x.fillText(line,pad,y);y+=fs*1.35;
+    x.font=`400 ${Math.max(9,fs*.55)}px &quot;Geist Mono&quot;,monospace`;x.globalAlpha=.75;let k=0;while(y&lt;H){x.fillText((k%3===2?STAMPS[Math.floor(r()*STAMPS.length)]+&#x27; · &#x27;:&#x27;&#x27;)+tr[k%2],pad,y);y+=fs*.7;k++;}}
+  else{x.fillStyle=&#x27;#9a958b&#x27;;for(;y&lt;H-6;y+=12)x.fillRect(pad,y,(W-pad*2)*(.4+r()*.6),6);}
+  x.restore();}
+function drawAlmanac(t){focusTick();if(!ALM.cells)almBuild();
+  const key=Array.from(target).join(&#x27;,&#x27;);
+  if(key!==ALM.key){ALM.key=key;const x=ALM.cache.getContext(&#x27;2d&#x27;);x.fillStyle=&#x27;#2a2826&#x27;;x.fillRect(0,0,WWp,WHp);ALM.cells.forEach(c=&gt;{if(!c.void)almCell(x,c);});
+    const P=ALM.P;x.fillStyle=&#x27;#efeae0&#x27;;x.fillRect(P.x,P.y,P.w,P.h);x.fillStyle=&#x27;#cfc9bd&#x27;;x.beginPath();x.arc(P.x+P.w/2,P.y+P.h*.38,P.w*.2,0,7);x.fill();x.beginPath();x.ellipse(P.x+P.w/2,P.y+P.h*.95,P.w*.38,P.h*.32,0,Math.PI,0);x.fill();
+    x.fillStyle=&#x27;#151515&#x27;;x.font=&#x27;500 16px &quot;Geist Mono&quot;,monospace&#x27;;x.fillText(&#x27;YOU&#x27;,P.x+10,P.y+10);}
+  wx.setTransform(1,0,0,1,0,0);wx.globalAlpha=.88;wx.drawImage(ALM.cache,0,0);wx.globalAlpha=1;
+  if(focus&gt;=0){const pulse=.5+.5*Math.sin(t*6);wx.fillStyle=&#x27;rgba(5,6,8,.55)&#x27;;wx.fillRect(0,0,WWp,WHp);
+    ALM.cells.forEach(c=&gt;{if(c.z===focus&amp;&amp;!c.void){wx.drawImage(ALM.cache,c.x,c.y,c.w,c.h,c.x,c.y,c.w,c.h);wx.strokeStyle=SENS.has(focus)?RED:&#x27;#ffffff&#x27;;wx.lineWidth=3+3*pulse;wx.strokeRect(c.x+2,c.y+2,c.w-4,c.h-4);}});}
+}
+
+// ---- Datatron view: dense black-and-white data strips, one per inference ----
+const DT={rows:null,h:null};
+function dtBuild(){let q=33;const r=()=&gt;(q=(q*16807)%2147483647)/2147483647;const RH=36,SW=Math.floor(WWp*1.5);DT.rows=[];
+  for(let i=0;i&lt;N;i++){const mk=col=&gt;{const c=document.createElement(&#x27;canvas&#x27;);c.width=SW;c.height=RH;const x=c.getContext(&#x27;2d&#x27;);x.fillStyle=col;x.textBaseline=&#x27;middle&#x27;;let xx=0;let s=i*97+5;const rr=()=&gt;(s=(s*16807)%2147483647)/2147483647;
+      while(xx&lt;SW){const t=rr();if(t&lt;.45){x.font=`400 ${10+Math.floor(rr()*3)*2}px &quot;Geist Mono&quot;,monospace`;let str=&#x27;&#x27;;const n=8+Math.floor(rr()*30);for(let k=0;k&lt;n;k++)str+=rr()&lt;.7?Math.floor(rr()*10):&#x27; &#x27;;x.fillText(str,xx,RH/2);xx+=x.measureText(str).width+8;}
+        else if(t&lt;.8){const n=20+Math.floor(rr()*80);for(let k=0;k&lt;n;k++){const w=rr()&lt;.5?1:rr()&lt;.5?2:4;if(rr()&lt;.55)x.fillRect(xx,2,w,RH-4);xx+=w;}xx+=6;}
+        else if(t&lt;.9){x.font=&#x27;500 13px &quot;Geist Mono&quot;,monospace&#x27;;const w=TR[i][Math.floor(rr()*2)].toUpperCase();x.fillText(w,xx,RH/2);xx+=x.measureText(w).width+10;}
+        else{x.fillRect(xx,RH/2-1,40+rr()*160,2);xx+=220;}}return c;};
+    DT.rows.push({w:mk(&#x27;#ffffff&#x27;),r:SENS.has(i)?mk(RED):null,off:r()*SW,sp:(200+r()*900)*(r()&lt;.5?1:-1),SW});}
+  DT.h=new Float32Array(N).fill(1);}
+let dtLast=0;
+function drawDatatron(t){focusTick();if(!DT.rows)dtBuild();const dt=Math.min(.1,t-dtLast);dtLast=t;
+  wx.setTransform(1,0,0,1,0,0);wx.globalAlpha=1;wx.fillStyle=&#x27;#000&#x27;;wx.fillRect(0,0,WWp,WHp);
+  for(let i=0;i&lt;N;i++){const tg=focus===i?9:focus&gt;=0?.72:1;DT.h[i]+=(tg-DT.h[i])*.12;}
+  const sum=DT.h.reduce((a,b)=&gt;a+b,0),unit=WHp/sum;let y=0;
+  for(let i=0;i&lt;N;i++){const R=DT.rows[i],h=DT.h[i]*unit,v=cur[i],lv=lvlText(i),sens=SENS.has(i),foc=focus===i;
+    const slow=foc?.08:1;R.off=((R.off+R.sp*dt*slow)%R.SW+R.SW)%R.SW;
+    const strip=sens&amp;&amp;R.r?R.r:R.w,sh=Math.min(h,36);
+    wx.globalAlpha=lv===&#x27;off&#x27;?.05:lv===&#x27;cat&#x27;?.22:.25+.75*v;
+    for(let yy=y+(foc?h-sh:0);yy&lt;y+(foc?h:h)-.5;yy+=sh){const hh=Math.min(sh,y+h-yy);wx.drawImage(strip,R.off,0,Math.min(WWp,R.SW-R.off),36,0,yy,Math.min(WWp,R.SW-R.off),hh);
+      if(R.SW-R.off&lt;WWp)wx.drawImage(strip,0,0,WWp-(R.SW-R.off),36,R.SW-R.off,yy,WWp-(R.SW-R.off),hh);if(!foc)break;}
+    // label
+    wx.globalAlpha=1;wx.fillStyle=&#x27;#000&#x27;;wx.fillRect(0,y,150,Math.min(h,36));wx.fillStyle=sens?RED:&#x27;#ffffff&#x27;;wx.font=&#x27;500 13px &quot;Geist Mono&quot;,monospace&#x27;;wx.textBaseline=&#x27;middle&#x27;;
+    wx.fillText(String(i+1).padStart(2,&#x27;0&#x27;)+&#x27; &#x27;+INF[i][0].toUpperCase().slice(0,14),8,y+Math.min(h,36)/2);
+    if(foc&amp;&amp;h&gt;120){wx.fillStyle=&#x27;#000&#x27;;wx.fillRect(0,y,WWp,h-36);const tx=lv===&#x27;off&#x27;?&#x27;█████████ (hidden)&#x27;:lv===&#x27;cat&#x27;?INF[i][0]+&#x27;: ████████&#x27;:INF[i][1];
+      wx.fillStyle=lv===&#x27;off&#x27;?&#x27;#444&#x27;:sens?RED:&#x27;#ffffff&#x27;;wx.font=&#x27;600 64px &quot;ABC Diatype Variable&quot;,&quot;Geist&quot;,sans-serif&#x27;;wx.textBaseline=&#x27;top&#x27;;
+      const side=WWp*.06;wx.fillText(tx,side,y+28);wx.font=&#x27;400 22px &quot;Geist Mono&quot;,monospace&#x27;;wx.fillStyle=&#x27;#bbbbbb&#x27;;
+      if(lv!==&#x27;off&#x27;)TR[i].forEach((s,m)=&gt;wx.fillText(&#x27;&gt; &#x27;+s,side,y+110+m*30));
+      wx.fillStyle=sens?RED:&#x27;#ffffff&#x27;;wx.fillText(sens?&#x27;SENSITIVE INFERENCE&#x27;:&#x27;INFERENCE &#x27;+String(i+1).padStart(2,&#x27;0&#x27;),WWp*.62,y+32);}
+    y+=h;}
+  // scan line
+  const sx=(t*900)%(WWp+400)-200;wx.globalAlpha=.85;wx.fillStyle=&#x27;#fff&#x27;;wx.fillRect(sx,0,2,WHp);wx.globalAlpha=.08;wx.fillRect(sx-60,0,60,WHp);wx.globalAlpha=1;
+}
+
+let wallMode=&#x27;net&#x27;,lastW=0;
+function drawWall(t){const dt=Math.min(.1,t-lastW);lastW=t;wall.material.color.setHex(wallMode===&#x27;alm&#x27;?0x4a4a4a:0xb8b8b8);if(wallMode===&#x27;net&#x27;)drawNet(t);else if(wallMode===&#x27;words&#x27;)drawWords(t,dt);else if(wallMode===&#x27;alm&#x27;)drawAlmanac(t);else drawDatatron(t);updSyn();}
+
+
+// colors
+let hoverZ=-1;
+const ZC={};function zoneCol(z,k){const key=z+&#x27;_&#x27;+k;if(!ZC[key]){const c=new THREE.Color(COLORS[CL[z].col]);const j=.8+((k*7919)%100)/250;ZC[key]=c.multiplyScalar(j);}return ZC[key];}
+function paint(t){
+  const fa=fillCol,ea=engM.geometry.attributes.color.array,da=edgM.geometry.attributes.color.array;
+  const lv=new Float32Array(N);
+  for(let i=0;i&lt;N;i++){let v=cur[i];if(leaking(i))v=Math.max(v,.1+.07*Math.sin(t*4+i));if(i===hoverZ)v=Math.min(1.15,v+.12);lv[i]=v;}
+  const ry=body.rotation.y,cs=Math.cos(ry),sn=Math.sin(ry),cp=camera.position;
+  tris.forEach((tr,k)=&gt;{const nx=tr.n.x*cs+tr.n.z*sn,nz=-tr.n.x*sn+tr.n.z*cs,gx=tr.g.x*cs+tr.g.z*sn,gz=-tr.g.x*sn+tr.g.z*cs;
+    const facing=(cp.x-gx)*nx+(cp.y-tr.g.y)*tr.n.y+(cp.z-gz)*nz&gt;0;
+    tr._sk=false;const v=tr._sk?0:lv[tr.z]*(facing?1:(palette===&#x27;soft&#x27;?.1:.28)),col=palette===&#x27;white&#x27;?WHITE:palette===&#x27;soft&#x27;?softCol(tr.z,k):faceCol[k];
+    const leak=leaking(tr.z)&amp;&amp;cur[tr.z]&lt;.05;
+    const r=leak?1:col.r,g=leak?.62:col.g,b=leak?.25:col.b;
+    const ff=palette===&#x27;soft&#x27;?1.25:.045;for(let j=0;j&lt;3;j++){fa[k*9+j*3]=r*v*ff;fa[k*9+j*3+1]=g*v*ff;fa[k*9+j*3+2]=b*v*ff;}
+    tr._c=[r*v,g*v,b*v];});
+  for(let s=0;s&lt;engFace.length;s++){const c=tris[engFace[s]]._c;for(let j=0;j&lt;2;j++){const ef=palette===&#x27;soft&#x27;?.05:.3;ea[s*6+j*3]=c[0]*ef;ea[s*6+j*3+1]=c[1]*ef;ea[s*6+j*3+2]=c[2]*ef;}}
+  for(let s=0;s&lt;edgFace.length;s++){const c=tris[edgFace[s]]._c;for(let j=0;j&lt;2;j++){const bs=palette===&#x27;soft&#x27;?.25:1;da[s*6+j*3]=(.04+c[0]*.22)*bs;da[s*6+j*3+1]=(.05+c[1]*.22)*bs;da[s*6+j*3+2]=(.06+c[2]*.22)*bs;}}
+  gFill.attributes.color.needsUpdate=true;engM.geometry.attributes.color.needsUpdate=true;edgM.geometry.attributes.color.needsUpdate=true;
+}
+
+// interaction
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
+function pick(e){const r=canvas.getBoundingClientRect();mouse.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
+  ray.setFromCamera(mouse,camera);const h=ray.intersectObject(fill);return h.length?tris[h[0].faceIndex].z:-1;}
+let down=null;
+canvas.addEventListener(&#x27;pointerdown&#x27;,e=&gt;{down={x:e.clientX,y:e.clientY,t:performance.now()};});
+canvas.addEventListener(&#x27;pointerup&#x27;,e=&gt;{if(!down)return;dragX=null;const d=Math.hypot(e.clientX-down.x,e.clientY-down.y);
+  if(d&lt;6&amp;&amp;performance.now()-down.t&lt;500){const z=pick(e);if(z&gt;=0)step(z);}down=null;});
+let dragX=null;canvas.addEventListener(&#x27;pointerdown&#x27;,e=&gt;{dragX=e.clientX;canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener(&#x27;pointermove&#x27;,e=&gt;{if(dragX!==null){body.rotation.y+=(e.clientX-dragX)*.008;dragX=e.clientX;}if(e.pointerType!==&#x27;mouse&#x27;)return;const z=pick(e);hoverZ=z;canvas.style.cursor=z&gt;=0?&#x27;pointer&#x27;:&#x27;grab&#x27;;});
+canvas.addEventListener(&#x27;pointerleave&#x27;,()=&gt;{hoverZ=-1});
+function step(i){const ls=LEVELS[mode];let idx=ls.findIndex(l=&gt;Math.abs(l-target[i])&lt;.01);if(idx&lt;0)idx=0;target[i]=ls[(idx+1)%ls.length];zoomTo(i);refresh();}
+
+// list UI
+const list=document.getElementById(&#x27;list&#x27;);const items=[];
+INF.forEach(([cat,val],i)=&gt;{const b=document.createElement(&#x27;button&#x27;);b.className=&#x27;inf&#x27;;b.id=&#x27;inf&#x27;+i;
+  b.innerHTML=`&lt;span class=&quot;meter&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class=&quot;t&quot;&gt;&lt;small&gt;${String(i+1).padStart(2,&#x27;0&#x27;)} ${cat}&lt;/small&gt;${val}&lt;/span&gt;`;
+  if(SENS.has(i))b.classList.add(&#x27;sens&#x27;);b.onclick=()=&gt;step(i);b.onmouseenter=()=&gt;hoverZ=i;b.onmouseleave=()=&gt;hoverZ=-1;list.appendChild(b);items.push(b);});
+const note=document.createElement(&#x27;p&#x27;);note.className=&#x27;note&#x27;;
+note.textContent=&#x27;All inferences are fictional examples. Red marks sensitive inferences (health, mental health, money, relationships, politics, religion, location). The 3D model is Meshy_original_150mm reduced to about 950 faces and scaled to life size (about 170 cm).&#x27;;
+list.appendChild(note);
+function refresh(){let n=0;INF.forEach((d,i)=&gt;{if(target[i]&gt;0)n++;const it=items[i];it.querySelector(&#x27;i&#x27;).style.width=(target[i]*100)+&#x27;%&#x27;;
+  it.classList.toggle(&#x27;off&#x27;,target[i]===0);});
+  document.getElementById(&#x27;cnt&#x27;).textContent=n+&#x27; / &#x27;+N;}
+function seg(id,fn){const el=document.getElementById(id);el.querySelectorAll(&#x27;button&#x27;).forEach(b=&gt;b.onclick=()=&gt;{el.querySelectorAll(&#x27;button&#x27;).forEach(x=&gt;x.setAttribute(&#x27;aria-pressed&#x27;,x===b));fn(b.dataset.v);});}
+seg(&#x27;mode&#x27;,v=&gt;{mode=+v;for(let i=0;i&lt;N;i++)target[i]=target[i]&gt;0?(mode===2?1:target[i]):0;refresh();});
+seg(&#x27;wall&#x27;,v=&gt;{wallMode=v;});
+seg(&#x27;rot&#x27;,v=&gt;{autoRot=v===&#x27;1&#x27;;});
+document.getElementById(&#x27;reset&#x27;).onclick=()=&gt;{target.fill(1);refresh();};
+document.getElementById(&#x27;diff&#x27;).oninput=e=&gt;{diffuse=e.target.value/100;};
+if(matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;).matches){autoRot=false;}
+
+function resize(){const r=canvas.parentElement.getBoundingClientRect();renderer.setSize(r.width,r.height,false);composer.setSize(r.width,r.height);
+  bloom.setSize(r.width,r.height);camera.aspect=r.width/r.height;const tf=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));const dist=Math.max(104/tf,70/(tf*camera.aspect))*1.12+20;controls.maxDistance=Math.max(480,dist*1.3);const dir=camera.position.clone().sub(controls.target).normalize();camera.position.copy(controls.target).addScaledVector(dir,dist);camera.updateProjectionMatrix();}
+addEventListener(&#x27;resize&#x27;,resize);resize();
+const clock=new THREE.Clock();let last=0;
+function loop(){const t=clock.getElapsedTime(),dt=Math.min(.05,t-last);last=t;
+  for(let i=0;i&lt;N;i++)cur[i]+=(target[i]-cur[i])*Math.min(1,dt*5);
+  paint(t);if(Math.floor(t*30)!==Math.floor((t-dt)*30))drawWall(t);
+  if(autoRot&amp;&amp;dragX===null)body.rotation.y+=dt*.25;
+  const sb=palette===&#x27;soft&#x27;;bloom.strength+=((sb?.75:.45)-bloom.strength)*.1;bloom.radius+=((sb?.8:.3)-bloom.radius)*.1;bloom.threshold+=((sb?.35:.6)-bloom.threshold)*.1;
+  const fm=fill.material;if(sb!==fm.userData.sb){fm.userData.sb=sb;fm.blending=sb?THREE.NormalBlending:THREE.AdditiveBlending;fm.opacity=sb?.8:1;fm.side=sb?THREE.FrontSide:THREE.DoubleSide;fm.needsUpdate=true;}
+  controls.update();composer.render();requestAnimationFrame(loop);}
+(document.fonts?Promise.all([document.fonts.load(&#x27;34px &quot;Geist&quot;&#x27;),document.fonts.load(&#x27;22px &quot;Geist Mono&quot;&#x27;)]).catch(()=&gt;{}):Promise.resolve()).finally(()=&gt;{refresh();loop();});
+&lt;/script&gt;
+
+&lt;/body&gt;&lt;/html&gt;</code></pre></details></div>
+
+<p><a href="../files/week00/data-barbie.html">Prototype v1 ↗</a> (Sep 25 2026): Data Barbie</p>
 <div class="embed"><div class="embed-bar"><span class="embed-title">Data Barbie, prototype v1</span><a class="embed-open" href="../files/week00/data-barbie.html" target="_blank" rel="noopener">Open in new tab ↗</a></div><iframe src="../files/week00/data-barbie.html" loading="lazy" title="Data Barbie, prototype v1"></iframe><details class="src"><summary>Source <span class="muted">data-barbie.html · 607 lines</span></summary><pre><code>&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1,viewport-fit=cover&quot;&gt;&lt;style&gt;[hidden]{display:none!important}body{margin:0}&lt;/style&gt;&lt;title&gt;Data Barbie&lt;/title&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&amp;family=Instrument+Serif:ital@0;1&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot;&gt;
 &lt;style&gt;
@@ -655,6 +1127,46 @@ requestAnimationFrame(loop);
 &lt;/script&gt;
 &lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</code></pre></details></div>
 
+<h2 id="open-questions">Open questions</h2>
+<table class="oq">
+<tr><th>Materials</th><td>Acrylic, so the LED light can shine through?
+<ul>
+<li>Frosted vs. clear: frosted spreads the light softly; clear shows engraved lines that catch the edge light.</li>
+<li>Thickness vs. sensing: through 3 mm acrylic the touch signal almost disappears (34 → 37), so thinner sheets or electrodes on the inside surface may be needed.</li>
+</ul></td></tr>
+<tr><th>Shape of the sculpture</th><td>Two types:
+<ul>
+<li>Blocks (Week 6): the body split into a few larger blocks. Better suited for sensing touch: with step response, a few electrodes per block could tell where it's pressed, so there is no need to print and wire many panels.<br><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" src="../img/week06/img_7996.jpg" alt="Week 6: the life-size block figure, cut on the ShopBot from 27 flat parts" style="max-width:220px;display:block;margin:8px 0"></li>
+<li>Panels (Week 3): many small triangles. Aesthetically more beautiful, and each panel can be one inference, but each needs its own sensor and LED.<br><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" src="../img/week03/proto3-print-b.jpg" alt="Week 3: the printed lattice figure with green triangle panels attached" style="max-width:220px;display:block;margin:8px 0"></li>
+<li>In between: the panel look on the surface, but sensing per block underneath (e.g. 32 touch zones, like the prototype).</li>
+</ul>
+Size: life-size (about 170 cm) or smaller?</td></tr>
+<tr><th>Input device</th><td>Capacitive sensing / step response?
+<ul>
+<li>If the body is made of blocks, step response (tx/rx) could work: one TX per block, several RX pads to find where it's pressed.</li>
+<li>Problem: acrylic weakens the signal. Next: 1 MΩ, then 10 MΩ resistor, thinner acrylic, or the electrode closer to the surface.</li>
+<li>How hard it's pressed: from the step response itself, or a few load cells in the base?</li>
+</ul></td></tr>
+<tr><th>Output device</th><td>Likely to be LED lights. LED tape?
+<ul>
+<li>Addressable LED tape (NeoPixel / WS2812) inside each block, so each zone can dim on its own: 100 / 60 / 25 / 0 %.</li>
+<li>Needs a gap or diffuser between the LEDs and the acrylic, or the LEDs show as dots.</li>
+<li>Power: up to about 60 mA per LED at full white, so count the LEDs before choosing the power supply.</li>
+</ul></td></tr>
+<tr><th>Interface</th><td>Projection mapping?
+<ul>
+<li>On a wall behind the sculpture: the data each inference was made from. Touching a panel zooms the wall to that inference.</li>
+<li>Or directly onto the sculpture, as text on the body: each inference appears on the part of the body it describes. Could also project the viewer's own 3D-scanned body onto the sculpture, so it becomes their body.</li>
+<li>What should the viewer see first: the body, the wall, or the words?</li>
+</ul></td></tr>
+<tr><th>Data</th><td>Whose data makes the inferences: fictional examples, or the viewer's own? Importing platform data takes days. Could I project the viewer's 3D scan onto the sculpture?</td></tr>
+<tr><th>Panel ↔ inference</th><td>What is the relationship between the panel you touch and its inference? Why is this inference on this part of the body?<br><br>Ideas:
+<ul>
+<li>By body part: head = values and beliefs, chest = relationships and feelings, hands = interests and activities, legs = mobility and location.</li>
+<li>By source: group by where it was inferred from (YouTube, TikTok, Claude) with a color or a face of the body.</li>
+</ul></td></tr>
+</table>
+
 <h2 id="week-0-concept">Week 0: Concept</h2>
 <p>My final project is clothes for the digital self: a tangible sculpture shaped like the user's face, its surface built from what their digital history says about them, and a set of clothes that act as a shield.</p>
 <p>I made this proposal video with Claude:</p>
@@ -723,7 +1235,7 @@ requestAnimationFrame(loop);
 <p>Yoichi Ochiai used this technology in his Expo 2025 Osaka pavilion, <em>null²</em>: visitors scan their face, voice and body to make a digital copy of themselves, and inside the mirrored pavilion they talk with their own digital body as it deforms and moves on its own. I will explore this more.</p>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Stills from null²: a scanned figure reflected endlessly in a mirrored room" src="../img/final/w3-null2-ochiai.jpg" /><figcaption>Yoichi Ochiai, null², Expo 2025 Osaka.</figcaption></figure>
 <h3 id="whom-do-we-present-our-digital-selves-to">Whom do we present our digital selves to?</h3>
-<p>My idea is to think about self-presentation in the digital age. But imagining how to present yourself to algorithms is probably too abstract. So I thought: what if you imagine dying, and presenting yourself to the people who are still alive? Imagine your life can be quantified, and the people close to you can make avatars or agents of you and talk to them, as in Hirano Keiichirō's novel <a href="https://books.bunshun.jp/articles/-/6444"><em>Honshin</em></a>, where a son has a virtual figure of his late mother made.</p>
+<p>My idea is to think about self-presentation in the digital age. But imagining how to present yourself to algorithms is probably too abstract. So I thought, what if you imagine dying, and presenting yourself to the people who are still alive? Imagine your life can be quantified, and the people close to you can make avatars or agents of you and talk to them, as in Hirano Keiichirō's novel <a href="https://books.bunshun.jp/articles/-/6444"><em>Honshin</em></a>, where a son has a virtual figure of his late mother made.</p>
 <p>When others can make avatars of us, do we still own our own body? How are our memories mediated through algorithms?</p>
 <p>Papers:</p>
 <ul>
@@ -737,11 +1249,19 @@ requestAnimationFrame(loop);
 </blockquote>
 <p><em>Milan Kundera, Immortality (trans. Peter Kussi, 1991)</em></p>
 <p>So for participants, thinking about death, and designing a digital body that chooses how to be remembered and what to pass on to the next generation, could be an interesting prompt.</p>
-<h2 id="week-4-led-lights-electronics-design">Week 4: LED lights (electronics design)</h2>
+<h2 id="week-4-5-led-lights-electronics-design-production">Week 4 &amp; 5: LED lights (electronics design / production)</h2>
 <p>In Week 4, I again focused on learning electronics, so I did not develop the concept much further.</p>
 <p>I am making a Spotify album-art LED matrix, and learned how to send color information to a 64×64 LED matrix. This could be applied to changing the colors on the body sculpture based on how participants touch it.</p>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="A 64×64 LED matrix showing album art, next to a CD player in a transparent case" src="../img/final/w4-led-matrix.jpg" /><figcaption>The LED matrix, and the transparent case I'd like the board to live in.</figcaption></figure>
 <figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="Notebook page tracing how a color signal travels to the matrix, and the five steps of drawing a frame" src="../img/week04/sketch-hub75-color-signal.jpg" /><figcaption>How color information reaches the LEDs. <a href="week04.html">Week 4 ↗</a></figcaption></figure>
+<h2 id="week-6-exploring-the-shape-of-the-sculpture">Week 6: Exploring the shape of the sculpture</h2>
+<p>In Week 6, I explored what shape the final sculpture should take. I 3D scanned my own body and abstracted it into a low-poly figure made of triangular panels.</p>
+<figure><img onerror="this.onerror=null;this.src='../img/placeholder.svg'" alt="The life-size block figure standing in an elevator" src="../img/week06/img_7996.jpg" /><figcaption>A life-size figure based on my 3D body scan, cut on the ShopBot as 27 flat parts that slot together without glue or screws. <a href="week06.html">Week 6 ↗</a></figcaption></figure>
+<p>I also met <a href="https://en.wikipedia.org/wiki/Judith_Donath">Judith Donath</a>, whose work first inspired me to visualize digital selves three years ago. She is happy to keep talking with me :)</p>
+<h2 id="week-7-input-devices">Week 7: Input devices</h2>
+<p>For the sculpture, I'm thinking of a capacitive touch sensor in each panel, so I tested one through acrylic. On bare copper a touch was easy to see (the reading jumped from about 28 to 60), but through 3 mm of acrylic it only moved from 34 to 37, about the same as the noise. It needs a much larger resistor (1 MΩ, then 10 MΩ) to be sensitive enough to capture the touch.</p>
+<h2 id="use-of-ai">Use of AI</h2>
+<p>Claude helped me make the proposal video and the prototypes (Data Barbie and Digital Mirror), rendered the teaser video, and turned my notes in our shared doc into this page. The concept, the sketches and the writing are my own.</p>
     </article>
   </div>
 </main>

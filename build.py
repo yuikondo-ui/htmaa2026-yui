@@ -286,8 +286,13 @@ def project_page(meta, depth, label, prev_link, next_link, active="", intro=""):
     cover_title = re.sub(r"\s*,\s*", "\u2003", cover_title).upper()   # no commas, all caps, em-space between topics
     hero_src = ((meta["hero"] if re.match(r"https?://", meta["hero"]) else "../" * depth + meta["hero"])
                 if meta.get("hero") else "")
-    hero_img = (f'<img class="cover-img" src="{esc(hero_src)}" alt="" '
-                f'onerror="this.closest(\'.cover\').classList.add(\'no-img\');this.remove()">') if hero_src else ""
+    if hero_src and re.search(r"\.(mp4|webm)$", hero_src, re.I):   # video hero: loops silently, poster = same name .jpg
+        poster = re.sub(r"\.(mp4|webm)$", ".jpg", hero_src)
+        hero_img = (f'<video class="cover-img" src="{esc(hero_src)}" poster="{esc(poster)}" '
+                    f'autoplay muted loop playsinline aria-hidden="true"></video>')
+    else:
+        hero_img = (f'<img class="cover-img" src="{esc(hero_src)}" alt="" '
+                    f'onerror="this.closest(\'.cover\').classList.add(\'no-img\');this.remove()">') if hero_src else ""
     r = "../" * depth
     strip_item = (f'<span class="strip-item"><a href="{r}index.html">{esc(SITE["name"])}</a>'
                   f'<span class="sep">—</span><a href="https://www.media.mit.edu/">MIT Media Lab</a>, {esc(SITE["year"])}</span>')
@@ -402,7 +407,7 @@ def build_index(weeks, final):
 
 def build_grid(weeks, final):
     def card(href, img, cap):
-        src = esc(img) if img else "img/placeholder.svg"
+        src = esc(re.sub(r"\.(mp4|webm)$", ".jpg", img)) if img else "img/placeholder.svg"   # video hero → its poster
         return (f'  <a class="card" href="{href}"><img src="{src}" alt="" loading="lazy" '
                 f'onerror="this.onerror=null;this.src=\'img/placeholder.svg\'">'
                 f'<p class="caption">{cap}</p></a>\n')

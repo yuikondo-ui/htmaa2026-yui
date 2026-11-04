@@ -2,7 +2,7 @@
 title: Final Project
 ref: HTMAA/FINAL
 status: WIP
-hero: img/final/doll-facets.jpg
+hero: img/final/final_teaser.mp4
 summary: Clothes for digital selves. A tangible digital twin built from a person's own data, and clothes to choose what it shows.
 ---
 
@@ -14,9 +14,56 @@ I propose that we need a shield between us and AI. Right now our digital body is
 
 Undressed, the sculpture tells everything it knows about you. Put a piece of clothing on it and it speaks only from the facets you chose to show; take the clothing off and the rest comes back. Assembling and disassembling a sculpture made of your own data lets you think about this with your hands: what to show, what to hide, and to whom.
 
-[Prototype v1 ↗](files/week00/data-barbie.html) (Sep 25 2026)
+## Prototypes
+
+[Prototype v2 ↗](files/week00/acrylic-data-body.html) (Nov 2 2026): Digital Mirror
+
+:::embed files/week00/acrylic-data-body.html | Digital Mirror, prototype v2
+
+[Prototype v1 ↗](files/week00/data-barbie.html) (Sep 25 2026): Data Barbie
 
 :::embed files/week00/data-barbie.html | Data Barbie, prototype v1
+
+## Open questions
+
+<table class="oq">
+<tr><th>Materials</th><td>Acrylic, so the LED light can shine through?
+<ul>
+<li>Frosted vs. clear: frosted spreads the light softly; clear shows engraved lines that catch the edge light.</li>
+<li>Thickness vs. sensing: through 3 mm acrylic the touch signal almost disappears (34 → 37), so thinner sheets or electrodes on the inside surface may be needed.</li>
+</ul></td></tr>
+<tr><th>Shape of the sculpture</th><td>Two types:
+<ul>
+<li>Blocks (Week 6): the body split into a few larger blocks. Better suited for sensing touch: with step response, a few electrodes per block could tell where it's pressed, so there is no need to print and wire many panels.<br><img src="img/week06/img_7996.jpg" alt="Week 6: the life-size block figure, cut on the ShopBot from 27 flat parts" style="max-width:220px;display:block;margin:8px 0"></li>
+<li>Panels (Week 3): many small triangles. Aesthetically more beautiful, and each panel can be one inference, but each needs its own sensor and LED.<br><img src="img/week03/proto3-print-b.jpg" alt="Week 3: the printed lattice figure with green triangle panels attached" style="max-width:220px;display:block;margin:8px 0"></li>
+<li>In between: the panel look on the surface, but sensing per block underneath (e.g. 32 touch zones, like the prototype).</li>
+</ul>
+Size: life-size (about 170 cm) or smaller?</td></tr>
+<tr><th>Input device</th><td>Capacitive sensing / step response?
+<ul>
+<li>If the body is made of blocks, step response (tx/rx) could work: one TX per block, several RX pads to find where it's pressed.</li>
+<li>Problem: acrylic weakens the signal. Next: 1 MΩ, then 10 MΩ resistor, thinner acrylic, or the electrode closer to the surface.</li>
+<li>How hard it's pressed: from the step response itself, or a few load cells in the base?</li>
+</ul></td></tr>
+<tr><th>Output device</th><td>Likely to be LED lights. LED tape?
+<ul>
+<li>Addressable LED tape (NeoPixel / WS2812) inside each block, so each zone can dim on its own: 100 / 60 / 25 / 0 %.</li>
+<li>Needs a gap or diffuser between the LEDs and the acrylic, or the LEDs show as dots.</li>
+<li>Power: up to about 60 mA per LED at full white, so count the LEDs before choosing the power supply.</li>
+</ul></td></tr>
+<tr><th>Interface</th><td>Projection mapping?
+<ul>
+<li>On a wall behind the sculpture: the data each inference was made from. Touching a panel zooms the wall to that inference.</li>
+<li>Or directly onto the sculpture, as text on the body: each inference appears on the part of the body it describes. Could also project the viewer's own 3D-scanned body onto the sculpture, so it becomes their body.</li>
+<li>What should the viewer see first: the body, the wall, or the words?</li>
+</ul></td></tr>
+<tr><th>Data</th><td>Whose data makes the inferences: fictional examples, or the viewer's own? Importing platform data takes days. Could I project the viewer's 3D scan onto the sculpture?</td></tr>
+<tr><th>Panel ↔ inference</th><td>What is the relationship between the panel you touch and its inference? Why is this inference on this part of the body?<br><br>Ideas:
+<ul>
+<li>By body part: head = values and beliefs, chest = relationships and feelings, hands = interests and activities, legs = mobility and location.</li>
+<li>By source: group by where it was inferred from (YouTube, TikTok, Claude) with a color or a face of the body.</li>
+</ul></td></tr>
+</table>
 
 ## Week 0: Concept
 
@@ -148,7 +195,7 @@ Yoichi Ochiai used this technology in his Expo 2025 Osaka pavilion, *null²*: vi
 
 ### Whom do we present our digital selves to?
 
-My idea is to think about self-presentation in the digital age. But imagining how to present yourself to algorithms is probably too abstract. So I thought: what if you imagine dying, and presenting yourself to the people who are still alive? Imagine your life can be quantified, and the people close to you can make avatars or agents of you and talk to them, as in Hirano Keiichirō's novel [*Honshin*](https://books.bunshun.jp/articles/-/6444), where a son has a virtual figure of his late mother made.
+My idea is to think about self-presentation in the digital age. But imagining how to present yourself to algorithms is probably too abstract. So I thought, what if you imagine dying, and presenting yourself to the people who are still alive? Imagine your life can be quantified, and the people close to you can make avatars or agents of you and talk to them, as in Hirano Keiichirō's novel [*Honshin*](https://books.bunshun.jp/articles/-/6444), where a son has a virtual figure of his late mother made.
 
 When others can make avatars of us, do we still own our own body? How are our memories mediated through algorithms?
 
@@ -166,7 +213,7 @@ Quietly, I'm slightly against [TeleAbsence](https://news.mit.edu/2025/teleabsenc
 
 So for participants, thinking about death, and designing a digital body that chooses how to be remembered and what to pass on to the next generation, could be an interesting prompt.
 
-## Week 4: LED lights (electronics design)
+## Week 4 & 5: LED lights (electronics design / production)
 
 In Week 4, I again focused on learning electronics, so I did not develop the concept much further.
 
@@ -177,3 +224,20 @@ I am making a Spotify album-art LED matrix, and learned how to send color inform
 
 ![Notebook page tracing how a color signal travels to the matrix, and the five steps of drawing a frame](img/week04/sketch-hub75-color-signal.jpg)
 *How color information reaches the LEDs. [Week 4 ↗](weeks/week04.html)*
+
+## Week 6: Exploring the shape of the sculpture
+
+In Week 6, I explored what shape the final sculpture should take. I 3D scanned my own body and abstracted it into a low-poly figure made of triangular panels.
+
+![The life-size block figure standing in an elevator](img/week06/img_7996.jpg)
+*A life-size figure based on my 3D body scan, cut on the ShopBot as 27 flat parts that slot together without glue or screws. [Week 6 ↗](weeks/week06.html)*
+
+I also met [Judith Donath](https://en.wikipedia.org/wiki/Judith_Donath), whose work first inspired me to visualize digital selves three years ago. She is happy to keep talking with me :)
+
+## Week 7: Input devices
+
+For the sculpture, I'm thinking of a capacitive touch sensor in each panel, so I tested one through acrylic. On bare copper a touch was easy to see (the reading jumped from about 28 to 60), but through 3 mm of acrylic it only moved from 34 to 37, about the same as the noise. It needs a much larger resistor (1 MΩ, then 10 MΩ) to be sensitive enough to capture the touch.
+
+## Use of AI
+
+Claude helped me make the proposal video and the prototypes (Data Barbie and Digital Mirror), rendered the teaser video, and turned my notes in our shared doc into this page. The concept, the sketches and the writing are my own.
