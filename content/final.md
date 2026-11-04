@@ -78,6 +78,7 @@ Size: life-size (about 170 cm) or smaller?</td></tr>
 ## Weekly log
 
 ### Week 0: Concept { .log-week }
+
 My final project is clothes for the digital self: a tangible sculpture shaped like the user's face, its surface built from what their digital history says about them, and a set of clothes that act as a shield.
 
 I made this proposal video with Claude:
@@ -131,6 +132,7 @@ Artistic inspiration for fragmented selves across space and time:
 :::
 
 ### Week 1: Modular clothes (laser cutting) { .log-week }
+
 I first thought of printing the user's inferences as cards, so that users could sort them by hand and slip them into pockets on the clothes. Learning about construction kits changed that: I want assembling the clothes from parts to be intuitive in itself. So I looked at modular clothes, which can be taken apart and put back together without sewing ([definition](https://www.sciencedirect.com/science/article/pii/S0921344924000892)), and at ANREALAGE's Spring/Summer 2022 collection "Dimension" ([source](https://www.tokyoweekender.com/art_and_culture/fashion/anrealage-japanese-fashion/)).
 
 ![A board of modular clothing references: garments with detachable parts, user prototypes and modular pieces](img/final/w1-modular-inspiration.jpg)
@@ -142,12 +144,14 @@ I first thought of printing the user's inferences as cards, so that users could 
 I am not satisfied with the usability of the assembly: it took me two hours to put together. So I plan to explore more intuitive joints and shapes. This kit also only makes a skirt, and I want users to be able to assemble the parts in different ways, into pants or a dress as well.
 
 ### Week 2: A map of poetry words (embedded programming) { .log-week }
+
 In Week 2, I focused on learning the basics of electronics, as I had no background in it. As a side project, I explored a map visualization of poetry words. On the internet we get lost: everything is zoomed in, and we have little spatial sense of how words relate. So I thought the XIAO-based QPad could be an interesting device for exploring a map of words.
 
 ![The Kigo pad: a map of seasonal poetry words on the QPad's screen](img/week02/kigopad.jpg)
 *The Kigo pad. [Week 2 ↗](weeks/week02.html)*
 
 ### Week 3: Body sculpture (3D printing) { .log-week }
+
 #### Exploring shapes
 
 In Week 3, I wanted to explore what the final shape of a digital self could look like, using the 3D printer.
@@ -222,6 +226,7 @@ Quietly, I'm slightly against [TeleAbsence](https://news.mit.edu/2025/teleabsenc
 So for participants, thinking about death, and designing a digital body that chooses how to be remembered and what to pass on to the next generation, could be an interesting prompt.
 
 ### Week 4 & 5: LED lights (electronics design / production) { .log-week }
+
 In Week 4, I again focused on learning electronics, so I did not develop the concept much further.
 
 I am making a Spotify album-art LED matrix, and learned how to send color information to a 64×64 LED matrix. This could be applied to changing the colors on the body sculpture based on how participants touch it.
@@ -233,6 +238,7 @@ I am making a Spotify album-art LED matrix, and learned how to send color inform
 *How color information reaches the LEDs. [Week 4 ↗](weeks/week04.html)*
 
 ### Week 6: Exploring the shape of the sculpture { .log-week }
+
 In Week 6, I explored what shape the final sculpture should take. I 3D scanned my own body and abstracted it into a low-poly figure made of triangular panels.
 
 ![The life-size block figure standing in an elevator](img/week06/img_7996.jpg)
@@ -241,6 +247,7 @@ In Week 6, I explored what shape the final sculpture should take. I 3D scanned m
 I also met [Judith Donath](https://en.wikipedia.org/wiki/Judith_Donath), whose work first inspired me to visualize digital selves three years ago. She is happy to keep talking with me :)
 
 ### Week 7: Input devices { .log-week }
+
 For the sculpture, I'm thinking of a capacitive touch sensor in each panel, so I tested one through acrylic. On bare copper a touch was easy to see (the reading jumped from about 28 to 60), but through 3 mm of acrylic it only moved from 34 to 37, about the same as the noise. It needs a much larger resistor (1 MΩ, then 10 MΩ) to be sensitive enough to capture the touch.
 
 ## Use of AI
