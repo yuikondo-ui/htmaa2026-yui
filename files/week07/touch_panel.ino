@@ -12,7 +12,7 @@ const int SENSE_PIN = D0;      // GP26
 const int SENSE_GP  = 26;      // raw GPIO number for fast reads
 const int LED_PIN   = D8;      // GP2
 
-const int SAMPLES   = 32;      // averaging per reading
+const int SAMPLES = 128;   // 32 → 128      // averaging per reading
 const uint32_t TIMEOUT = 20000;
 
 // thresholds above the untouched baseline (tune after looking at the plot)
