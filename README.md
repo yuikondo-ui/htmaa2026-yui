@@ -64,3 +64,4 @@ The workflow in `.github/workflows/pages.yml` does the rest.
 
 Until Gridular is added the name uses the body face. If your files are `.otf`/`.ttf`, either
 change the `url(...)` in `css/style.css` or convert to woff2.
+# mirror-extension
