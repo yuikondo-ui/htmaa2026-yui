@@ -18,6 +18,12 @@ Undressed, the sculpture tells everything it knows about you. Put a piece of clo
 
 ## Prototypes
 
+### Prototype v4: Inference View
+
+[Open in new tab ↗](files/week00/inference-view.html) (Nov 5 2026)
+
+:::embed files/week00/inference-view.html | Inference View, prototype v4
+
 ### Prototype v3: Data Blocks
 
 [Open in new tab ↗](files/week00/data-blocks.html) (Nov 4 2026)
