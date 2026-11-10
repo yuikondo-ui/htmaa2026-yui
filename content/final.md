@@ -2,7 +2,7 @@
 title: Final Project
 ref: HTMAA/FINAL
 status: WIP
-hero: img/final/final_teaser.mp4
+hero: img/final/final_teaser_v5.gif
 summary: Clothes for digital selves. A tangible digital twin built from a person's own data, and clothes to choose what it shows.
 ---
 
@@ -15,6 +15,12 @@ I propose that we need a shield between us and AI. Right now our digital body is
 Undressed, the sculpture tells everything it knows about you. Put a piece of clothing on it and it speaks only from the facets you chose to show; take the clothing off and the rest comes back. Assembling and disassembling a sculpture made of your own data lets you think about this with your hands: what to show, what to hide, and to whom.
 
 ## Prototypes
+
+### Prototype v5: Your Data Body
+
+[Open in new tab ↗](files/week00/your-data-body.html) (Nov 9 2026)
+
+:::embed files/week00/your-data-body.html | Your Data Body, prototype v5
 
 ### Prototype v4: Inference View
 

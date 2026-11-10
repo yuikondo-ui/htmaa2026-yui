@@ -4,7 +4,7 @@ date: 09/09
 topics: [final project proposal & log](http://academy.cba.mit.edu/classes/principles_practices/index.html)
 recitation: [version control and web development](https://pub.cba.mit.edu/863.26/site/recitations/version/index.html)
 status: WIP
-hero: img/final/final_teaser.mp4
+hero: img/final/final_teaser_v5.gif
 summary: Clothes for digital selves — a tangible digital twin built from a person's own data, choosing what to show and what to hide.
 ---
 
@@ -17,6 +17,12 @@ I propose that we need a shield between us and AI. Right now our digital body is
 Undressed, the sculpture tells everything it knows about you. Put a piece of clothing on it and it speaks only from the facets you chose to show; take the clothing off and the rest comes back. Assembling and disassembling a sculpture made of your own data lets you think about this with your hands: what to show, what to hide, and to whom.
 
 ## Prototypes
+
+### Prototype v5: Your Data Body
+
+[Open in new tab ↗](files/week00/your-data-body.html) (Nov 9 2026)
+
+:::embed files/week00/your-data-body.html | Your Data Body, prototype v5
 
 ### Prototype v4: Inference View
 

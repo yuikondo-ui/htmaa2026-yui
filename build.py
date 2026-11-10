@@ -97,9 +97,12 @@ def blocks(body):
                 f'<div class="embed-bar"><span class="embed-title">{esc(title)}</span>'
                 f'<a class="embed-open" href="{esc(path)}" target="_blank" rel="noopener">Open in new tab ↗</a></div>'
                 f'<iframe src="{esc(path)}" loading="lazy" title="{esc(title)}"></iframe>'
-                f'<details class="src"><summary>Source <span class="muted">{esc(os.path.basename(path))} · '
-                f'{src.count(chr(10)) + 1} lines</span></summary><pre><code>{esc(src)}</code></pre></details>'
-                f'</div>\n')
+                + (f'<details class="src"><summary>Source <span class="muted">{esc(os.path.basename(path))} · '
+                   f'{src.count(chr(10)) + 1} lines</span></summary><pre><code>{esc(src)}</code></pre></details>'
+                   if len(src) <= 60_000 else   # big files (inlined data): link the source instead of pasting it in
+                   f'<p class="src muted"><a href="{esc(path)}" download>Source: {esc(os.path.basename(path))} '
+                   f'({len(src) // 1000:,} KB)</a></p>')
+                + f'</div>\n')
     body = re.sub(r"^:::embed\s+(\S+)(?:\s*\|\s*(.+))?\s*$", embed, body, flags=re.M)
 
     def codeview(m):
