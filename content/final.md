@@ -2,7 +2,7 @@
 title: Final Project
 ref: HTMAA/FINAL
 status: WIP
-hero: img/final/final_teaser_v5.gif
+hero: img/final/final_teaser_v5.mp4
 summary: Clothes for digital selves. A tangible digital twin built from a person's own data, and clothes to choose what it shows.
 ---
 
