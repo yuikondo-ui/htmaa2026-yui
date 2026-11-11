@@ -18,6 +18,20 @@ Undressed, the sculpture tells everything it knows about you. Put a piece of clo
 
 ## Prototypes
 
+### Prototype v6: Your Group <span class="h-note">You against the box a platform files you in: what the box expects of you, and what is only yours.</span> { #prototype-v6-your-group data-toc-label="Prototype v6: Your Group" }
+
+[Open in new tab ↗](files/week00/your-group.html#group) (Nov 9 2026)
+
+:::embed files/week00/your-group.html | Your Group, prototype v6
+
+#### Political version
+
+The same body, read only for politics: what platforms could guess about your political views.
+
+[Open in new tab ↗](files/week00/political-body.html) (Nov 9 2026)
+
+:::embed files/week00/political-body.html | Your Political Body, prototype v6
+
 ### Prototype v5: You Will <span class="h-note">See yourself the way the algorithm sees you: what it guesses about who you are, and the life it predicts you’ll live.</span> { #prototype-v5-you-will data-toc-label="Prototype v5: You Will" }
 
 [Open in new tab ↗](files/week00/you-will.html) (Nov 9 2026)
