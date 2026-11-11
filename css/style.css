@@ -241,6 +241,7 @@ html{scroll-behavior:smooth}
 .content h2{font-size:1.45em;line-height:1.05;letter-spacing:-0.015em;margin:2.2em 0 .6em;padding-top:.6em;border-top:var(--rule)}
 .content h2:first-child{margin-top:0;border-top:0;padding-top:0}
 .content h3{margin:1.6em 0 .4em;color:var(--muted)}
+.content h3 .h-note{font-weight:400;margin-left:.8em}
 .content img{max-width:100%;max-height:80vh;object-fit:cover;display:block;margin:1em 0;background:#eee}
 .content p+img,.content p img{margin-top:.2em}
 .content ul,.content ol{padding-left:1.4em}

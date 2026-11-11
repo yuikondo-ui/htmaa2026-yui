@@ -18,7 +18,7 @@ Undressed, the sculpture tells everything it knows about you. Put a piece of clo
 
 ## Prototypes
 
-### Prototype v5: You Will
+### Prototype v5: You Will <span class="h-note">See yourself the way the algorithm sees you: what it guesses about who you are, and the life it predicts you’ll live.</span> { #prototype-v5-you-will data-toc-label="Prototype v5: You Will" }
 
 [Open in new tab ↗](files/week00/you-will.html) (Nov 9 2026)
 
