@@ -16,11 +16,11 @@ Undressed, the sculpture tells everything it knows about you. Put a piece of clo
 
 ## Prototypes
 
-### Prototype v5: Your Data Body
+### Prototype v5: You Will
 
-[Open in new tab ↗](files/week00/your-data-body.html) (Nov 9 2026)
+[Open in new tab ↗](files/week00/you-will.html) (Nov 9 2026)
 
-:::embed files/week00/your-data-body.html | Your Data Body, prototype v5
+:::embed files/week00/you-will.html | You Will, prototype v5
 
 ### Prototype v4: Inference View
 
